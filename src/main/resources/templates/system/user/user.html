@@ -1,0 +1,78 @@
+<!DOCTYPE html>
+<html lang="zh_CN" xmlns:th="http://www.thymeleaf.org"
+	xmlns:shiro="http://www.pollix.at/thymeleaf/shiro">
+<meta charset="utf-8">
+<head th:include="include :: header"></head>
+<body style="padding: 10px;">
+	<div>
+		<div>
+			<script type="text/javascript">
+				var s_edit_h = 'hidden';
+				var s_remove_h = 'hidden';
+				var s_resetPwd_h = 'hidden';
+			</script>
+		</div>
+		<div shiro:hasPermission="sys:user:edit">
+			<script type="text/javascript">
+				s_edit_h = '';
+			</script>
+		</div>
+		<div shiro:hasPermission="sys:user:remove">
+			<script type="text/javascript">
+				var s_remove_h = '';
+			</script>
+		</div>
+		<div shiro:hasPermission="sys:user:resetPwd">
+			<script type="text/javascript">
+				var s_resetPwd_h = '';
+			</script>
+		</div>
+	</div>
+	<div>
+		<blockquote class="layui-elem-quote quoteBox">
+			<div class="layui-form">
+				<div class="layui-inline" style="float: right;">
+					<div class="layui-input-inline">
+						<input type="text" class="layui-input" id="username"
+							style="font-size: 12px" placeholder="请输入用户名" autocomplete="off" />
+					</div>
+					<button type="button" class="layui-btn search_btn">
+						<i class="layui-icon layui-icon-search" aria-hidden="true"></i>搜索
+					</button>
+				</div>
+				<div class="layui-inline">
+					<button shiro:hasPermission="sys:user:add" type="button"
+						class="layui-btn addNews_btn">
+						<i class="layui-icon layui-icon-add-1" aria-hidden="true"></i>新增
+					</button>
+				</div>
+				<div class="layui-inline">
+					<button shiro:hasPermission="sys:user:batchRemove" type="button"
+						class="layui-btn layui-btn-danger layui-btn-normal delAll_btn">
+						<i class="layui-icon layui-icon-delete" aria-hidden="true"></i>批量删除
+					</button>
+				</div>
+			</div>
+		</blockquote>
+		<table id="userList" lay-filter="userList"></table>
+	</div>
+	<div th:include="include :: footer"></div>
+	<script src="/js/requiremain.js"></script>
+	<script src="/js/plugins/require/require.js"
+		data-main="/js/appjs/sys/user/user.js"></script>
+	<script type="text/html" id="userListBar">
+      	{{# 
+			var gfun=function(pstatus){
+				var html="";
+				var t=d.userstatus==1?'禁用':'启用';
+				var t1=d.userstatus==1?'layui-btn-warm':'layui-btn-normal';
+				html +="<a class='layui-btn layui-btn-xs "+s_edit_h + "' lay-event='edit'>编辑</a>";
+				html +="<a class='layui-btn layui-btn-xs layui-btn-danger "+ s_remove_h + "' lay-event='del'>删除</a>";
+				html +="<a class='layui-btn layui-btn-xs " + t1 + "  " + s_resetPwd_h + "' lay-event='usable'>"+t+"</a>";
+				return html;
+			};
+		}}
+		{{ gfun() }}
+	</script>
+</body>
+</html>

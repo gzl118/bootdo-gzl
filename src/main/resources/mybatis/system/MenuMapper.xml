@@ -1,0 +1,162 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.bootdo.system.dao.MenuDao">
+
+	<select id="get" resultType="com.bootdo.system.domain.MenuDO">
+		select
+		`menu_id`,`menuname`,`menuicon`,`menuurl`,`menuperms`,`ordernum`,`parent_id`,`menutype`,`edit_user`,`edit_time`,`deleteflag`,`ext1`,`ext2`,`ext3`
+		from sys_menu where menu_id = #{value}
+	</select>
+
+	<select id="list" resultType="com.bootdo.system.domain.MenuDO">
+		select
+		`menu_id`,`menuname`,`menuicon`,`menuurl`,`menuperms`,`ordernum`,`parent_id`,`menutype`,`edit_user`,`edit_time`,`deleteflag`,`ext1`,`ext2`,`ext3`
+		from sys_menu
+		<where>
+			<if test="menuId != null and menuId != ''"> and menu_id = #{menuId} </if>
+			<if test="menuname != null and menuname != ''"> and menuname = #{menuname} </if>
+			<if test="menuicon != null and menuicon != ''"> and menuicon = #{menuicon} </if>
+			<if test="menuurl != null and menuurl != ''"> and menuurl = #{menuurl} </if>
+			<if test="menuperms != null and menuperms != ''"> and menuperms = #{menuperms} </if>
+			<if test="ordernum != null and ordernum != ''"> and ordernum = #{ordernum} </if>
+			<if test="parentId != null and parentId != ''"> and parent_id = #{parentId} </if>
+			<if test="menutype != null and menutype != ''"> and menutype = #{menutype} </if>
+			<if test="editUser != null and editUser != ''"> and edit_user = #{editUser} </if>
+			<if test="editTime != null and editTime != ''"> and edit_time = #{editTime} </if>
+			<if test="deleteflag != null and deleteflag != ''"> and deleteflag = #{deleteflag} </if>
+			<if test="ext1 != null and ext1 != ''"> and ext1 = #{ext1} </if>
+			<if test="ext2 != null and ext2 != ''"> and ext2 = #{ext2} </if>
+			<if test="ext3 != null and ext3 != ''"> and ext3 = #{ext3} </if>
+		</where>
+		<choose>
+			<when test="sort != null and sort.trim() != ''">
+				order by ${sort} ${order}
+			</when>
+			<otherwise>
+				order by menu_id desc
+			</otherwise>
+		</choose>
+		<if test="offset != null and limit != null">
+			limit #{offset}, #{limit}
+		</if>
+	</select>
+
+	<select id="count" resultType="int">
+		select count(*) from sys_menu
+		<where>
+			<if test="menuId != null and menuId != ''"> and menu_id = #{menuId} </if>
+			<if test="menuname != null and menuname != ''"> and menuname = #{menuname} </if>
+			<if test="menuicon != null and menuicon != ''"> and menuicon = #{menuicon} </if>
+			<if test="menuurl != null and menuurl != ''"> and menuurl = #{menuurl} </if>
+			<if test="menuperms != null and menuperms != ''"> and menuperms = #{menuperms} </if>
+			<if test="ordernum != null and ordernum != ''"> and ordernum = #{ordernum} </if>
+			<if test="parentId != null and parentId != ''"> and parent_id = #{parentId} </if>
+			<if test="menutype != null and menutype != ''"> and menutype = #{menutype} </if>
+			<if test="editUser != null and editUser != ''"> and edit_user = #{editUser} </if>
+			<if test="editTime != null and editTime != ''"> and edit_time = #{editTime} </if>
+			<if test="deleteflag != null and deleteflag != ''"> and deleteflag = #{deleteflag} </if>
+			<if test="ext1 != null and ext1 != ''"> and ext1 = #{ext1} </if>
+			<if test="ext2 != null and ext2 != ''"> and ext2 = #{ext2} </if>
+			<if test="ext3 != null and ext3 != ''"> and ext3 = #{ext3} </if>
+		</where>
+	</select>
+
+	<insert id="save" parameterType="com.bootdo.system.domain.MenuDO">
+		insert into sys_menu
+		(
+		`menu_id`,
+		`menuname`,
+		`menuicon`,
+		`menuurl`,
+		`menuperms`,
+		`ordernum`,
+		`parent_id`,
+		`menutype`,
+		`edit_user`,
+		`edit_time`,
+		`deleteflag`,
+		`ext1`,
+		`ext2`,
+		`ext3`
+		)
+		values
+		(
+		#{menuId},
+		#{menuname},
+		#{menuicon},
+		#{menuurl},
+		#{menuperms},
+		#{ordernum},
+		#{parentId},
+		#{menutype},
+		#{editUser},
+		#{editTime},
+		#{deleteflag},
+		#{ext1},
+		#{ext2},
+		#{ext3}
+		)
+	</insert>
+
+	<update id="update" parameterType="com.bootdo.system.domain.MenuDO">
+		update sys_menu
+		<set>
+			<if test="menuname != null">`menuname` = #{menuname}, </if>
+			<if test="menuicon != null">`menuicon` = #{menuicon}, </if>
+			<if test="menuurl != null">`menuurl` = #{menuurl}, </if>
+			<if test="menuperms != null">`menuperms` = #{menuperms}, </if>
+			<if test="ordernum != null">`ordernum` = #{ordernum}, </if>
+			<if test="parentId != null">`parent_id` = #{parentId}, </if>
+			<if test="menutype != null">`menutype` = #{menutype}, </if>
+			<if test="editUser != null">`edit_user` = #{editUser}, </if>
+			<if test="editTime != null">`edit_time` = #{editTime}, </if>
+			<if test="deleteflag != null">`deleteflag` = #{deleteflag}, </if>
+			<if test="ext1 != null">`ext1` = #{ext1}, </if>
+			<if test="ext2 != null">`ext2` = #{ext2}, </if>
+			<if test="ext3 != null">`ext3` = #{ext3}</if>
+		</set>
+		where menu_id = #{menuId}
+	</update>
+
+	<delete id="remove">
+		delete from sys_menu where menu_id = #{value}
+	</delete>
+
+	<delete id="batchRemove">
+		delete from sys_menu where menu_id in
+		<foreach item="menuId" collection="array" open="(" separator=","
+			close=")">
+			#{menuId}
+		</foreach>
+	</delete>
+
+	<select id="listMenuByUserId" resultType="com.bootdo.system.domain.MenuDO">
+		select distinct
+		m.menu_id , m.parent_id, m.menuname, m.menuurl,
+		m.menuperms,m.menutype,m.menuicon,m.ordernum,m.edit_time, m.edit_user
+		from sys_menu m
+		left
+		join sys_role_menu rm on m.menu_id = rm.menu_id
+		left join
+		sys_user_role ur
+		on rm.role_id =ur.role_id where ur.user_id =
+		#{id}
+		and
+		m.menutype in(0,1)
+		order by
+		m.ordernum
+	</select>
+
+	<select id="listUserPerms" resultType="string">
+		select distinct
+		m.menuperms
+		from sys_menu m left join
+		sys_role_menu rm on m.menu_id =
+		rm.menu_id
+		left join sys_user_role ur
+		on rm.role_id = ur.role_id where
+		ur.user_id
+		= #{id}
+	</select>
+</mapper>

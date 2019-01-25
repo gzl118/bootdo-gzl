@@ -1,0 +1,123 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.bootdo.system.dao.StaffDao">
+
+	<select id="get" resultType="com.bootdo.system.domain.StaffDO">
+		select a.`staff_id`,a.`name`,a.`sex`,a.`staff_id_create`,a.`staff_id_modified`,a.`dept_id`,a.`education`,a.`zc`,a.`zw`,b.name as `deptName` from sys_staff a, sys_dept b where a.dept_id=b.dept_id and a.staff_id = #{value}
+	</select>
+
+	<select id="list" resultType="com.bootdo.system.domain.StaffDO">
+		select sys_staff.`staff_id`,sys_staff.`name`,sys_staff.`sex`,sys_staff.`staff_id_create`,sys_staff.`staff_id_modified`,sys_staff.`dept_id`,sys_staff.`education`,sys_staff.`zc`,sys_staff.`zw`,sys_dept.name as `deptName` from sys_staff left join sys_dept on sys_staff.dept_id = sys_dept.dept_id
+        <where>  
+		  		  <if test="staffId != null and staffId != ''"> and staff_id = #{staffId} </if>
+		  		  <if test="name != null and name != ''"> and sys_staff.name LIKE '%${name}%' </if>
+		  		  <if test="sex != null and sex != ''"> and sex = #{sex} </if>
+		  		  <if test="staffIdCreate != null and staffIdCreate != ''"> and staff_id_create = #{staffIdCreate} </if>
+		  		  <if test="staffIdModified != null and staffIdModified != ''">`staff_id_modified` = #{staffIdModified}, </if>
+		  		  <if test="deptId != null and deptId != ''"> and sys_staff.dept_id = #{deptId} </if>
+		  		  <if test="education != null and education != ''"> and education = #{education} </if>
+		  		  <if test="zc != null and zc != ''"> and zc = #{zc} </if>
+		  		  <if test="zw != null and zw != ''"> and zw = #{zw} </if>
+		  		</where>
+        <choose>
+            <when test="sort != null and sort.trim() != ''">
+                order by ${sort} ${order}
+            </when>
+			<otherwise>
+                order by staff_id desc
+			</otherwise>
+        </choose>
+		<if test="offset != null and limit != null">
+			limit #{offset}, #{limit}
+		</if>
+	</select>
+	
+ 	<select id="count" resultType="int">
+		select count(*) from sys_staff
+		 <where>  
+		  		  <if test="staffId != null and staffId != ''"> and staff_id = #{staffId} </if>
+		  		  <if test="name != null and name != ''"> and name LIKE '%${name}%' </if>
+		  		  <if test="sex != null and sex != ''"> and sex = #{sex} </if>
+		  		  <if test="staffIdCreate != null and staffIdCreate != ''"> and staff_id_create = #{staffIdCreate} </if>
+		  		  <if test="staffIdModified != null and staffIdModified != ''">`staff_id_modified` = #{staffIdModified}, </if>
+		  		  <if test="deptId != null and deptId != ''"> and dept_id = #{deptId} </if>
+		  		  <if test="education != null and education != ''"> and education = #{education} </if>
+		  		  <if test="zc != null and zc != ''"> and zc = #{zc} </if>
+		  		  <if test="zw != null and zw != ''"> and zw = #{zw} </if>
+		  		</where>
+	</select>
+	 
+	<insert id="save" parameterType="com.bootdo.system.domain.StaffDO">
+		insert into sys_staff
+		(
+			`staff_id`, 
+			`name`, 
+			`sex`, 
+			`staff_id_create`, 
+			`staff_id_modified`, 
+			`dept_id`, 
+			`education`, 
+			`zc`, 
+			`zw`
+		)
+		values
+		(
+			#{staffId}, 
+			#{name}, 
+			#{sex}, 
+			#{staffIdCreate}, 
+			#{staffIdModified}, 
+			#{deptId}, 
+			#{education}, 
+			#{zc}, 
+			#{zw}
+		)
+	</insert>
+	 
+	<update id="update" parameterType="com.bootdo.system.domain.StaffDO">
+		update sys_staff 
+		<set>
+			<if test="name != null">`name` = #{name}, </if>
+			<if test="sex != null">`sex` = #{sex}, </if>
+			<if test="staffIdCreate != null">`staff_id_create` = #{staffIdCreate}, </if>
+			<if test="staffIdModified != null">`staff_id_modified` = #{staffIdModified}, </if>
+			<if test="deptId != null">`dept_id` = #{deptId}, </if>
+			<if test="education != null">`education` = #{education}, </if>
+			<if test="zc != null">`zc` = #{zc}, </if>
+			<if test="zw != null">`zw` = #{zw}</if>
+		</set>
+		where staff_id = #{staffId}
+	</update>
+	
+	<delete id="remove">
+		delete from sys_staff where staff_id = #{value}
+	</delete>
+	
+	<delete id="batchRemove">
+		delete from sys_staff where staff_id in 
+		<foreach item="staffId" collection="array" open="(" separator="," close=")">
+			#{staffId}
+		</foreach>
+	</delete>
+
+	<update id="updateUserStaff" parameterType="com.bootdo.system.domain.StaffDO">
+		update sys_user 
+		<set>
+			<if test="name != null">`name` = #{name}, </if>
+			<if test="deptId != null">`dept_id` = #{deptId} </if>
+		</set>
+		where staff_id = #{staffId}
+	</update>
+	
+	<update id="deleteUserStaff">
+		update sys_user set name=null,staff_id=null,status=0 where staff_id = #{value}
+	</update>
+	
+	<update id="deleteUserStaffs">
+		update sys_user set name=null,staff_id=null,status=0 where staff_id in 
+		<foreach item="staffId" collection="array" open="(" separator="," close=")">
+			#{staffId}
+		</foreach>
+	</update>
+</mapper>
