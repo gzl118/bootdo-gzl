@@ -123,5 +123,8 @@ require(
 								function addData() {
 									layer.msg("添加数据！");
 								};
+								function del(){
+									console.log("aaaa");
+								}
 							});
 		});
