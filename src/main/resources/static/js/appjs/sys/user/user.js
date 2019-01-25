@@ -122,8 +122,6 @@ require(
 												});
 								function addData() {
 									layer.msg("添加数据！");
-								}
-								;
-
+								};
 							});
 		});
