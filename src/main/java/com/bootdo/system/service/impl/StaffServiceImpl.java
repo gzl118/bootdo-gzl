@@ -3,13 +3,11 @@ package com.bootdo.system.service.impl;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 
 import com.bootdo.system.dao.StaffDao;
 import com.bootdo.system.domain.StaffDO;
-import com.bootdo.system.domain.UserRoleDO;
 import com.bootdo.system.service.StaffService;
 
 
@@ -20,8 +18,8 @@ public class StaffServiceImpl implements StaffService {
 	private StaffDao staffDao;
 	
 	@Override
-	public StaffDO get(Long staffId){
-		return staffDao.get(staffId);
+	public StaffDO get(String employeeId){
+		return staffDao.get(employeeId);
 	}
 	
 	@Override
@@ -41,22 +39,17 @@ public class StaffServiceImpl implements StaffService {
 	
 	@Override
 	public int update(StaffDO staff){
-		int n=staffDao.update(staff);
-		staffDao.updateUserStaff(staff);
-		return n;
+		return staffDao.update(staff);
 	}
 	
 	@Override
-	public int remove(Long staffId){
-		int n=staffDao.remove(staffId);
-		staffDao.deleteUserStaff(staffId);
-		return n;
+	public int remove(String employeeId){
+		return staffDao.remove(employeeId);
 	}
 	
 	@Override
-	public int batchRemove(Long[] staffIds){
-		int n=staffDao.batchRemove(staffIds);
-		staffDao.deleteUserStaffs(staffIds);
-		return n;
+	public int batchRemove(String[] employeeIds){
+		return staffDao.batchRemove(employeeIds);
 	}
+	
 }

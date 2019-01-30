@@ -22,7 +22,7 @@
                 order by ${pk.columnName} desc
 			</otherwise>
         </choose>
-		<if test="offset != null and limit != null">
+		<if test="offset != null and limit != null and limit !=-1">
 			limit #{offset}, #{limit}
 		</if>
 	</select>

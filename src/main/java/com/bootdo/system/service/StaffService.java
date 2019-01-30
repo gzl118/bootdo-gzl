@@ -10,11 +10,11 @@ import java.util.Map;
  * 
  * @author chglee
  * @email 1992lcg@163.com
- * @date 2018-10-16 10:36:57
+ * @date 2019-01-30 14:52:19
  */
 public interface StaffService {
 	
-	StaffDO get(Long staffId);
+	StaffDO get(String employeeId);
 	
 	List<StaffDO> list(Map<String, Object> map);
 	
@@ -24,7 +24,7 @@ public interface StaffService {
 	
 	int update(StaffDO staff);
 	
-	int remove(Long staffId);
+	int remove(String employeeId);
 	
-	int batchRemove(Long[] staffIds);
+	int batchRemove(String[] employeeIds);
 }

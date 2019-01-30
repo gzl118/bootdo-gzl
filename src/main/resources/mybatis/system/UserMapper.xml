@@ -16,8 +16,8 @@
 		<where>
 			<if test="userId != null and userId != ''"> and user_id = #{userId} </if>
 			<if test="deptId != null and deptId != ''"> and dept_id = #{deptId} </if>
-			<if test="username != null and username != ''"> and username = #{username} </if>
-			<if test="usernikename != null and usernikename != ''"> and usernikename = #{usernikename} </if>
+			<if test="username != null and username != ''"> and username LIKE '%${username}%' </if>
+			<if test="usernikename != null and usernikename != ''"> and usernikename LIKE '%${usernikename}%' </if>
 			<if test="userpwd != null and userpwd != ''"> and userpwd = #{userpwd} </if>
 			<if test="userstatus != null and userstatus != ''"> and userstatus = #{userstatus} </if>
 			<if test="editUser != null and editUser != ''"> and edit_user = #{editUser} </if>
@@ -35,7 +35,7 @@
 				order by user_id desc
 			</otherwise>
 		</choose>
-		<if test="offset != null and limit != null">
+		<if test="offset != null and limit != null and limit !=-1">
 			limit #{offset}, #{limit}
 		</if>
 	</select>
@@ -45,8 +45,8 @@
 		<where>
 			<if test="userId != null and userId != ''"> and user_id = #{userId} </if>
 			<if test="deptId != null and deptId != ''"> and dept_id = #{deptId} </if>
-			<if test="username != null and username != ''"> and username = #{username} </if>
-			<if test="usernikename != null and usernikename != ''"> and usernikename = #{usernikename} </if>
+			<if test="username != null and username != ''"> and username LIKE '%${username}%' </if>
+			<if test="usernikename != null and usernikename != ''"> and usernikename LIKE '%${usernikename}%' </if>
 			<if test="userpwd != null and userpwd != ''"> and userpwd = #{userpwd} </if>
 			<if test="userstatus != null and userstatus != ''"> and userstatus = #{userstatus} </if>
 			<if test="editUser != null and editUser != ''"> and edit_user = #{editUser} </if>

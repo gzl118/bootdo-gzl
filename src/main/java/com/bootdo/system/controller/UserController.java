@@ -2,6 +2,7 @@ package com.bootdo.system.controller;
 
 import java.util.List;
 import java.util.Map;
+import java.util.Objects;
 import java.util.UUID;
 
 import org.apache.shiro.authz.annotation.RequiresPermissions;
@@ -15,6 +16,8 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 
+import com.bootdo.common.annotation.Log;
+import com.bootdo.common.config.Constant;
 import com.bootdo.common.controller.BaseController;
 import com.bootdo.common.utils.MD5Utils;
 import com.bootdo.common.utils.PageUtils;
@@ -23,6 +26,7 @@ import com.bootdo.common.utils.R;
 import com.bootdo.common.utils.StringUtils;
 import com.bootdo.system.domain.UserDO;
 import com.bootdo.system.service.UserService;
+import com.bootdo.system.vo.UserVO;
 
 @RequestMapping("/sys/user")
 @Controller
@@ -120,5 +124,46 @@ public class UserController extends BaseController {
 		if (u == null)
 			return R.ok();
 		return R.error("用户名已存在！");
+	}
+
+	@PostMapping("/adminresetpwd")
+	@ResponseBody
+	@RequiresPermissions("sys:user:adminresetpwd")
+	public R adminresetpwd(String userId) {
+		UserDO user = userService.get(userId);
+		user.setUserpwd(MD5Utils.encrypt(user.getUsername(), "111111"));
+		if (userService.update(user) > 0) {
+			return R.ok();
+		}
+		return R.error();
+	}
+
+	@Log("提交更改用户密码")
+	@PostMapping("/resetPwd")
+	@ResponseBody
+	R resetPwd(UserVO userVO) {
+		try {
+			this.resetPwdfunc(userVO, getUser());
+			return R.ok();
+		} catch (Exception e) {
+			return R.error(1, e.getMessage());
+		}
+
+	}
+
+	private int resetPwdfunc(UserVO userVO, UserDO userDO) throws Exception {
+		if (Objects.equals(userVO.getUserDO().getUserId(), userDO.getUserId())) {
+			if (Objects.equals(
+					MD5Utils.encrypt(userDO.getUsername(), userVO.getPwdOld()),
+					userDO.getUserpwd())) {
+				userDO.setUserpwd(MD5Utils.encrypt(userDO.getUsername(),
+						userVO.getPwdNew()));
+				return userService.update(userDO);
+			} else {
+				throw new Exception("输入的旧密码有误！");
+			}
+		} else {
+			throw new Exception("你修改的不是你登录的账号！");
+		}
 	}
 }

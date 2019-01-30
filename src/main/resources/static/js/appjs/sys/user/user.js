@@ -19,10 +19,14 @@ require(
 											url : prefix + "/list",
 											cellMinWidth : 95,
 											page : true,
+											where : {
+												sort : 'username',
+												order : 'asc'
+											},
 											even : true,
 											height : "full-120",
-											limits : [ 10, 15, 20, 25 ],
-											limit : 15,
+											limits : [ 5, 10, 15, 20, 25 ],
+											limit : 5,
 											id : "userListTable",
 											done : function(res, curr, count) {
 											},
@@ -52,28 +56,33 @@ require(
 														templet : function(d) {
 															return d.userstatus === 1 ? '<span class="label label-primary">正常</span>'
 																	: '<span class="label label-danger">停用</span>';
-															;
 														}
 													},
 													{
 														title : '操作',
-														width : 180,
+														width : 220,
 														templet : '#userListBar',
 														fixed : "right",
 														align : "center"
 													} ] ]
 										});
 								;
-								$(".search_btn").on("click", function() {
-									table.reload("userListTable", {
-										page : {
-											curr : 1
-										},
-										where : {
-											username : $("#username").val()
-										}
-									});
-								});
+								$(".search_btn").on(
+										"click",
+										function() {
+											table.reload("userListTable", {
+												page : {
+													curr : 1
+												},
+												where : {
+													username : $("#username")
+															.val(),
+													usernikename : $(
+															"#usernikename")
+															.val()
+												}
+											});
+										});
 								$(".addNews_btn").click(function() {
 									addData();
 								});
@@ -176,6 +185,22 @@ require(
 									});
 								}
 								;
+								function resetpwd(id) {
+									layer.confirm('确定重置此用户的密码，重置后原密码将无法登陆？', {
+										icon : 3,
+										title : '提示信息'
+									}, function(index) {
+										$.post(prefix + "/adminresetpwd", {
+											userId : id
+										}, function(res) {
+											layer.msg(res.msg);
+											layer.close(index);
+											if (res.code == 0) {
+												tableIns.reload();
+											}
+										});
+									});
+								}
 								table.on('tool(userList)', function(obj) {
 									var layEvent = obj.event, data = obj.data;
 									switch (layEvent) {
@@ -187,6 +212,9 @@ require(
 										break;
 									case "usable":
 										usable(data);
+										break;
+									case "resetpwd":
+										resetpwd(data.userId);
 										break;
 									}
 								});

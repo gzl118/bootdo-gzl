@@ -15,12 +15,14 @@ public class Query extends LinkedHashMap<String, Object> {
 
 	public Query(Map<String, Object> params) {
 		this.putAll(params);
-		if (params.containsKey("offset") && params.containsKey("limit")) {
+		if (params.containsKey("page") && params.containsKey("limit")) {
 			// 分页参数
-			this.offset = Integer.parseInt(params.get("offset").toString());
+			Integer page = Integer.parseInt(params.get("page").toString());
 			this.limit = Integer.parseInt(params.get("limit").toString());
-			this.put("offset", offset);
-			this.put("page", offset / limit + 1);
+			Integer offsettemp = (page - 1) * this.limit;
+			this.offset = offsettemp;
+			this.put("offset", offsettemp);
+			this.put("page", page);
 			this.put("limit", limit);
 		}
 	}

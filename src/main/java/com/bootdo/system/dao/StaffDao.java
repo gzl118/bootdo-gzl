@@ -9,14 +9,14 @@ import org.apache.ibatis.annotations.Mapper;
 
 /**
  * 
- * @author wwpan
+ * @author chglee
  * @email 1992lcg@163.com
- * @date 2018-10-16 10:36:57
+ * @date 2019-01-30 14:52:19
  */
 @Mapper
 public interface StaffDao {
 
-	StaffDO get(Long staffId);
+	StaffDO get(String employeeId);
 	
 	List<StaffDO> list(Map<String,Object> map);
 	
@@ -26,13 +26,7 @@ public interface StaffDao {
 	
 	int update(StaffDO staff);
 	
-	int remove(Long staff_id);
+	int remove(String employee_id);
 	
-	int batchRemove(Long[] staffIds);
-	
-	int updateUserStaff(StaffDO staff);
-	
-	int deleteUserStaff(Long staff_id);
-	
-	int deleteUserStaffs(Long[] staffIds);
+	int batchRemove(String[] employeeIds);
 }

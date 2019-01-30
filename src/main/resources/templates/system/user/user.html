@@ -10,6 +10,7 @@
 				var s_edit_h = 'hidden';
 				var s_remove_h = 'hidden';
 				var s_resetPwd_h = 'hidden';
+				var s_usable_h = 'hidden';
 			</script>
 		</div>
 		<div shiro:hasPermission="sys:user:edit">
@@ -22,9 +23,14 @@
 				var s_remove_h = '';
 			</script>
 		</div>
-		<div shiro:hasPermission="sys:user:resetPwd">
+		<div shiro:hasPermission="sys:user:adminresetpwd">
 			<script type="text/javascript">
 				var s_resetPwd_h = '';
+			</script>
+		</div>
+		<div shiro:hasPermission="sys:user:usable">
+			<script type="text/javascript">
+				var s_usable_h = '';
 			</script>
 		</div>
 	</div>
@@ -35,6 +41,10 @@
 					<div class="layui-input-inline">
 						<input type="text" class="layui-input" id="username"
 							style="font-size: 12px" placeholder="请输入用户名" autocomplete="off" />
+					</div>
+					<div class="layui-input-inline">
+						<input type="text" class="layui-input" id="usernikename"
+							style="font-size: 12px" placeholder="请输入用户昵称" autocomplete="off" />
 					</div>
 					<button type="button" class="layui-btn search_btn">
 						<i class="layui-icon layui-icon-search" aria-hidden="true"></i>搜索
@@ -68,7 +78,8 @@
 				var t1=d.userstatus==1?'layui-btn-warm':'layui-btn-normal';
 				html +="<a class='layui-btn layui-btn-xs "+s_edit_h + "' lay-event='edit'>编辑</a>";
 				html +="<a class='layui-btn layui-btn-xs layui-btn-danger "+ s_remove_h + "' lay-event='del'>删除</a>";
-				html +="<a class='layui-btn layui-btn-xs " + t1 + "  " + s_resetPwd_h + "' lay-event='usable'>"+t+"</a>";
+				html +="<a class='layui-btn layui-btn-xs " + t1 + "  " + s_usable_h + "' lay-event='usable'>"+t+"</a>";
+				html +="<a class='layui-btn layui-btn-xs layui-btn-normal " + s_resetPwd_h + "' lay-event='resetpwd'>密码重置</a>";
 				return html;
 			};
 		}}
