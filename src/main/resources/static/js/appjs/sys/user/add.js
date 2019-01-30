@@ -1,151 +1,66 @@
-//$().ready(function() {
-//	validateRule();
-//});
-$(function() {
-	validateRule();
+var prefix = "/sys/user";
+require.config({
+	paths : {}
 });
-$.validator.setDefaults({
-	submitHandler : function() {
-		save();
-	}
-});
-$("#pd_checkbox").on("change",function(){
-    if ($("#pd_checkbox").is(':checked')) {
-   	 $("#password").val("111111");
-   	 $("#password").attr("readonly","readonly");
-    }else{
-  	 $("#password").val("");
-  	 $("#password").removeAttr("readonly");
-    }
-  });
-
-function getCheckedRoles() {
-	var adIds = "";
-	$("input:checkbox[name=role]:checked").each(function(i) {
-		if (0 == i) {
-			adIds = $(this).val();
-		} else {
-			adIds += ("," + $(this).val());
-		}
-	});
-	return adIds;
-}
-function save() {
-	$("#roleIds").val(getCheckedRoles());
-	$.ajax({
-		cache : true,
-		type : "POST",
-		url : "/sys/user/save",
-		data : $('#signupForm').serialize(),// 你的formid
-		async : false,
-		error : function(request) {
-			parent.layer.alert("Connection error");
-		},
-		success : function(data) {
-			if (data.code == 0) {
-				parent.layer.msg("操作成功");
-				parent.reLoad();
-				var index = parent.layer.getFrameIndex(window.name); // 获取窗口索引
-				parent.layer.close(index);
-
-			} else {
-				parent.layer.alert(data.msg)
+require([ "jquery", 'layui' ], function($) {
+	layui.use([ 'form', 'layer', 'laydate' ], function() {
+		var form = layui.form;
+		var laydate = layui.laydate;
+		layer = parent.layer === undefined ? layui.layer : top.layer,
+				$ = layui.jquery;
+		form.on("submit(addUser)", function(data) {
+			$.post(prefix + "/isExist", {
+				username : $("#username").val(),
+				userId : $("#userId").val()
+			}, function(res1) {
+				if (res1.code == 0) {
+					// 弹出loading
+					var index = top.layer.msg('数据提交中，请稍候', {
+						icon : 16,
+						time : false,
+						shade : 0.8
+					});
+					// 实际使用时的提交信息
+					$.post(prefix + "/save", $("#userform").serialize(),
+							function(res) {
+								top.layer.close(index);
+								top.layer.msg(res.msg);
+								if (res.code == 0) {
+									layer.closeAll("iframe");
+									// 刷新父页面
+									parent.location.reload();
+								}
+							});
+				} else {
+					top.layer.msg(res1.msg);
+				}
+			});
+			return false;
+		});
+		form.on('checkbox(cbxPwd)', function(data) {
+			if (data.elem.checked === true) {
+				$("#userpwd").val("111111");
 			}
-
-		}
-	});
-
-}
-function validateRule() {
-	var icon = "<i class='fa fa-times-circle'></i> ";
-	$("#signupForm").validate({
-		rules : {
-//			name : {
-//				required : true
-//			},
-			username : {
-				required : true,
-				minlength : 2,
-				remote : {
-					url : "/sys/user/exit", // 后台处理程序
-					type : "post", // 数据发送方式
-					dataType : "json", // 接受数据格式
-					data : { // 要传递的数据
-						username : function() {
-							return $("#username").val();
+		});
+		form.on('switch(userstatus)', function(data) {
+			var t = (data.elem.checked === true ? 1 : 0);
+			$("#userstatus").val(t);
+		});
+		// 自定义验证规则
+		form
+				.verify({
+					username : function(value, item) { // value：表单的值、item：表单的DOM对象
+						if (/[\u4e00-\u9fa5]+/.test(value)) {
+							return '用户名不能为汉字';
+						}
+						if (/\s+/.test(value)) {
+							return '用户名不能包含空格';
+						}
+						if (!new RegExp("^[a-zA-Z0-9_\u4e00-\u9fa5\\s·]+$")
+								.test(value)) {
+							return '用户名不能有特殊字符';
 						}
 					}
-				}
-			},
-			password : {
-				required : true,
-				minlength : 6
-			},
-//			confirm_password : {
-//				required : true,
-//				minlength : 6,
-//				equalTo : "#password"
-//			},
-			deptName : {
-				required : true,
-				deptName : true
-			}
-//			email : {
-//				required : true,
-//				email : true
-//			},
-//			topic : {
-//				required : "#newsletter:checked",
-//				minlength : 2
-//			},
-//			agree : "required"
-		},
-		messages : {
-
-//			name : {
-//				required : icon + "请选择人员姓名"
-//			},
-			username : {
-				required : icon + "请输入您的用户名",
-				minlength : icon + "用户名必须两个字符以上",
-				remote : icon + "用户名已经存在"
-			},
-			password : {
-				required : icon + "请输入您的密码",
-				minlength : icon + "密码必须6个字符以上"
-			},
-			deptName : {
-				required : icon + "请选择所属机构"
-			}
-		}
-	})
-}
-var openStaff = function(){
-	layer.open({
-		type:2,
-		title:"选择人员",
-		area : [ '700px', '420px' ],
-		content:"/system/staff/selectView"
-	})
-}
-function loadStaffAndDept(staffId,name,deptId,deptName){
-	$("#staffId").val(staffId);
-	$("#name").val(name);
-	$("#deptId").val(deptId);
-	$("#deptName").val(deptName);
-	$("#deptName").attr("disabled","true");
-}
-var openDept = function(){
-	layer.open({
-		type:2,
-		title:"选择部门",
-		area : [ '300px', '450px' ],
-		content:"/system/sysDept/treeView"
-	})
-}
-function loadDept(deptId,deptName){
-	$("#deptId").val(deptId);
-	$("#deptName").val(deptName);
-	$("#deptName").attr("disabled","true");
-}
-
+				});
+	});
+});

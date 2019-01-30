@@ -120,5 +120,11 @@
 			#{userId}
 		</foreach>
 	</delete>
+	<select id="getByName" resultType="com.bootdo.system.domain.UserDO"
+		parameterType="com.bootdo.system.domain.UserDO">
+		select
+		`user_id`,`dept_id`,`username`,`usernikename`,`userpwd`,`userstatus`,`edit_user`,`edit_time`,`deleteflag`,`ext1`,`ext2`,`ext3`
+		from sys_user where username = #{username} and user_id <![CDATA[ <> #{userId}]]>
+	</select>
 
 </mapper>

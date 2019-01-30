@@ -53,4 +53,9 @@ public class UserServiceImpl implements UserService {
 		return userDao.batchRemove(userIds);
 	}
 
+	@Override
+	public UserDO getByName(Map<String, Object> map) {
+		return userDao.getByName(map);
+	}
+
 }

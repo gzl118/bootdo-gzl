@@ -22,4 +22,6 @@ public interface UserService {
 	int remove(String userId);
 
 	int batchRemove(String[] userIds);
+
+	UserDO getByName(Map<String, Object> map);
 }

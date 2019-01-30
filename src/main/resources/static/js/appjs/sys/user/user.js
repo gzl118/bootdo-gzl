@@ -51,7 +51,7 @@ require(
 														minWidth : 50,
 														templet : function(d) {
 															return d.userstatus === 1 ? '<span class="label label-primary">正常</span>'
-																	: '<span class="label label-danger">禁用</span>';
+																	: '<span class="label label-danger">停用</span>';
 															;
 														}
 													},
@@ -106,25 +106,89 @@ require(
 																							function(
 																									res) {
 																								layer
-																										.msg(res.Messages);
+																										.msg(res.msg);
 																								layer
 																										.close(index);
-																								if (res.StateCode == 200) {
+																								if (res.code == 0) {
 																									tableIns
 																											.reload();
 																								}
-																							},
-																							"json");
+																							});
 																		});
 													} else {
 														layer.msg("请至少选择一条记录！");
 													}
 												});
 								function addData() {
-									layer.msg("添加数据！");
-								};
-								function del(){
-									console.log("aaaa");
+									var index = layui.layer.open({
+										title : "添加用户",
+										type : 2,
+										content : prefix + "/add",
+										area : [ "600px", "400px" ]
+									});
 								}
+								;
+								function editData(id) {
+									var index = layui.layer.open({
+										title : "编辑用户",
+										type : 2,
+										content : prefix + "/edit/" + id,
+										area : [ "600px", "400px" ]
+									});
+								}
+								;
+								function del(id) {
+									layer.confirm('确定删除此用户？', {
+										icon : 3,
+										title : '提示信息'
+									}, function(index) {
+										$.post(prefix + "/remove", {
+											userId : id
+										}, function(res) {
+											layer.msg(res.msg);
+											layer.close(index);
+											if (res.code == 0) {
+												tableIns.reload();
+											}
+										});
+									});
+								}
+								;
+								function usable(data) {
+									var t = data.userstatus == 1 ? '禁用' : '启用';
+									var targetstatus = data.userstatus == 1 ? 0
+											: 1;
+									var id = data.userId;
+									layer.confirm('确定' + t + '此用户？', {
+										icon : 3,
+										title : '提示信息'
+									}, function(index) {
+										$.post(prefix + "/update", {
+											userId : id,
+											userstatus : targetstatus
+										}, function(res) {
+											layer.msg(res.msg);
+											layer.close(index);
+											if (res.code == 0) {
+												tableIns.reload();
+											}
+										});
+									});
+								}
+								;
+								table.on('tool(userList)', function(obj) {
+									var layEvent = obj.event, data = obj.data;
+									switch (layEvent) {
+									case "edit":
+										editData(data.userId);
+										break;
+									case "del":
+										del(data.userId);
+										break;
+									case "usable":
+										usable(data);
+										break;
+									}
+								});
 							});
 		});

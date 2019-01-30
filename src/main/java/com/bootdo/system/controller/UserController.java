@@ -2,6 +2,7 @@ package com.bootdo.system.controller;
 
 import java.util.List;
 import java.util.Map;
+import java.util.UUID;
 
 import org.apache.shiro.authz.annotation.RequiresPermissions;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -15,9 +16,11 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 import com.bootdo.common.controller.BaseController;
+import com.bootdo.common.utils.MD5Utils;
 import com.bootdo.common.utils.PageUtils;
 import com.bootdo.common.utils.Query;
 import com.bootdo.common.utils.R;
+import com.bootdo.common.utils.StringUtils;
 import com.bootdo.system.domain.UserDO;
 import com.bootdo.system.service.UserService;
 
@@ -66,6 +69,9 @@ public class UserController extends BaseController {
 	@PostMapping("/save")
 	@RequiresPermissions("sys:user:add")
 	public R save(UserDO user) {
+		if (StringUtils.isBlank(user.getUserId()))
+			user.setUserId(UUID.randomUUID().toString());
+		user.setUserpwd(MD5Utils.encrypt(user.getUsername(), user.getUserpwd()));
 		if (userService.save(user) > 0) {
 			return R.ok();
 		}
@@ -105,5 +111,14 @@ public class UserController extends BaseController {
 	public R remove(@RequestParam("ids[]") String[] userIds) {
 		userService.batchRemove(userIds);
 		return R.ok();
+	}
+
+	@PostMapping("/isExist")
+	@ResponseBody
+	public R isExist(@RequestParam Map<String, Object> params) {
+		UserDO u = userService.getByName(params);
+		if (u == null)
+			return R.ok();
+		return R.error("用户名已存在！");
 	}
 }

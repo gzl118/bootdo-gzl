@@ -21,11 +21,10 @@
 
 <body class="fixed-sidebar full-height-layout gray-bg"
 	style="overflow: hidden">
-	<div id="wrapper">
+	<div id="wrapper" style="overflow: hidden;">
 		<div class="row border-bottom">
-			<nav class="navbar navbar-static-top" role="navigation"
-				style="margin-bottom: 0">
-				<div class="navbar-header">
+			<nav class="navbar navbar-static-top" style="margin-bottom: 0;">
+				<div>
 					<div
 						style="float: left; margin-left: 25px; margin-top: 8px; width: 190px;">
 						<span style="float: left;"><img alt="image" height="40"
@@ -54,14 +53,17 @@
 								data-index="0" th:href="@{/main}">gzl</a></li>
 						</ul></li> -->
 					<li th:each="menu : ${menus}"><a href="#"> <i
-							class="fa fa fa-bar-chart-o" th:class="${menu.attributes.icon}"></i>
-							<span class="nav-label" th:text="${menu.text}">基础信息</span> <span
+							class="fa fa-bar-chart-o"
+							th:class="${menu.attributes.icon==''}?'':'fa fa-book'"></i> <span
+							class="nav-label" th:text="${menu.text}">基础信息</span> <span
 							class="fa arrow"></span>
 					</a>
 						<ul class="nav nav-second-level">
 							<li th:each="cmenu : ${menu.children}"><a class="J_menuItem"
-								href="graph_echarts.html" th:text="${cmenu.text}"
-								th:href="${cmenu.attributes.url}">系统管理</a></li>
+								href="graph_echarts.html" th:href="${cmenu.attributes.url}"><i
+									class="fa fa-bar-chart-o"
+									th:class="${cmenu.attributes.icon==''}?'':'fa fa-book'"></i> <span
+									class="nav-label" th:text="${cmenu.text}">系统管理</span> </a></li>
 						</ul></li>
 				</ul>
 			</div>
@@ -95,13 +97,14 @@
 				</div>
 			</div>
 
-			<div class="row J_mainContent" id="content-main">
+			<div class="row J_mainContent" id="content-main"
+				style="overflow: visible;">
 				<iframe class="J_iframe" name="iframe0" width="100%" height="100%"
-					src="" frameborder="0" data-id="index_v1.html"
-					seamless></iframe>
+					src="" frameborder="0" data-id="index_v1.html" seamless
+					style="overflow: hidden;"></iframe>
 			</div>
-			<div class="layui-footer">
-				<h2>copyright 2018</h2>
+			<div class="footer" id="mainfooter">
+				<div class="pull-right">权限管理系统</div>
 			</div>
 		</div>
 	</div>

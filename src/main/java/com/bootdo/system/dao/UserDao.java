@@ -29,4 +29,6 @@ public interface UserDao {
 	int remove(String user_id);
 
 	int batchRemove(String[] userIds);
+
+	UserDO getByName(Map<String, Object> map);
 }

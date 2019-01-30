@@ -3,94 +3,60 @@
 <meta charset="utf-8">
 <head th:include="include :: header"></head>
 <body class="gray-bg">
-	<div class="wrapper wrapper-content ">
-		<div class="row">
-			<div class="col-sm-12">
-				<div class="ibox float-e-margins">
-					<div class="ibox-content">
-						<form class="form-horizontal m-t" id="signupForm">
-							<input id="userId" name="userId" type="hidden">
-							<div class="form-group">
-								<label class="col-sm-3 control-label">人员姓名：</label>
-<!-- 								<div class="col-sm-8"> -->
-<!-- 									<input id="name" name="name" class="form-control" type="text"> -->
-<!-- 								</div> -->
-								<div class="col-sm-8">
-									<input id="staffId" name="staffId" class="hidden"> 
-									<input id="name" name="name" class="form-control" type="text"
-										style="cursor: pointer;" onclick="openStaff()"
-										readonly="readonly" placeholder="人员名称">
-								</div>
-							</div>
-							<div class="form-group">
-								<label class="col-sm-3 control-label"><em style="color: red; font-style: normal; padding-right: 5px;">*</em>用户名：</label>
-								<div class="col-sm-8">
-									<input id="username" name="username" class="form-control"
-										type="text">
-								</div>
-							</div>
-							<div class="form-group">
-								<label class="col-sm-3 control-label"><em style="color: red; font-style: normal; padding-right: 5px;">*</em>密码：</label>
-								<div class="col-sm-4">
-									<input id="password" name="password" class="form-control"
-										type="password" readonly="readonly" value="111111" >
-								</div>
-								<div class="col-sm-4">
-									<label  class="checkbox-inline">
-										<input id="pd_checkbox" name="pd_checkbox" type="checkbox" checked="checked" value="111111" th:text=" 默认密码">
-									</label>
-								</div>
-							</div>
-							<div class="form-group">
-								<label class="col-sm-3 control-label"><em style="color: red; font-style: normal; padding-right: 5px;">*</em>部门：</label>
-								<div class="col-sm-8">
-									<input id="deptId" name="deptId" class="hidden"> <input
-										id="deptName" name="deptName" class="form-control" type="text"
-										style="cursor: pointer;" onclick="openDept()"
-										readonly="readonly" placeholder="所属机构">
-								</div>
-							</div>
-<!-- 							<div class="form-group"> -->
-<!-- 								<label class="col-sm-3 control-label">E-mail：</label> -->
-<!-- 								<div class="col-sm-8"> -->
-<!-- 									<input id="email" name="email" class="form-control" -->
-<!-- 										type="email"> -->
-<!-- 								</div> -->
-<!-- 							</div> -->
-							<div class="form-group">
-								<label class="col-sm-3 control-label">状态:</label>
-								<div class="col-sm-8">
-									<label class="radio-inline"> <input type="radio"
-										name="status" value="1" /> 正常
-									</label> <label class="radio-inline"> <input type="radio"
-										name="status" value="0" /> 禁用
-									</label>
-								</div>
-							</div>
-							<input type="hidden" name="roleIds" id="roleIds">
-							<div class="form-group">
-								<label class="col-sm-3 control-label">角色</label>
-								<div class="col-sm-8">
-									<label th:each="role:${roles}" class="checkbox-inline">
-										<input name="role" type="checkbox" th:value="${role.roleId}"
-										th:text="${role.roleName}">
-									</label>
-								</div>
-							</div>
-							<div class="form-group">
-								<div class="col-sm-8 col-sm-offset-3">
-									<button type="submit" class="btn btn-primary">提交</button>
-								</div>
-							</div>
-						</form>
-					</div>
+	<div style="padding: 20px;">
+		<form class="layui-form" style="width: 80%;" id="userform">
+			<div class="layui-form-item">
+				<input type="hidden" id="userId" name="userId"> <input
+					type="hidden" id="deleteflag" name="deleteflag" value="1">
+				<label class="layui-form-label">用户名<i style="color: red;">*</i></label>
+				<div class="layui-input-block">
+					<input type="text" class="layui-input" id="username"
+						name="username" lay-verify="required|username" autocomplete="off"
+						placeholder="请输入用户名" />
 				</div>
 			</div>
-		</div>
-
+			<div class="layui-form-item">
+				<label class="layui-form-label">昵称</label>
+				<div class="layui-input-block">
+					<input type="text" class="layui-input" id="usernikename"
+						autocomplete="off" name="usernikename" placeholder="请输入昵称" />
+				</div>
+			</div>
+			<div class="layui-form-item">
+				<label class="layui-form-label">状态</label>
+				<div class="layui-input-block">
+					<input type="hidden" id="userstatus" name="userstatus" value="1" />
+					<input type="checkbox" lay-skin="switch" lay-text="正常|停用"
+						lay-filter="userstatus" checked="" />
+				</div>
+			</div>
+			<div class="layui-form-item">
+				<label class="layui-form-label">密码<i style="color: red;">*</i></label>
+				<div class="layui-input-block">
+					<input type="password" class="layui-input" id="userpwd"
+						name="userpwd" autocomplete="off" lay-verify="required"
+						placeholder="请输入密码" />
+				</div>
+			</div>
+			<div class="layui-form-item">
+				<div class="layui-input-block">
+					<input type="checkbox" name="like[write]" lay-skin="primary"
+						title="默认密码" lay-filter="cbxPwd" />
+				</div>
+			</div>
+			<div class="layui-form-item layui-row layui-col-xs12">
+				<div class="layui-input-block">
+					<button class="layui-btn layui-btn-sm" lay-submit=""
+						lay-filter="addUser">保存</button>
+					<button type="reset"
+						class="layui-btn layui-btn-sm layui-btn-primary">重置</button>
+				</div>
+			</div>
+		</form>
 	</div>
 	<div th:include="include::footer"></div>
-	<script type="text/javascript" src="/js/appjs/sys/user/add.js">
-	</script>
+	<script src="/js/requiremain.js"></script>
+	<script src="/js/plugins/require/require.js"
+		data-main="/js/appjs/sys/user/add.js"></script>
 </body>
 </html>

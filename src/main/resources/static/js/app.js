@@ -2,91 +2,109 @@
 
 //公共配置
 
-$(document).ready(function() {
+$(document).ready(
+		function() {
 
-	// MetsiMenu
-	$('#side-menu').metisMenu();
-	// 打开右侧边栏
-	$('.right-sidebar-toggle').click(function() {
-		$('#right-sidebar').toggleClass('sidebar-open');
-	});
+			// MetsiMenu
+			$('#side-menu').metisMenu();
+			// 打开右侧边栏
+			$('.right-sidebar-toggle').click(function() {
+				$('#right-sidebar').toggleClass('sidebar-open');
+			});
 
-	// 右侧边栏使用slimscroll
-	$('.sidebar-container').slimScroll({
-		height : '100%',
-		railOpacity : 0.4,
-		wheelStep : 10
-	});
+			function fixedcontentHeight() {
+				var ht = ($("#wrapper").outerHeight()
+						- $(".navbar-static-top").outerHeight() - 1);
+				$("#page-wrapper").height(ht);
+				var cht = ht - $(".content-tabs").outerHeight()
+						- $("#mainfooter").outerHeight() - 2;
+				$("#content-main").height(cht);
+				console.log("ht:" + cht);
+			}
+			;
+			fixedcontentHeight();
+			// 右侧边栏使用slimscroll
+			$('.sidebar-container').slimScroll({
+				height : '100%',
+				railOpacity : 0.4,
+				wheelStep : 10
+			});
 
-	// Small todo handler
-	$('.check-link').click(function() {
-		var button = $(this).find('i');
-		var label = $(this).next('span');
-		button.toggleClass('fa-check-square').toggleClass('fa-square-o');
-		label.toggleClass('todo-completed');
-		return false;
-	});
+			// Small todo handler
+			$('.check-link').click(
+					function() {
+						var button = $(this).find('i');
+						var label = $(this).next('span');
+						button.toggleClass('fa-check-square').toggleClass(
+								'fa-square-o');
+						label.toggleClass('todo-completed');
+						return false;
+					});
 
-	// 固定菜单栏
-	$(function() {
-		$('.sidebar-collapse').slimScroll({
-			height : '100%',
-			railOpacity : 0.9,
-			alwaysVisible : false
-		});
-	});
+			// 固定菜单栏
+			$(function() {
+				$('.sidebar-collapse').slimScroll({
+					height : '100%',
+					railOpacity : 0.9,
+					alwaysVisible : false
+				});
+			});
 
-	// 菜单切换
-	$('.navbar-minimalize').click(function() {
-		$("body").toggleClass("mini-navbar");
-		SmoothlyMenu();
-	});
+			// 菜单切换
+			$('.navbar-minimalize').click(function() {
+				$("body").toggleClass("mini-navbar");
+				SmoothlyMenu();
+			});
 
-	// 侧边栏高度
-	function fix_height() {
-		var heightWithoutNavbar = $("body > #wrapper").height() - 61;
-		$(".sidebard-panel").css("min-height", heightWithoutNavbar + "px");
-	}
-	fix_height();
-
-	$(window).bind("load resize click scroll", function() {
-		if (!$("body").hasClass('body-small')) {
+			// 侧边栏高度
+			function fix_height() {
+				var heightWithoutNavbar = $("body > #wrapper").height() - 61;
+				$(".sidebard-panel").css("min-height",
+						heightWithoutNavbar + "px");
+			}
 			fix_height();
-		}
-	});
 
-	// 侧边栏滚动
-	$(window).scroll(function() {
-		if ($(window).scrollTop() > 0 && !$('body').hasClass('fixed-nav')) {
-			$('#right-sidebar').addClass('sidebar-top');
-		} else {
-			$('#right-sidebar').removeClass('sidebar-top');
-		}
-	});
+			$(window).bind("load resize click scroll", function() {
+				if (!$("body").hasClass('body-small')) {
+					fix_height();
+					fixedcontentHeight();
+				}
+			});
 
-/*	$('.full-height-scroll').slimScroll({
-		height : '100%'
-	});*/
+			// 侧边栏滚动
+			$(window).scroll(
+					function() {
+						if ($(window).scrollTop() > 0
+								&& !$('body').hasClass('fixed-nav')) {
+							$('#right-sidebar').addClass('sidebar-top');
+						} else {
+							$('#right-sidebar').removeClass('sidebar-top');
+						}
+					});
 
-	$('#side-menu>li').click(function() {
-		if ($('body').hasClass('mini-navbar')) {
-			NavToggle();
-		}
-	});
-	$('#side-menu>li li a').click(function() {
-		if ($(window).width() < 769) {
-			NavToggle();
-		}
-	});
+			/*
+			 * $('.full-height-scroll').slimScroll({ height : '100%' });
+			 */
 
-	$('.nav-close').click(NavToggle);
+			$('#side-menu>li').click(function() {
+				if ($('body').hasClass('mini-navbar')) {
+					NavToggle();
+				}
+			});
+			$('#side-menu>li li a').click(function() {
+				if ($(window).width() < 769) {
+					NavToggle();
+				}
+			});
 
-	// ios浏览器兼容性处理
-	if (/(iPhone|iPad|iPod|iOS)/i.test(navigator.userAgent)) {
-		$('#content-main').css('overflow-y', 'auto');
-	}
+			$('.nav-close').click(NavToggle);
 
-});
+			// ios浏览器兼容性处理
+			if (/(iPhone|iPad|iPod|iOS)/i.test(navigator.userAgent)) {
+				$('#content-main').css('overflow-y', 'auto');
+			}
+
+		});
 
 $(window).bind("load resize", function() {
 	if ($(this).width() < 769) {
