@@ -20,6 +20,9 @@ require(
 											cellMinWidth : 95,
 											page : true,
 											even : true,
+											where : {
+												deleteflag : 1
+											},
 											height : "full-120",
 											limits : [ 5, 10, 15, 20, 25 ],
 											limit : 5,
@@ -146,16 +149,22 @@ require(
 													} ] ]
 										});
 								;
-								$(".search_btn").on("click", function() {
-									table.reload("staffListTable", {
-										page : {
-											curr : 1
-										},
-										where : {
-											searchName : $("#searchName").val()
-										}
-									});
-								});
+								$(".search_btn").on(
+										"click",
+										function() {
+											table.reload("staffListTable", {
+												page : {
+													curr : 1
+												},
+												where : {
+													telphone : $("#telphone")
+															.val(),
+													employeename : $(
+															"#employeename")
+															.val()
+												}
+											});
+										});
 								$(".addNews_btn").click(function() {
 									addData();
 								});
@@ -215,7 +224,7 @@ require(
 										title : "编辑用户",
 										type : 2,
 										content : prefix + "/edit/" + id,
-										area : [ "600px", "400px" ]
+										area : [ "800px", "600px" ]
 									});
 								}
 								;

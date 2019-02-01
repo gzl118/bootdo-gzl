@@ -108,7 +108,7 @@ require(
 												});
 								function addData() {
 									var index = layui.layer.open({
-										title : "添加用户",
+										title : "添加",
 										type : 2,
 										content : prefix + "/add",
 										area : [ "600px", "400px" ]
@@ -117,7 +117,7 @@ require(
 								;
 								function editData(id) {
 									var index = layui.layer.open({
-										title : "编辑用户",
+										title : "编辑",
 										type : 2,
 										content : prefix + "/edit/" + id,
 										area : [ "600px", "400px" ]
@@ -125,7 +125,7 @@ require(
 								}
 								;
 								function del(id) {
-									layer.confirm('确定删除此用户？', {
+									layer.confirm('确定删除此记录？', {
 										icon : 3,
 										title : '提示信息'
 									}, function(index) {

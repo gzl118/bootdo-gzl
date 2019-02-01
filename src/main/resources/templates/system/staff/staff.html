@@ -2,7 +2,7 @@
 <html>
 <meta charset="utf-8">
 <head th:include="include :: header"></head>
-<body  style="padding: 10px;">
+<body style="padding: 10px;">
 	<div>
 		<div>
 			<script type="text/javascript">
@@ -26,8 +26,12 @@
 			<div class="layui-form">
 				<div class="layui-inline" style="float: right;">
 					<div class="layui-input-inline">
-						<input type="text" class="layui-input" id="searchName"
-							style="font-size: 12px" placeholder="" autocomplete="off" />
+						<input type="text" class="layui-input" id="employeename"
+							placeholder="请输入姓名" style="font-size: 12px" autocomplete="off" />
+					</div>
+					<div class="layui-input-inline">
+						<input type="text" class="layui-input" id="telphone"
+							placeholder="请输入手机号" style="font-size: 12px" autocomplete="off" />
 					</div>
 					<button type="button" class="layui-btn search_btn">
 						<i class="layui-icon layui-icon-search" aria-hidden="true"></i>搜索
@@ -40,7 +44,8 @@
 					</button>
 				</div>
 				<div class="layui-inline">
-					<button shiro:hasPermission="system:staff:batchRemove" type="button"
+					<button shiro:hasPermission="system:staff:batchRemove"
+						type="button"
 						class="layui-btn layui-btn-danger layui-btn-normal delAll_btn">
 						<i class="layui-icon layui-icon-delete" aria-hidden="true"></i>批量删除
 					</button>

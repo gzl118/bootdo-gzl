@@ -10,8 +10,13 @@
 			<div class="layui-form-item">
 				<label class="layui-form-label">头像</label>
 				<div class="layui-input-inline">
-					<input type="text" class="layui-input" id="photo" name="photo"
-						autocomplete="off" placeholder="请输入照片" />
+					<img id="personPhoto" style="width: 80px; height: 80px;"
+						onerror="this.onerror='';src='/img/defaultphoto.jpg'" />
+				</div>
+				<div class="layui-input-inline">
+					<input type="button" id="btnphoto" class="layui-btn" value="上传头像"
+						style="margin-left: 15px;" /> <input type="hidden" id="photo"
+						name="photo" />
 				</div>
 			</div>
 			<div class="layui-form-item">
@@ -37,7 +42,7 @@
 					<div class="layui-input-inline">
 						<input type="hidden" class="layui-input" id="estatus" value="0"
 							name="estatus" /> <input type="checkbox" lay-skin="switch"
-							lay-text="在职|离职" lay-filter="estatus" checked="" />
+							lay-text="在职|离职" lay-filter="cbxestatus" checked="" />
 					</div>
 				</div>
 				<div class="layui-inline">

@@ -7,14 +7,41 @@ require(
 		function($) {
 			layui
 					.use(
-							[ 'form', 'layer', 'laydate' ],
+							[ 'form', 'layer', 'laydate', 'upload' ],
 							function() {
-								var form = layui.form;
+								var form = layui.form, upload = layui.upload;
 								var laydate = layui.laydate;
 										layer = parent.layer === undefined ? layui.layer
 												: top.layer, $ = layui.jquery;
 								laydate.render({
 									elem : '#birthday'
+								});
+								// 普通图片上传
+								var uploadInst = upload.render({
+									elem : '#btnphoto',
+									url : prefix + '/upload/',
+									before : function(obj) {
+										// 预读本地文件示例，不支持ie8
+										/*
+										 * obj.preview(function(index, file,
+										 * result) { $('#demo').attr('src',
+										 * result); // 图片链接（base64） });
+										 */
+									},
+									done : function(res) {
+										// 如果上传失败
+										if (res.code == 0) {
+											$("#photo").val(res.msg);
+											$('#personPhoto').attr('src',
+													res.msg);
+											return;
+										}
+										return layer.msg('上传失败');
+										// 上传成功
+									},
+									error : function() {
+										layer.msg('上传失败');
+									}
 								});
 								form.on("submit(savestaff)", function(data) {
 									// 弹出loading
@@ -38,7 +65,7 @@ require(
 								});
 								form
 										.on(
-												'switch(estatus)',
+												'switch(cbxestatus)',
 												function(data) {
 													var t = (data.elem.checked === true ? 0
 															: 1);
@@ -71,10 +98,11 @@ require(
 											},
 											selfphone : function(value, item) {
 												if (value != null
-														&& value != '')
+														&& value != '') {
 													var re = /^1\d{10}$/;
-												if (!re.test(value)) {
-													return '请输入正确的手机号';
+													if (!re.test(value)) {
+														return '请输入正确的手机号';
+													}
 												}
 											}
 										});

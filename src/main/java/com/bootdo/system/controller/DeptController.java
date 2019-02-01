@@ -30,7 +30,7 @@ import com.bootdo.system.service.DeptService;
  */
 
 @Controller
-@RequestMapping("/system/sysDept")
+@RequestMapping("/system/dept")
 public class DeptController extends BaseController {
 	@Autowired
 	private DeptService deptService;
@@ -49,7 +49,7 @@ public class DeptController extends BaseController {
 		Query query = new Query(params);
 		List<DeptDO> deptList = deptService.list(query);
 		int total = deptService.count(query);
-		PageUtils pageUtils = new PageUtils(deptList, total);
+		PageUtils pageUtils = new PageUtils(deptList, total, 0);
 		return pageUtils;
 	}
 

@@ -4,123 +4,127 @@
 <mapper namespace="com.bootdo.system.dao.StaffDao">
 
 	<select id="get" resultType="com.bootdo.system.domain.StaffDO">
-		select `employee_id`,`dept_id`,`employeename`,`estatus`,`sex`,`birthday`,`email`,`qq`,`wx`,`photo`,`telphone`,`professionaltitle`,`educational`,`duty`,`edit_user`,`edit_time`,`deleteflag`,`ext1`,`ext2`,`ext3` from sys_staff where employee_id = #{value}
+		select
+		`employee_id`,`dept_id`,`employeename`,`estatus`,`sex`,`birthday`,`email`,`qq`,`wx`,`photo`,`telphone`,`professionaltitle`,`educational`,`duty`,`edit_user`,`edit_time`,`deleteflag`,`ext1`,`ext2`,`ext3`
+		from sys_staff where employee_id = #{value}
 	</select>
 
 	<select id="list" resultType="com.bootdo.system.domain.StaffDO">
-		select `employee_id`,`dept_id`,`employeename`,`estatus`,`sex`,`birthday`,`email`,`qq`,`wx`,`photo`,`telphone`,`professionaltitle`,`educational`,`duty`,`edit_user`,`edit_time`,`deleteflag`,`ext1`,`ext2`,`ext3` from sys_staff
-        <where>  
-		  		  <if test="employeeId != null and employeeId != ''"> and employee_id = #{employeeId} </if>
-		  		  <if test="deptId != null and deptId != ''"> and dept_id = #{deptId} </if>
-		  		  <if test="employeename != null and employeename != ''"> and employeename = #{employeename} </if>
-		  		  <if test="estatus != null and estatus != ''"> and estatus = #{estatus} </if>
-		  		  <if test="sex != null and sex != ''"> and sex = #{sex} </if>
-		  		  <if test="birthday != null and birthday != ''"> and birthday = #{birthday} </if>
-		  		  <if test="email != null and email != ''"> and email = #{email} </if>
-		  		  <if test="qq != null and qq != ''"> and qq = #{qq} </if>
-		  		  <if test="wx != null and wx != ''"> and wx = #{wx} </if>
-		  		  <if test="photo != null and photo != ''"> and photo = #{photo} </if>
-		  		  <if test="telphone != null and telphone != ''"> and telphone = #{telphone} </if>
-		  		  <if test="professionaltitle != null and professionaltitle != ''"> and professionaltitle = #{professionaltitle} </if>
-		  		  <if test="educational != null and educational != ''"> and educational = #{educational} </if>
-		  		  <if test="duty != null and duty != ''"> and duty = #{duty} </if>
-		  		  <if test="editUser != null and editUser != ''"> and edit_user = #{editUser} </if>
-		  		  <if test="editTime != null and editTime != ''"> and edit_time = #{editTime} </if>
-		  		  <if test="deleteflag != null and deleteflag != ''"> and deleteflag = #{deleteflag} </if>
-		  		  <if test="ext1 != null and ext1 != ''"> and ext1 = #{ext1} </if>
-		  		  <if test="ext2 != null and ext2 != ''"> and ext2 = #{ext2} </if>
-		  		  <if test="ext3 != null and ext3 != ''"> and ext3 = #{ext3} </if>
-		  		</where>
-        <choose>
-            <when test="sort != null and sort.trim() != ''">
-                order by ${sort} ${order}
-            </when>
+		select
+		`employee_id`,`dept_id`,`employeename`,`estatus`,`sex`,`birthday`,`email`,`qq`,`wx`,`photo`,`telphone`,`professionaltitle`,`educational`,`duty`,`edit_user`,`edit_time`,`deleteflag`,`ext1`,`ext2`,`ext3`
+		from sys_staff
+		<where>
+			<if test="employeeId != null and employeeId != ''"> and employee_id = #{employeeId} </if>
+			<if test="deptId != null and deptId != ''"> and dept_id = #{deptId} </if>
+			<if test="employeename != null and employeename != ''"> and employeename LIKE '%${employeename}%' </if>
+			<if test="estatus != null and estatus != ''"> and estatus = #{estatus} </if>
+			<if test="sex != null and sex != ''"> and sex = #{sex} </if>
+			<if test="birthday != null and birthday != ''"> and birthday = #{birthday} </if>
+			<if test="email != null and email != ''"> and email = #{email} </if>
+			<if test="qq != null and qq != ''"> and qq = #{qq} </if>
+			<if test="wx != null and wx != ''"> and wx = #{wx} </if>
+			<if test="photo != null and photo != ''"> and photo = #{photo} </if>
+			<if test="telphone != null and telphone != ''"> and telphone LIKE '%${telphone}%' </if>
+			<if test="professionaltitle != null and professionaltitle != ''"> and professionaltitle = #{professionaltitle} </if>
+			<if test="educational != null and educational != ''"> and educational = #{educational} </if>
+			<if test="duty != null and duty != ''"> and duty = #{duty} </if>
+			<if test="editUser != null and editUser != ''"> and edit_user = #{editUser} </if>
+			<if test="editTime != null and editTime != ''"> and edit_time = #{editTime} </if>
+			<if test="deleteflag != null and deleteflag != ''"> and deleteflag = #{deleteflag} </if>
+			<if test="ext1 != null and ext1 != ''"> and ext1 = #{ext1} </if>
+			<if test="ext2 != null and ext2 != ''"> and ext2 = #{ext2} </if>
+			<if test="ext3 != null and ext3 != ''"> and ext3 = #{ext3} </if>
+		</where>
+		<choose>
+			<when test="sort != null and sort.trim() != ''">
+				order by ${sort} ${order}
+			</when>
 			<otherwise>
-                order by employee_id desc
+				order by employee_id desc
 			</otherwise>
-        </choose>
+		</choose>
 		<if test="offset != null and limit != null and limit !=-1">
 			limit #{offset}, #{limit}
 		</if>
 	</select>
-	
- 	<select id="count" resultType="int">
+
+	<select id="count" resultType="int">
 		select count(*) from sys_staff
-		 <where>  
-		  		  <if test="employeeId != null and employeeId != ''"> and employee_id = #{employeeId} </if>
-		  		  <if test="deptId != null and deptId != ''"> and dept_id = #{deptId} </if>
-		  		  <if test="employeename != null and employeename != ''"> and employeename = #{employeename} </if>
-		  		  <if test="estatus != null and estatus != ''"> and estatus = #{estatus} </if>
-		  		  <if test="sex != null and sex != ''"> and sex = #{sex} </if>
-		  		  <if test="birthday != null and birthday != ''"> and birthday = #{birthday} </if>
-		  		  <if test="email != null and email != ''"> and email = #{email} </if>
-		  		  <if test="qq != null and qq != ''"> and qq = #{qq} </if>
-		  		  <if test="wx != null and wx != ''"> and wx = #{wx} </if>
-		  		  <if test="photo != null and photo != ''"> and photo = #{photo} </if>
-		  		  <if test="telphone != null and telphone != ''"> and telphone = #{telphone} </if>
-		  		  <if test="professionaltitle != null and professionaltitle != ''"> and professionaltitle = #{professionaltitle} </if>
-		  		  <if test="educational != null and educational != ''"> and educational = #{educational} </if>
-		  		  <if test="duty != null and duty != ''"> and duty = #{duty} </if>
-		  		  <if test="editUser != null and editUser != ''"> and edit_user = #{editUser} </if>
-		  		  <if test="editTime != null and editTime != ''"> and edit_time = #{editTime} </if>
-		  		  <if test="deleteflag != null and deleteflag != ''"> and deleteflag = #{deleteflag} </if>
-		  		  <if test="ext1 != null and ext1 != ''"> and ext1 = #{ext1} </if>
-		  		  <if test="ext2 != null and ext2 != ''"> and ext2 = #{ext2} </if>
-		  		  <if test="ext3 != null and ext3 != ''"> and ext3 = #{ext3} </if>
-		  		</where>
+		<where>
+			<if test="employeeId != null and employeeId != ''"> and employee_id = #{employeeId} </if>
+			<if test="deptId != null and deptId != ''"> and dept_id = #{deptId} </if>
+			<if test="employeename != null and employeename != ''"> and employeename LIKE '%${employeename}%' </if>
+			<if test="estatus != null and estatus != ''"> and estatus = #{estatus} </if>
+			<if test="sex != null and sex != ''"> and sex = #{sex} </if>
+			<if test="birthday != null and birthday != ''"> and birthday = #{birthday} </if>
+			<if test="email != null and email != ''"> and email = #{email} </if>
+			<if test="qq != null and qq != ''"> and qq = #{qq} </if>
+			<if test="wx != null and wx != ''"> and wx = #{wx} </if>
+			<if test="photo != null and photo != ''"> and photo = #{photo} </if>
+			<if test="telphone != null and telphone != ''"> and telphone LIKE '%${telphone}%' </if>
+			<if test="professionaltitle != null and professionaltitle != ''"> and professionaltitle = #{professionaltitle} </if>
+			<if test="educational != null and educational != ''"> and educational = #{educational} </if>
+			<if test="duty != null and duty != ''"> and duty = #{duty} </if>
+			<if test="editUser != null and editUser != ''"> and edit_user = #{editUser} </if>
+			<if test="editTime != null and editTime != ''"> and edit_time = #{editTime} </if>
+			<if test="deleteflag != null and deleteflag != ''"> and deleteflag = #{deleteflag} </if>
+			<if test="ext1 != null and ext1 != ''"> and ext1 = #{ext1} </if>
+			<if test="ext2 != null and ext2 != ''"> and ext2 = #{ext2} </if>
+			<if test="ext3 != null and ext3 != ''"> and ext3 = #{ext3} </if>
+		</where>
 	</select>
-	 
+
 	<insert id="save" parameterType="com.bootdo.system.domain.StaffDO">
 		insert into sys_staff
 		(
-			`employee_id`, 
-			`dept_id`, 
-			`employeename`, 
-			`estatus`, 
-			`sex`, 
-			`birthday`, 
-			`email`, 
-			`qq`, 
-			`wx`, 
-			`photo`, 
-			`telphone`, 
-			`professionaltitle`, 
-			`educational`, 
-			`duty`, 
-			`edit_user`, 
-			`edit_time`, 
-			`deleteflag`, 
-			`ext1`, 
-			`ext2`, 
-			`ext3`
+		`employee_id`,
+		`dept_id`,
+		`employeename`,
+		`estatus`,
+		`sex`,
+		`birthday`,
+		`email`,
+		`qq`,
+		`wx`,
+		`photo`,
+		`telphone`,
+		`professionaltitle`,
+		`educational`,
+		`duty`,
+		`edit_user`,
+		`edit_time`,
+		`deleteflag`,
+		`ext1`,
+		`ext2`,
+		`ext3`
 		)
 		values
 		(
-			#{employeeId}, 
-			#{deptId}, 
-			#{employeename}, 
-			#{estatus}, 
-			#{sex}, 
-			#{birthday}, 
-			#{email}, 
-			#{qq}, 
-			#{wx}, 
-			#{photo}, 
-			#{telphone}, 
-			#{professionaltitle}, 
-			#{educational}, 
-			#{duty}, 
-			#{editUser}, 
-			#{editTime}, 
-			#{deleteflag}, 
-			#{ext1}, 
-			#{ext2}, 
-			#{ext3}
+		#{employeeId},
+		#{deptId},
+		#{employeename},
+		#{estatus},
+		#{sex},
+		#{birthday},
+		#{email},
+		#{qq},
+		#{wx},
+		#{photo},
+		#{telphone},
+		#{professionaltitle},
+		#{educational},
+		#{duty},
+		#{editUser},
+		#{editTime},
+		#{deleteflag},
+		#{ext1},
+		#{ext2},
+		#{ext3}
 		)
 	</insert>
-	 
+
 	<update id="update" parameterType="com.bootdo.system.domain.StaffDO">
-		update sys_staff 
+		update sys_staff
 		<set>
 			<if test="deptId != null">`dept_id` = #{deptId}, </if>
 			<if test="employeename != null">`employeename` = #{employeename}, </if>
@@ -144,14 +148,15 @@
 		</set>
 		where employee_id = #{employeeId}
 	</update>
-	
+
 	<delete id="remove">
 		delete from sys_staff where employee_id = #{value}
 	</delete>
-	
+
 	<delete id="batchRemove">
-		delete from sys_staff where employee_id in 
-		<foreach item="employeeId" collection="array" open="(" separator="," close=")">
+		delete from sys_staff where employee_id in
+		<foreach item="employeeId" collection="array" open="("
+			separator="," close=")">
 			#{employeeId}
 		</foreach>
 	</delete>

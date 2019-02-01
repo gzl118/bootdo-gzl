@@ -5,75 +5,101 @@
 
 	<select id="get" resultType="com.bootdo.system.domain.DeptDO">
 		select
-		`dept_id`,`parent_id`,`name`,`sname`,`order_num`,`del_flag` from sys_dept
-		where dept_id = #{value}
+		`dept_id`,`deptname`,`deptdesc`,`parent_id`,`ordernum`,`edit_user`,`edit_time`,`deleteflag`,`ext1`,`ext2`,`ext3`
+		from sys_dept where dept_id = #{value}
 	</select>
 
 	<select id="list" resultType="com.bootdo.system.domain.DeptDO">
-<!-- 	   <bind name="name_like" value="'%' + _parameter.name + '%'" />  -->
-		select `dept_id`,`parent_id`,`name`,`sname`,`order_num`,`del_flag` from
-		sys_dept
+		select
+		`dept_id`,`deptname`,`deptdesc`,`parent_id`,`ordernum`,`edit_user`,`edit_time`,`deleteflag`,`ext1`,`ext2`,`ext3`
+		from sys_dept
 		<where>
 			<if test="deptId != null and deptId != ''"> and dept_id = #{deptId} </if>
+			<if test="deptname != null and deptname != ''"> and deptname LIKE '%${deptname}%'  </if>
+			<if test="deptdesc != null and deptdesc != ''"> and deptdesc = #{deptdesc} </if>
 			<if test="parentId != null and parentId != ''"> and parent_id = #{parentId} </if>
-			<if test="name != null and name != ''"> and name LIKE '%${name}%' </if>
-<!-- 			<if test="name != null and name != ''"> and name = #{name} </if> -->
-			<if test="orderNum != null and orderNum != ''"> and order_num = #{orderNum} </if>
-			<if test="delFlag != null and delFlag != ''"> and del_flag = #{delFlag} </if>
+			<if test="ordernum != null and ordernum != ''"> and ordernum = #{ordernum} </if>
+			<if test="editUser != null and editUser != ''"> and edit_user = #{editUser} </if>
+			<if test="editTime != null and editTime != ''"> and edit_time = #{editTime} </if>
+			<if test="deleteflag != null and deleteflag != ''"> and deleteflag = #{deleteflag} </if>
+			<if test="ext1 != null and ext1 != ''"> and ext1 = #{ext1} </if>
+			<if test="ext2 != null and ext2 != ''"> and ext2 = #{ext2} </if>
+			<if test="ext3 != null and ext3 != ''"> and ext3 = #{ext3} </if>
 		</where>
 		<choose>
 			<when test="sort != null and sort.trim() != ''">
 				order by ${sort} ${order}
 			</when>
 			<otherwise>
-				order by dept_id
+				order by dept_id desc
 			</otherwise>
 		</choose>
-		<if test="offset != null and limit != null">
+		<if test="offset != null and limit != null and limit !=-1">
 			limit #{offset}, #{limit}
 		</if>
 	</select>
 
-	<select id="count" resultType="int" >
-	
+	<select id="count" resultType="int">
 		select count(*) from sys_dept
 		<where>
 			<if test="deptId != null and deptId != ''"> and dept_id = #{deptId} </if>
+			<if test="deptname != null and deptname != ''"> and deptname LIKE '%${deptname}%' </if>
+			<if test="deptdesc != null and deptdesc != ''"> and deptdesc = #{deptdesc} </if>
 			<if test="parentId != null and parentId != ''"> and parent_id = #{parentId} </if>
-			<if test="name != null and name != ''"> and name LIKE '%${name}%' </if>
-			<if test="orderNum != null and orderNum != ''"> and order_num = #{orderNum} </if>
-			<if test="delFlag != null and delFlag != ''"> and del_flag = #{delFlag} </if>
+			<if test="ordernum != null and ordernum != ''"> and ordernum = #{ordernum} </if>
+			<if test="editUser != null and editUser != ''"> and edit_user = #{editUser} </if>
+			<if test="editTime != null and editTime != ''"> and edit_time = #{editTime} </if>
+			<if test="deleteflag != null and deleteflag != ''"> and deleteflag = #{deleteflag} </if>
+			<if test="ext1 != null and ext1 != ''"> and ext1 = #{ext1} </if>
+			<if test="ext2 != null and ext2 != ''"> and ext2 = #{ext2} </if>
+			<if test="ext3 != null and ext3 != ''"> and ext3 = #{ext3} </if>
 		</where>
 	</select>
 
-	<insert id="save" parameterType="com.bootdo.system.domain.DeptDO"
-		useGeneratedKeys="true" keyProperty="deptId">
+	<insert id="save" parameterType="com.bootdo.system.domain.DeptDO">
 		insert into sys_dept
 		(
+		`dept_id`,
+		`deptname`,
+		`deptdesc`,
 		`parent_id`,
-		`name`,
-		`sname`,
-		`order_num`,
-		`del_flag`
+		`ordernum`,
+		`edit_user`,
+		`edit_time`,
+		`deleteflag`,
+		`ext1`,
+		`ext2`,
+		`ext3`
 		)
 		values
 		(
+		#{deptId},
+		#{deptname},
+		#{deptdesc},
 		#{parentId},
-		#{name},
-		#{sname},
-		#{orderNum},
-		#{delFlag}
+		#{ordernum},
+		#{editUser},
+		#{editTime},
+		#{deleteflag},
+		#{ext1},
+		#{ext2},
+		#{ext3}
 		)
 	</insert>
 
 	<update id="update" parameterType="com.bootdo.system.domain.DeptDO">
 		update sys_dept
 		<set>
+			<if test="deptname != null">`deptname` = #{deptname}, </if>
+			<if test="deptdesc != null">`deptdesc` = #{deptdesc}, </if>
 			<if test="parentId != null">`parent_id` = #{parentId}, </if>
-			<if test="name != null">`name` = #{name}, </if>
-			<if test="sname != null">`sname` = #{sname}, </if>
-			<if test="orderNum != null">`order_num` = #{orderNum}, </if>
-			<if test="delFlag != null">`del_flag` = #{delFlag}</if>
+			<if test="ordernum != null">`ordernum` = #{ordernum}, </if>
+			<if test="editUser != null">`edit_user` = #{editUser}, </if>
+			<if test="editTime != null">`edit_time` = #{editTime}, </if>
+			<if test="deleteflag != null">`deleteflag` = #{deleteflag}, </if>
+			<if test="ext1 != null">`ext1` = #{ext1}, </if>
+			<if test="ext2 != null">`ext2` = #{ext2}, </if>
+			<if test="ext3 != null">`ext3` = #{ext3}</if>
 		</set>
 		where dept_id = #{deptId}
 	</update>
@@ -89,16 +115,5 @@
 			#{deptId}
 		</foreach>
 	</delete>
-	
-	<select id="listParentDept" resultType="long">
-		select DISTINCT parent_id from sys_dept
-	</select>
 
-    <select id="getDeptUserNumber" resultType="int">
-		select count(*) from sys_user where dept_id = #{value}
-	</select>
-	
-	<select id="getDeptStaffNumber" resultType="int">
-		select count(*) from sys_staff where dept_id = #{value}
-	</select>
 </mapper>

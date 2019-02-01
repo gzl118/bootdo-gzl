@@ -19,7 +19,7 @@ $(document).ready(
 				var cht = ht - $(".content-tabs").outerHeight()
 						- $("#mainfooter").outerHeight() - 2;
 				$("#content-main").height(cht);
-				console.log("ht:" + cht);
+				// console.log("ht:" + cht);
 			}
 			;
 			fixedcontentHeight();

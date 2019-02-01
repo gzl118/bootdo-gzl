@@ -2,72 +2,67 @@
 <html>
 <meta charset="utf-8">
 <head th:include="include :: header"></head>
-<body class="gray-bg">
-<div class="wrapper wrapper-content ">
-    <div class="col-sm-12">
-        <div class="ibox">
-            <div class="ibox-body">
-                <div class="fixed-table-toolbar">
-                    <div class="columns pull-left" >
-                        <button shiro:hasPermission="system:sysDept:add" type="button" class="btn  btn-primary"
-                                onclick="add(0)">
-                            <i class="fa fa-plus hidden" aria-hidden="true"></i>添加
-                        </button>
-<!--                         <button shiro:hasPermission="system:sysDept:batchRemove" type="button" class="btn  btn-danger" -->
-<!--                                 onclick="batchRemove()"> -->
-<!--                             <i class="fa fa-trash" aria-hidden="true"></i>删除 -->
-<!--                         </button> -->
-<!--                          <button shiro:hasPermission="system:sysDept:remove" type="button" class="btn  btn-danger" -->
-<!--                                 onclick="batchRemove()"> -->
-<!--                             <i class="fa fa-trash" aria-hidden="true"></i>删除2 -->
-<!--                         </button> -->
-                    </div>
-                    <div class="columns pull-right">
-                        <button class="btn btn-success" onclick="reLoad()">查询</button>
-                    </div>
-
-                    <div class="columns pull-right col-md-2 nopadding">
-                        <input id="searchName" type="text" class="form-control"
-                               placeholder="单位名称">
-                    </div>
-                </div>
-                <table id="exampleTable" data-mobile-responsive="true">
-                </table>
-            </div>
-        </div>
-    </div>
-</div>
-<!--shiro控制bootstraptable行内按钮看见性 来自bootdo的创新方案 -->
-<div>
-    <script type="text/javascript">
-        var s_add_h = 'hidden';
-        var s_edit_h = 'hidden';
-        var s_remove_h = 'hidden';
-        var s_resetPwd_h = 'hidden';
-    </script>
-</div>
-<div shiro:hasPermission="system:sysDept:edit">
-    <script type="text/javascript">
-        s_edit_h = '';
-    </script>
-</div>
-<div shiro:hasPermission="system:sysDept:add">
-    <script type="text/javascript">
-        s_add_h = '';
-    </script>
-</div>
-<div shiro:hasPermission="system:sysDept:remove">
-    <script type="text/javascript">
-        var s_remove_h = '';
-    </script>
-</div>
-<div shiro:hasPermission="system:sysDept:resetPwd">
-    <script type="text/javascript">
-        var s_resetPwd_h = '';
-    </script>
-</div>
-</div>
-<div th:include="include :: footer"></div>
-<script type="text/javascript" src="/js/appjs/system/sysDept/sysDept.js"></script>
+<body style="padding: 10px;">
+	<div>
+		<div>
+			<script type="text/javascript">
+				var s_edit_h = 'hidden';
+				var s_remove_h = 'hidden';
+			</script>
+		</div>
+		<div shiro:hasPermission="system:dept:edit">
+			<script type="text/javascript">
+				s_edit_h = '';
+			</script>
+		</div>
+		<div shiro:hasPermission="system:dept:remove">
+			<script type="text/javascript">
+				var s_remove_h = '';
+			</script>
+		</div>
+	</div>
+	<div style="height: 100%;">
+		<blockquote class="layui-elem-quote quoteBox">
+			<div class="layui-form">
+				<div class="layui-inline" style="float: right;">
+					<div class="layui-input-inline">
+						<input type="text" class="layui-input" id="searchName"
+							style="font-size: 12px" placeholder="请输入部门名称" autocomplete="off" />
+					</div>
+					<button type="button" class="layui-btn search_btn">
+						<i class="layui-icon layui-icon-search" aria-hidden="true"></i>搜索
+					</button>
+				</div>
+				<div class="layui-inline">
+					<button shiro:hasPermission="system:dept:add" type="button"
+						class="layui-btn addNews_btn">
+						<i class="layui-icon layui-icon-add-1" aria-hidden="true"></i>新增
+					</button>
+				</div>
+				<div class="layui-inline">
+					<button shiro:hasPermission="system:dept:batchRemove" type="button"
+						class="layui-btn layui-btn-danger layui-btn-normal delAll_btn">
+						<i class="layui-icon layui-icon-delete" aria-hidden="true"></i>批量删除
+					</button>
+				</div>
+			</div>
+		</blockquote>
+		<table id="deptList" lay-filter="deptList" class="layui-hidden"></table>
+	</div>
+	<div th:include="include :: footer"></div>
+	<script src="/js/requiremain.js"></script>
+	<script src="/js/plugins/require/require.js"
+		data-main="/js/appjs/system/dept/dept.js"></script>
+	<script type="text/html" id="deptListBar">
+      	{{# 
+			var gfun=function(pstatus){
+				var html="";
+				html +="<a class='layui-btn layui-btn-xs "+s_edit_h + "' lay-event='edit'>编辑</a>";
+				html +="<a class='layui-btn layui-btn-xs layui-btn-danger "+ s_remove_h + "' lay-event='del'>删除</a>";
+				return html;
+			};
+		}}
+		{{ gfun() }}
+	</script>
 </body>
 </html>

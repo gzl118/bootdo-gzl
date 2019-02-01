@@ -21,7 +21,8 @@ require(
 											page : true,
 											where : {
 												sort : 'username',
-												order : 'asc'
+												order : 'asc',
+												deleteflag : 1
 											},
 											even : true,
 											height : "full-120",
