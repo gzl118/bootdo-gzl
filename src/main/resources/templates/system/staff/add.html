@@ -31,8 +31,10 @@
 				<div class="layui-inline">
 					<label class="layui-form-label">所属部门</label>
 					<div class="layui-input-inline">
-						<input type="text" class="layui-input" id="deptId" name="deptId"
-							autocomplete="off" placeholder="请输入部门编号" />
+						<input type="hidden" class="layui-input" id="deptId" name="deptId"
+							autocomplete="off" placeholder="请输入部门编号" /> <input type="text"
+							class="layui-input" id="deptName" name="deptName"
+							autocomplete="off" placeholder="请选择部门" />
 					</div>
 				</div>
 			</div>
@@ -129,8 +131,6 @@
 		</form>
 	</div>
 	<div th:include="include::footer"></div>
-	<script src="/js/requiremain.js"></script>
-	<script src="/js/plugins/require/require.js"
-		data-main="/js/appjs/system/staff/add.js"></script>
+	<script src="/js/appjs/system/staff/add.js"></script>
 </body>
 </html>

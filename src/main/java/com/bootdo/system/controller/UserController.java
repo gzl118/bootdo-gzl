@@ -48,7 +48,7 @@ public class UserController extends BaseController {
 		Query query = new Query(params);
 		List<UserDO> userList = userService.list(query);
 		int total = userService.count(query);
-		PageUtils pageUtils = new PageUtils(userList, total, 0);
+		PageUtils pageUtils = new PageUtils(userList, total);
 		return pageUtils;
 	}
 

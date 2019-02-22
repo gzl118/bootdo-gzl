@@ -53,6 +53,7 @@ public class StaffDO implements Serializable {
 	private String ext2;
 	// 备注
 	private String ext3;
+	private String deptName;
 
 	/**
 	 * 设置：员工编号
@@ -332,5 +333,13 @@ public class StaffDO implements Serializable {
 	 */
 	public String getExt3() {
 		return ext3;
+	}
+
+	public String getDeptName() {
+		return deptName;
+	}
+
+	public void setDeptName(String deptName) {
+		this.deptName = deptName;
 	}
 }

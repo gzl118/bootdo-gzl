@@ -10,8 +10,6 @@ public class PageUtils implements Serializable {
 	private static final long serialVersionUID = 1L;
 	private int total;
 	private List<?> rows;
-	private int count;
-	private List<?> data;
 	private int code;
 
 	public PageUtils(List<?> list, int total) {
@@ -20,8 +18,8 @@ public class PageUtils implements Serializable {
 	}
 
 	public PageUtils(List<?> list, int total, int code) {
-		this.data = list;
-		this.count = total;
+		this.rows = list;
+		this.total = total;
 		this.code = code;
 	}
 
@@ -39,22 +37,6 @@ public class PageUtils implements Serializable {
 
 	public void setRows(List<?> rows) {
 		this.rows = rows;
-	}
-
-	public int getCount() {
-		return count;
-	}
-
-	public void setCount(int count) {
-		this.count = count;
-	}
-
-	public List<?> getData() {
-		return data;
-	}
-
-	public void setData(List<?> data) {
-		this.data = data;
 	}
 
 	public int getCode() {

@@ -1,6 +1,5 @@
 package com.bootdo.system.controller;
 
-import java.util.Date;
 import java.util.List;
 import java.util.Map;
 import java.util.UUID;
@@ -20,14 +19,14 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.multipart.MultipartFile;
 
 import com.bootdo.common.config.BootdoConfig;
-import com.bootdo.common.domain.FileDO;
-import com.bootdo.common.utils.FileType;
 import com.bootdo.common.utils.FileUtil;
 import com.bootdo.common.utils.PageUtils;
 import com.bootdo.common.utils.Query;
 import com.bootdo.common.utils.R;
 import com.bootdo.common.utils.StringUtils;
+import com.bootdo.system.domain.DeptDO;
 import com.bootdo.system.domain.StaffDO;
+import com.bootdo.system.service.DeptService;
 import com.bootdo.system.service.StaffService;
 
 /**
@@ -43,6 +42,8 @@ import com.bootdo.system.service.StaffService;
 public class StaffController {
 	@Autowired
 	private StaffService staffService;
+	@Autowired
+	private DeptService deptService;
 	@Autowired
 	private BootdoConfig bootdoConfig;
 
@@ -60,7 +61,7 @@ public class StaffController {
 		Query query = new Query(params);
 		List<StaffDO> staffList = staffService.list(query);
 		int total = staffService.count(query);
-		PageUtils pageUtils = new PageUtils(staffList, total, 0);
+		PageUtils pageUtils = new PageUtils(staffList, total);
 		return pageUtils;
 	}
 
@@ -74,6 +75,9 @@ public class StaffController {
 	@RequiresPermissions("system:staff:edit")
 	String edit(@PathVariable("employeeId") String employeeId, Model model) {
 		StaffDO staff = staffService.get(employeeId);
+		DeptDO m = deptService.get(staff.getDeptId());
+		if (m != null)
+			staff.setDeptName(m.getDeptname());
 		model.addAttribute("staff", staff);
 		return "system/staff/edit";
 	}
@@ -102,6 +106,8 @@ public class StaffController {
 	@RequestMapping("/update")
 	@RequiresPermissions("system:staff:edit")
 	public R update(StaffDO staff) {
+		if (StringUtils.isBlank(staff.getBirthday()))
+			staff.setBirthday(null);
 		staffService.update(staff);
 		return R.ok();
 	}

@@ -49,7 +49,7 @@ public class DeptController extends BaseController {
 		Query query = new Query(params);
 		List<DeptDO> deptList = deptService.list(query);
 		int total = deptService.count(query);
-		PageUtils pageUtils = new PageUtils(deptList, total, 0);
+		PageUtils pageUtils = new PageUtils(deptList, total);
 		return pageUtils;
 	}
 
@@ -115,4 +115,8 @@ public class DeptController extends BaseController {
 		return R.ok();
 	}
 
+	@GetMapping("/deptTree")
+	String deptTree() {
+		return "system/dept/deptTree";
+	}
 }

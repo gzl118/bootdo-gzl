@@ -27,6 +27,13 @@ require(
 											limits : [ 5, 10, 15, 20, 25 ],
 											limit : 5,
 											id : "staffListTable",
+											response : {
+												statusName : 'code', // 规定数据状态的字段名称，默认：code
+												statusCode : 0, // 规定成功的状态码，默认：0
+												msgName : 'msg', // 规定状态信息的字段名称，默认：msg
+												countName : 'total', // 规定数据总数的字段名称，默认：count
+												dataName : 'rows' // 规定数据列表的字段名称，默认：data
+											},
 											done : function(res, curr, count) {
 											},
 											cols : [ [

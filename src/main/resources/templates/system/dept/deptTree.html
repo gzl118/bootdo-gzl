@@ -2,9 +2,9 @@
 <html>
 
 <meta charset="utf-8">
-<head th:include="include :: header">
+<head>
 <link href="/css/plugins/zTree/bootstrapStyle/bootstrapStyle.css"
-	rel="stylesheet">
+	rel="stylesheet" />
 </head>
 
 <body class="gray-bg">
@@ -17,42 +17,52 @@
 		src="/js/plugins/zTree/jquery.ztree.core.min.js"></script>
 	<script type="text/javascript">
 		$(document).ready(function() {
-			getTreeData()
+			zhouliMenu.loadMenu();
 		});
 		var setting = {
-			view : {
-				selectedMulti : false,
-				showTitle : true
+			callback : {
+				onClick : zTreeOnClick
 			},
 			check : {
 				enable : false
 			},
 			data : {
 				simpleData : {
-					enable : true
+					enable : true,
+					idKey : "deptId",
+					pIdKey : "parentId",
+					rootPId : "0"
 				},
 				key : {
-					name : "MenuName",
-					idKey : "MenuId",
-					pIdKey : "ParentMenuId"
+					name : "deptname"
 				}
 			}
 		};
 		var zhouliMenu = {
 			//加载菜单
 			loadMenu : function() {
-				$.get("/system/dept/getdepttreelist", function(data) {
-					console.log(data);
-					//绑定zTree
-					$.fn.zTree.init($("#treeMenu"), setting, data.JsonData);
-					//展开所有节点
-					$.fn.zTree.getZTreeObj("treeMenu").expandAll(true);
+				$.get("/system/dept/list", {
+					page : 1,
+					limit : -1
+				}, function(data) {
+					if (data && data.code == 0) {
+						//绑定zTree
+						$.fn.zTree.init($("#treeMenu"), setting, data.rows);
+						//展开所有节点
+						$.fn.zTree.getZTreeObj("treeMenu").expandAll(true);
+					}
 				});
 			},
 			getZtreeObj : function() {
 				return $.fn.zTree.getZTreeObj("treeMenu");
 			}
 		};
+		function zTreeOnClick(event, treeId, treeNode) {
+			layer.closeAll("iframe");
+			var index = parent.layer.getFrameIndex(window.name); //先得到当前iframe层的索引
+			parent.layer.close(index);
+			parent.loadDept(treeNode.deptId, treeNode.deptname);
+		}
 	</script>
 </body>
 

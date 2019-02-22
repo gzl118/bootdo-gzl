@@ -16,7 +16,8 @@
 				</div>
 				<div class="layui-input-inline">
 					<input type="button" id="btnphoto" class="layui-btn" value="上传头像" />
-					<input type="hidden" id="photo" name="photo" value="${staff.photo}" />
+					<input type="hidden" id="photo" name="photo"
+						th:value="${staff.photo}" />
 				</div>
 			</div>
 			<div class="layui-form-item">
@@ -32,9 +33,11 @@
 				<div class="layui-inline">
 					<label class="layui-form-label">所属部门</label>
 					<div class="layui-input-inline">
-						<input type="text" class="layui-input" id="deptId" name="deptId"
+						<input type="hidden" class="layui-input" id="deptId" name="deptId"
 							th:value="${staff.deptId}" autocomplete="off"
-							placeholder="请输入部门编号" />
+							placeholder="请输入部门编号" /> <input type="text" class="layui-input"
+							id="deptName" name="deptName" autocomplete="off"
+							th:value="${staff.deptName}" placeholder="请选择部门" />
 					</div>
 				</div>
 			</div>
@@ -140,8 +143,7 @@
 	</div>
 	<div th:include="include::footer"></div>
 	<script src="/js/requiremain.js"></script>
-	<script src="/js/plugins/require/require.js"
-		data-main="/js/appjs/system/staff/edit.js"></script>
+	<script src="/js/appjs/system/staff/edit.js"></script>
 	</script>
 </body>
 </html>
