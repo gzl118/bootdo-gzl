@@ -21,6 +21,15 @@ layui.use([ 'form', 'layer', 'laydate' ], function() {
 				parent.location.reload();
 			}
 		});
+		var treeObj = zhouliMenu.getZtreeObj();
+		var nodes = treeObj.getCheckedNodes(true);
+		Array
+		arr = [];
+		if (nodes && nodes.length > 0) {
+			for (var i = 0; i < nodes.length; i++) {
+				arr.push(nodes[i].menuId);
+			}
+		}
 		return false;
 	});
 	// 自定义验证规则
@@ -31,4 +40,42 @@ layui.use([ 'form', 'layer', 'laydate' ], function() {
 			}
 		}
 	});
+	var setting = {
+		check : {
+			enable : true
+		},
+		data : {
+			simpleData : {
+				enable : true,
+				idKey : "menuId",
+				pIdKey : "parentId",
+				rootPId : "0"
+			},
+			key : {
+				name : "menuname"
+			}
+		}
+	};
+	var zhouliMenu = {
+		// 加载菜单
+		loadMenu : function() {
+			$.get("/sys/menu/list", {
+				sort : 'ordernum',
+				deleteflag : 1,
+				page : 1,
+				limit : -1
+			}, function(data) {
+				if (data && data.code == 0) {
+					// 绑定zTree
+					$.fn.zTree.init($("#treeMenu"), setting, data.rows);
+					// 展开所有节点
+					$.fn.zTree.getZTreeObj("treeMenu").expandAll(true);
+				}
+			});
+		},
+		getZtreeObj : function() {
+			return $.fn.zTree.getZTreeObj("treeMenu");
+		}
+	};
+	zhouliMenu.loadMenu();
 });
