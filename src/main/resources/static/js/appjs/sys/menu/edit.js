@@ -1,91 +1,48 @@
-var prefix = "/sys/menu"
-$(function() {
-	validateRule();
-
-	//打开图标列表
-    $("#ico-btn").click(function(){
-        layer.open({
-            type: 2,
-			title:'图标列表',
-            content: '/FontIcoList.html',
-            area: ['480px', '90%'],
-            success: function(layero, index){
-                //var body = layer.getChildFrame('.ico-list', index);
-                //console.log(layero, index);
-            }
-        });
-    });
-
-});
-$.validator.setDefaults({
-	submitHandler : function() {
-		update();
-	}
-});
-function update() {
-	$.ajax({
-		cache : true,
-		type : "POST",
-		url : prefix + "/update",
-		data : $('#signupForm').serialize(),// 你的formid
-		async : false,
-		error : function(request) {
-			laryer.alert("Connection error");
-		},
-		success : function(data) {
-			if (data.code == 0) {
-				parent.layer.msg("保存成功");
-				parent.reLoad();
-				var index = parent.layer.getFrameIndex(window.name); // 获取窗口索引
-				parent.layer.close(index);
-
-			} else {
-				layer.alert(data.msg)
+var prefix = "/sys/menu";
+layui.use([ 'form', 'layer' ], function() {
+	var form = layui.form;
+	var layer = layui.layer, $ = layui.jquery;
+	form.on("submit(savemenu)", function(data) {
+		// 弹出loading
+		var index = top.layer.msg('数据提交中，请稍候', {
+			icon : 16,
+			time : false,
+			shade : 0.8
+		});
+		// 实际使用时的提交信息
+		$.post(prefix + "/update", $("#menuform").serialize(), function(res) {
+			top.layer.close(index);
+			top.layer.msg(res.msg);
+			if (res.code == 0) {
+				layer.closeAll("iframe");
+				// 刷新父页面
+				parent.location.reload();
 			}
-
-		}
+		});
+		return false;
 	});
-
-}
-function validate() {
-	var icon = "<i class='fa fa-times-circle'></i> ";
-	$("#signupForm").validate({
-		rules : {
-			name : {
-				required : true
-			},
-			type : {
-				required : true
-			}
-		},
-		messages : {
-			name : {
-				required : icon + "请输入菜单名"
-			},
-			type : {
-				required : icon + "请选择菜单类型"
-			}
-		}
-	})
-}
-function validateRule() {
-	var icon = "<i class='fa fa-times-circle'></i> ";
-	$("#signupForm").validate({
-		rules : {
-			name : {
-				required : true
-			},
-			type : {
-				required : true
-			}
-		},
-		messages : {
-			name : {
-				required : icon + "请输入菜单名"
-			},
-			type : {
-				required : icon + "请选择菜单类型"
-			}
-		}
-	})
+	form.val('menuform', {
+		"menutype" : $("#mtype").val()
+	});
+	$("#menuicon").click(function() {
+		var index = layer.open({
+			title : "选择图标",
+			type : 2,
+			maxmin : true,
+			content : prefix + "/icon/",
+			area : [ "550px", "400px" ]
+		});
+	});
+	$("#btnOtherIcon").click(function() {
+		var index = layer.open({
+			title : "选择图标",
+			type : 2,
+			maxmin : true,
+			content : "/FontIcoList.html",
+			area : [ "550px", "400px" ]
+		});
+	});
+});
+function setIcon(iconname) {
+	$("#menuicon").val(iconname);
 }

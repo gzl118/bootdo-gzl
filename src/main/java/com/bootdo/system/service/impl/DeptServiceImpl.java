@@ -50,4 +50,8 @@ public class DeptServiceImpl implements DeptService {
 		return DeptDao.batchRemove(deptIds);
 	}
 
+	@Override
+	public int updatelist(List<DeptDO> Dept) {
+		return DeptDao.updatelist(Dept);
+	}
 }

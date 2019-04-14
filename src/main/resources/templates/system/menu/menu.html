@@ -1,54 +1,73 @@
 <!DOCTYPE html>
-<html lang="zh_CN" xmlns:th="http://www.thymeleaf.org"
-	xmlns:shiro="http://www.pollix.at/thymeleaf/shiro">
+<html>
 <meta charset="utf-8">
 <head th:include="include :: header"></head>
-<body class="gray-bg">
-	<div class="wrapper wrapper-content ">
-		<div class="col-sm-12">
-			<div class="ibox">
-				<div class="ibox-body">
-					<div id="exampleToolbar" role="group" class="t-bar">
-						<button shiro:hasPermission="sys:menu:add" type="button"
-							class="btn btn-primary" title="在根节点下添加菜单" onclick="add('0')">
-							<i class="fa fa-plus" aria-hidden="true"></i>添加
-						</button>
-						<button shiro:hasPermission="sys:menu:batchRemove" type="button"
-							class="btn btn-danger" onclick="batchRemove()">
-							<i class="fa fa-trash" aria-hidden="true"></i>删除
-						</button>
-					</div>
-					<table id="exampleTable" data-mobile-responsive="true">
-					</table>
-				</div>
-			</div>
-		</div>
-		<!--shiro控制bootstraptable行内按钮看见性 来自bootdo的创新方案 -->
+<body>
+	<div>
 		<div>
 			<script type="text/javascript">
-				var s_add_h = 'hidden';
-				var s_edit_h = 'hidden';
-				var s_remove_h = 'hidden';
+				var s_edit_h = 'hide';
+				var s_remove_h = 'hide';
 			</script>
 		</div>
-		<div shiro:hasPermission="sys:menu:add">
-			<script type="text/javascript">
-				s_add_h = '';
-			</script>
-		</div>
-		<div shiro:hasPermission="sys:user:edit">
+		<div shiro:hasPermission="system:menu:edit">
 			<script type="text/javascript">
 				s_edit_h = '';
 			</script>
 		</div>
-		<div shiro:hasPermission="sys:user:remove">
+		<div shiro:hasPermission="system:menu:remove">
 			<script type="text/javascript">
 				var s_remove_h = '';
 			</script>
 		</div>
 	</div>
-	<div th:include="include::footer"></div>
+	<div style="height: 100%;">
+		<blockquote class="layui-elem-quote quoteBox">
+			<div class="layui-form">
+				<div class="layui-inline" style="float: right;">
+					<div class="layui-input-inline">
+						<input type="text" class="layui-input" id="searchName"
+							style="font-size: 12px" placeholder="请输入菜单名称" autocomplete="off" />
+					</div>
+					<button type="button" class="layui-btn search_btn">
+						<i class="layui-icon layui-icon-search" aria-hidden="true"></i>搜索
+					</button>
+				</div>
+				<div class="layui-inline">
+					<button type="button" class="layui-btn addNews_btn">
+						<i class="layui-icon layui-icon-add-1" aria-hidden="true"></i>新增
+					</button>
+				</div>
+				<div class="layui-inline">
+					<button type="button"
+						class="layui-btn layui-btn-danger delAll_btn">
+						<i class="layui-icon layui-icon-delete" aria-hidden="true"></i>批量删除
+					</button>
+				</div>
+				<div class="layui-inline">
+					<button type="button"
+						class="layui-btn layui-btn-normal order_btn">
+						<i class="layui-icon layui-icon-set" aria-hidden="true"></i>顺序调整
+					</button>
+				</div>
+			</div>
+		</blockquote>
+		<table id="menuList" lay-filter="menuList" class="layui-hidden"></table>
+	</div>
+	<div th:include="include :: footer"></div>
 	<script src="/js/appjs/sys/menu/menu.js"></script>
+	<script type="text/html" id="menuListBar">
+      	{{# 
+			var gfun=function(){
+				var html="";
+				html +="<a class='layui-btn layui-btn-xs "+s_edit_h + "' lay-event='edit'>编辑</a>";
+				html +="<a class='layui-btn layui-btn-xs layui-btn-danger "+ s_remove_h + "' lay-event='del'>删除</a>";
+				html +="<a class='layui-btn layui-btn-xs "+s_edit_h + "' lay-event='add'>新增</a>";
+				html +="<a class='layui-btn layui-btn-xs  layui-btn-normal "+s_edit_h + "' lay-event='set'>设置</a>";
+				return html;
+			};
+		}}
+		{{ gfun() }}
+	</script>
 </body>
-
 </html>

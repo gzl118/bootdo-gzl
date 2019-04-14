@@ -28,4 +28,5 @@ public interface DeptService {
 	int remove(String deptId);
 
 	int batchRemove(String[] deptIds);
+	int updatelist(List<DeptDO> Dept);
 }

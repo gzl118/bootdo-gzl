@@ -15,7 +15,7 @@
 		from sys_menu
 		<where>
 			<if test="menuId != null and menuId != ''"> and menu_id = #{menuId} </if>
-			<if test="menuname != null and menuname != ''"> and menuname = #{menuname} </if>
+			<if test="menuname != null and menuname != ''"> and menuname LIKE '%${menuname}%' </if>
 			<if test="menuicon != null and menuicon != ''"> and menuicon = #{menuicon} </if>
 			<if test="menuurl != null and menuurl != ''"> and menuurl = #{menuurl} </if>
 			<if test="menuperms != null and menuperms != ''"> and menuperms = #{menuperms} </if>
@@ -37,7 +37,7 @@
 				order by menu_id desc
 			</otherwise>
 		</choose>
-		<if test="offset != null and limit != null">
+		<if test="offset != null and limit != null and limit !=-1">
 			limit #{offset}, #{limit}
 		</if>
 	</select>
@@ -159,4 +159,38 @@
 		ur.user_id
 		= #{id}
 	</select>
+
+	<update id="updatelist" parameterType="java.util.List">
+		<foreach collection="list" item="item" separator=";" index="index"
+			open="" close="">
+			update sys_menu
+			<set>
+				ordernum=${item.ordernum}
+			</set>
+			where menu_id = '${item.menuId}'
+		</foreach>
+	</update>
+	<update id="insertlist" parameterType="java.util.List">
+		insert into sys_menu
+		(
+		`menu_id`,
+		`menuname`,
+		`menuperms`,
+		`ordernum`,
+		`parent_id`,
+		`menutype`
+		)
+		values
+		<foreach collection="list" item="item" separator="," index="index"
+			open="" close="">
+			(
+			'${item.menuId}',
+			'${item.menuname}',
+			'${item.menuperms}',
+			${item.ordernum},
+			'${item.parentId}',
+			${item.menutype}
+			)
+		</foreach>
+	</update>
 </mapper>

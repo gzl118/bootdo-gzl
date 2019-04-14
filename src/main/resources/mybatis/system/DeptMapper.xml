@@ -115,5 +115,14 @@
 			#{deptId}
 		</foreach>
 	</delete>
-
+	<update id="updatelist" parameterType="java.util.List">
+		<foreach collection="list" item="item" separator=";" index="index"
+			open="" close="">
+			update sys_dept
+			<set>
+				ordernum=${item.ordernum}
+			</set>
+			where dept_id = '${item.deptId}'
+		</foreach>
+	</update>
 </mapper>

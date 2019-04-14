@@ -22,7 +22,7 @@ import com.bootdo.system.domain.MenuDO;
 import com.bootdo.system.service.MenuService;
 
 @Service
-@Transactional(readOnly = true, rollbackFor = Exception.class)
+@Transactional(readOnly = false, rollbackFor = Exception.class)
 public class MenuServiceImpl implements MenuService {
 	@Autowired
 	RoleMenuDao roleMenuMapper;
@@ -175,4 +175,13 @@ public class MenuServiceImpl implements MenuService {
 		return menuDao.get(menuId);
 	}
 
+	@Override
+	public int updatelist(List<MenuDO> menuIds) {
+		return menuDao.updatelist(menuIds);
+	}
+
+	@Override
+	public int insertlist(List<MenuDO> menuIds) {
+		return menuDao.insertlist(menuIds);
+	}
 }

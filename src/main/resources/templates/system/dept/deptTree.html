@@ -10,6 +10,8 @@
 <body class="gray-bg">
 	<div>
 		<ul id="treeMenu" class="ztree"></ul>
+		<input type="hidden" class="layui-input" id="parentId"
+			th:value="${parentId}" />
 	</div>
 	<div th:include="include :: footer"></div>
 	<script type="text/javascript" src="/js/plugins/zTree/jquery.min.js"></script>
@@ -21,7 +23,8 @@
 		});
 		var setting = {
 			callback : {
-				onClick : zTreeOnClick
+				onClick : zTreeOnClick,
+				beforeClick : zTreebeforeClick
 			},
 			check : {
 				enable : false
@@ -42,6 +45,7 @@
 			//加载菜单
 			loadMenu : function() {
 				$.get("/system/dept/list", {
+					sort : 'ordernum',
 					page : 1,
 					limit : -1
 				}, function(data) {
@@ -62,6 +66,16 @@
 			var index = parent.layer.getFrameIndex(window.name); //先得到当前iframe层的索引
 			parent.layer.close(index);
 			parent.loadDept(treeNode.deptId, treeNode.deptname);
+		}
+		function zTreebeforeClick(treeId, treeNode, clickFlag) {
+			var parentId = $("#parentId").val();
+			if (parentId != "") {
+				if (treeNode.deptId === parentId) {
+					layer.msg("不能选择自己！");
+					return false;
+				}
+			}
+			return true;
 		}
 	</script>
 </body>

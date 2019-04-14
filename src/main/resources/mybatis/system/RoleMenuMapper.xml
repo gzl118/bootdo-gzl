@@ -4,14 +4,15 @@
 <mapper namespace="com.bootdo.system.dao.RoleMenuDao">
 
 	<select id="get" resultType="com.bootdo.system.domain.RoleMenuDO">
-		select `id`,`role_id`,`menu_id` from
-		sys_role_menu where id = #{value}
+		select
+		`relate_id`,`role_id`,`menu_id` from sys_role_menu where relate_id =
+		#{value}
 	</select>
 
 	<select id="list" resultType="com.bootdo.system.domain.RoleMenuDO">
-		select `id`,`role_id`,`menu_id` from sys_role_menu
+		select `relate_id`,`role_id`,`menu_id` from sys_role_menu
 		<where>
-			<if test="id != null and id != ''"> and id = #{id} </if>
+			<if test="relateId != null and relateId != ''"> and relate_id = #{relateId} </if>
 			<if test="roleId != null and roleId != ''"> and role_id = #{roleId} </if>
 			<if test="menuId != null and menuId != ''"> and menu_id = #{menuId} </if>
 		</where>
@@ -20,10 +21,10 @@
 				order by ${sort} ${order}
 			</when>
 			<otherwise>
-				order by id desc
+				order by relate_id desc
 			</otherwise>
 		</choose>
-		<if test="offset != null and limit != null">
+		<if test="offset != null and limit != null and limit !=-1">
 			limit #{offset}, #{limit}
 		</if>
 	</select>
@@ -31,21 +32,22 @@
 	<select id="count" resultType="int">
 		select count(*) from sys_role_menu
 		<where>
-			<if test="id != null and id != ''"> and id = #{id} </if>
+			<if test="relateId != null and relateId != ''"> and relate_id = #{relateId} </if>
 			<if test="roleId != null and roleId != ''"> and role_id = #{roleId} </if>
 			<if test="menuId != null and menuId != ''"> and menu_id = #{menuId} </if>
 		</where>
 	</select>
 
-	<insert id="save" parameterType="com.bootdo.system.domain.RoleMenuDO"
-		useGeneratedKeys="true" keyProperty="id">
+	<insert id="save" parameterType="com.bootdo.system.domain.RoleMenuDO">
 		insert into sys_role_menu
 		(
+		`relate_id`,
 		`role_id`,
 		`menu_id`
 		)
 		values
 		(
+		#{relateId},
 		#{roleId},
 		#{menuId}
 		)
@@ -57,39 +59,23 @@
 			<if test="roleId != null">`role_id` = #{roleId}, </if>
 			<if test="menuId != null">`menu_id` = #{menuId}</if>
 		</set>
-		where id = #{id}
+		where relate_id = #{relateId}
 	</update>
 
 	<delete id="remove">
-		delete from sys_role_menu where id = #{value}
+		delete from sys_role_menu where relate_id = #{value}
 	</delete>
 
 	<delete id="batchRemove">
-		delete from sys_role_menu where id in
-		<foreach item="id" collection="array" open="(" separator=","
-			close=")">
-			#{id}
+		delete from sys_role_menu where relate_id in
+		<foreach item="relateId" collection="array" open="("
+			separator="," close=")">
+			#{relateId}
 		</foreach>
 	</delete>
-
-	<select id="listMenuIdByRoleId" resultType="long">
+	<select id="listMenuIdByRoleId" resultType="String">
 		select menu_id from sys_role_menu
 		<where>role_id = #{roleId}</where>
 	</select>
 
-	<delete id="removeByRoleId">
-		DELETE FROM sys_role_menu WHERE role_id=#{roleId}
-	</delete>
-
-	<delete id="removeByMenuId">
-		DELETE FROM sys_role_menu WHERE menu_id=#{menuId}
-	</delete>
-
-	<insert id="batchSave">
-		INSERT INTO sys_role_menu(role_id, menu_id) values
-		<foreach item="item" index="index" collection="list"
-			separator=",">
-			(#{item.roleId},#{item.menuId})
-		</foreach>
-	</insert>
 </mapper>

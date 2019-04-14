@@ -2,7 +2,7 @@
 <html>
 <meta charset="utf-8">
 <head th:include="include :: header"></head>
-<body style="padding: 10px;">
+<body>
 	<div>
 		<div>
 			<script type="text/javascript">
@@ -41,8 +41,14 @@
 				</div>
 				<div class="layui-inline">
 					<button shiro:hasPermission="system:dept:batchRemove" type="button"
-						class="layui-btn layui-btn-danger layui-btn-normal delAll_btn">
+						class="layui-btn layui-btn-danger delAll_btn">
 						<i class="layui-icon layui-icon-delete" aria-hidden="true"></i>批量删除
+					</button>
+				</div>
+				<div class="layui-inline">
+					<button shiro:hasPermission="system:dept:changeOrder" type="button"
+						class="layui-btn layui-btn-normal order_btn">
+						<i class="layui-icon layui-icon-set" aria-hidden="true"></i>顺序调整
 					</button>
 				</div>
 			</div>
@@ -50,9 +56,7 @@
 		<table id="deptList" lay-filter="deptList" class="layui-hidden"></table>
 	</div>
 	<div th:include="include :: footer"></div>
-	<script src="/js/requiremain.js"></script>
-	<script src="/js/plugins/require/require.js"
-		data-main="/js/appjs/system/dept/dept.js"></script>
+	<script src="/js/appjs/system/dept/dept.js"></script>
 	<script type="text/html" id="deptListBar">
       	{{# 
 			var gfun=function(pstatus){

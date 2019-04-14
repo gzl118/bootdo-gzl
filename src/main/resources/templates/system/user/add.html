@@ -44,6 +44,16 @@
 						title="默认密码(111111)" lay-filter="cbxPwd" />
 				</div>
 			</div>
+			<div class="layui-form-item">
+				<label class="layui-form-label">员工</label>
+				<div class="layui-input-block">
+					<input type="hidden" class="layui-input" id="deptId" name="deptId" />
+					<input type="hidden" class="layui-input" id="employeeId"
+						name="employeeId" /> <input type="text" class="layui-input"
+						id="employeename" name="employeename" autocomplete="off"
+						placeholder="请选择员工" />
+				</div>
+			</div>
 			<div class="layui-form-item layui-row layui-col-xs12">
 				<div class="layui-input-block">
 					<button class="layui-btn layui-btn-sm" lay-submit=""
@@ -55,8 +65,6 @@
 		</form>
 	</div>
 	<div th:include="include::footer"></div>
-	<script src="/js/requiremain.js"></script>
-	<script src="/js/plugins/require/require.js"
-		data-main="/js/appjs/sys/user/add.js"></script>
+	<script src="/js/appjs/sys/user/add.js"></script>
 </body>
 </html>

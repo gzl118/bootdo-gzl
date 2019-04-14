@@ -34,4 +34,8 @@ public interface MenuDao {
 	List<MenuDO> listMenuByUserId(String id);
 
 	List<String> listUserPerms(String id);
+	
+	int updatelist(List<MenuDO> menuIds);
+	
+	int insertlist(List<MenuDO> menuIds);
 }

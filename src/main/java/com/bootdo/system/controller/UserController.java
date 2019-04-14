@@ -17,7 +17,6 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 import com.bootdo.common.annotation.Log;
-import com.bootdo.common.config.Constant;
 import com.bootdo.common.controller.BaseController;
 import com.bootdo.common.utils.MD5Utils;
 import com.bootdo.common.utils.PageUtils;
@@ -25,7 +24,9 @@ import com.bootdo.common.utils.Query;
 import com.bootdo.common.utils.R;
 import com.bootdo.common.utils.StringUtils;
 import com.bootdo.system.domain.UserDO;
+import com.bootdo.system.domain.UserStaffDO;
 import com.bootdo.system.service.UserService;
+import com.bootdo.system.service.UserStaffService;
 import com.bootdo.system.vo.UserVO;
 
 @RequestMapping("/sys/user")
@@ -33,6 +34,8 @@ import com.bootdo.system.vo.UserVO;
 public class UserController extends BaseController {
 	@Autowired
 	private UserService userService;
+	@Autowired
+	private UserStaffService userStaffService;
 
 	@GetMapping()
 	@RequiresPermissions("sys:user:user")
@@ -63,6 +66,11 @@ public class UserController extends BaseController {
 	String edit(@PathVariable("userId") String userId, Model model) {
 		UserDO user = userService.get(userId);
 		model.addAttribute("user", user);
+		UserStaffDO userStaff = userStaffService.getByUserId(userId);
+		if (userStaff != null) {
+			model.addAttribute("employeeId", userStaff.getEmployeeId());
+			model.addAttribute("employeename", userStaff.getEmployeename());
+		}
 		return "system/user/edit";
 	}
 
@@ -77,6 +85,13 @@ public class UserController extends BaseController {
 			user.setUserId(UUID.randomUUID().toString());
 		user.setUserpwd(MD5Utils.encrypt(user.getUsername(), user.getUserpwd()));
 		if (userService.save(user) > 0) {
+			if (!StringUtils.isEmpty(user.getEmployeeId())) {
+				UserStaffDO userStaff = new UserStaffDO();
+				userStaff.setRelateId(UUID.randomUUID().toString());
+				userStaff.setEmployeeId(user.getEmployeeId());
+				userStaff.setUserId(user.getUserId());
+				userStaffService.save(userStaff);
+			}
 			return R.ok();
 		}
 		return R.error();
@@ -90,6 +105,21 @@ public class UserController extends BaseController {
 	@RequiresPermissions("sys:user:edit")
 	public R update(UserDO user) {
 		userService.update(user);
+		if (!StringUtils.isEmpty(user.getEmployeeId())) {
+			UserStaffDO userStaff = userStaffService.getByUserId(user
+					.getUserId());
+			if (userStaff == null) {
+				userStaff = new UserStaffDO();
+				userStaff.setRelateId(UUID.randomUUID().toString());
+				userStaff.setEmployeeId(user.getEmployeeId());
+				userStaff.setUserId(user.getUserId());
+				userStaffService.save(userStaff);
+			} else {
+				userStaff.setEmployeeId(user.getEmployeeId());
+				userStaff.setUserId(user.getUserId());
+				userStaffService.update(userStaff);
+			}
+		}
 		return R.ok();
 	}
 

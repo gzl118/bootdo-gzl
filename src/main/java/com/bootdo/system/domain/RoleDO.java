@@ -1,94 +1,145 @@
 package com.bootdo.system.domain;
 
-import java.sql.Timestamp;
-import java.util.List;
+import java.io.Serializable;
+import java.util.Date;
 
-public class RoleDO {
+
+
+/**
+ * 
+ * 
+ * @author chglee
+ * @email 1992lcg@163.com
+ * @date 2019-04-14 18:52:03
+ */
+public class RoleDO implements Serializable {
+	private static final long serialVersionUID = 1L;
 	
-	private Long roleId;
-	private String roleName;
-	private String roleSign;
-	private String remark;
-	private Long userIdCreate;
-	private Timestamp gmtCreate;
-	private Timestamp gmtModified;
-	private List<Long> menuIds;
+	//角色ID
+	private String roleId;
+	//角色名称
+	private String rolename;
+	//说明
+	private String note;
+	//编辑人
+	private String editUser;
+	//编辑时间
+	private Date editTime;
+	//删除标识，1未删除，2删除
+	private Integer deleteflag;
+	//备注
+	private String ext1;
+	//备注
+	private String ext2;
+	//备注
+	private String ext3;
 
-	public Long getRoleId() {
-		return roleId;
-	}
-
-	public void setRoleId(Long roleId) {
+	/**
+	 * 设置：角色ID
+	 */
+	public void setRoleId(String roleId) {
 		this.roleId = roleId;
 	}
-
-	public String getRoleName() {
-		return roleName;
+	/**
+	 * 获取：角色ID
+	 */
+	public String getRoleId() {
+		return roleId;
 	}
-
-	public void setRoleName(String roleName) {
-		this.roleName = roleName;
+	/**
+	 * 设置：角色名称
+	 */
+	public void setRolename(String rolename) {
+		this.rolename = rolename;
 	}
-
-	public String getRoleSign() {
-		return roleSign;
+	/**
+	 * 获取：角色名称
+	 */
+	public String getRolename() {
+		return rolename;
 	}
-
-	public void setRoleSign(String roleSign) {
-		this.roleSign = roleSign;
+	/**
+	 * 设置：说明
+	 */
+	public void setNote(String note) {
+		this.note = note;
 	}
-
-	public String getRemark() {
-		return remark;
+	/**
+	 * 获取：说明
+	 */
+	public String getNote() {
+		return note;
 	}
-
-	public void setRemark(String remark) {
-		this.remark = remark;
+	/**
+	 * 设置：编辑人
+	 */
+	public void setEditUser(String editUser) {
+		this.editUser = editUser;
 	}
-
-	public Long getUserIdCreate() {
-		return userIdCreate;
+	/**
+	 * 获取：编辑人
+	 */
+	public String getEditUser() {
+		return editUser;
 	}
-
-	public void setUserIdCreate(Long userIdCreate) {
-		this.userIdCreate = userIdCreate;
+	/**
+	 * 设置：编辑时间
+	 */
+	public void setEditTime(Date editTime) {
+		this.editTime = editTime;
 	}
-
-	public Timestamp getGmtCreate() {
-		return gmtCreate;
+	/**
+	 * 获取：编辑时间
+	 */
+	public Date getEditTime() {
+		return editTime;
 	}
-
-	public void setGmtCreate(Timestamp gmtCreate) {
-		this.gmtCreate = gmtCreate;
+	/**
+	 * 设置：删除标识，1未删除，2删除
+	 */
+	public void setDeleteflag(Integer deleteflag) {
+		this.deleteflag = deleteflag;
 	}
-
-	public Timestamp getGmtModified() {
-		return gmtModified;
+	/**
+	 * 获取：删除标识，1未删除，2删除
+	 */
+	public Integer getDeleteflag() {
+		return deleteflag;
 	}
-
-	public void setGmtModified(Timestamp gmtModified) {
-		this.gmtModified = gmtModified;
+	/**
+	 * 设置：备注
+	 */
+	public void setExt1(String ext1) {
+		this.ext1 = ext1;
 	}
-
-	public List<Long> getMenuIds() {
-		return menuIds;
+	/**
+	 * 获取：备注
+	 */
+	public String getExt1() {
+		return ext1;
 	}
-
-	public void setMenuIds(List<Long> menuIds) {
-		this.menuIds = menuIds;
+	/**
+	 * 设置：备注
+	 */
+	public void setExt2(String ext2) {
+		this.ext2 = ext2;
 	}
-
-	@Override
-	public String toString() {
-		return "RoleDO{" +
-				"roleId=" + roleId +
-				", roleName='" + roleName + '\'' +
-				", roleSign='" + roleSign + '\'' +
-				", remark='" + remark + '\'' +
-				", userIdCreate=" + userIdCreate +
-				", gmtCreate=" + gmtCreate +
-				", gmtModified=" + gmtModified +
-				", menuIds=" + menuIds +
-				'}';
+	/**
+	 * 获取：备注
+	 */
+	public String getExt2() {
+		return ext2;
+	}
+	/**
+	 * 设置：备注
+	 */
+	public void setExt3(String ext3) {
+		this.ext3 = ext3;
+	}
+	/**
+	 * 获取：备注
+	 */
+	public String getExt3() {
+		return ext3;
 	}
 }

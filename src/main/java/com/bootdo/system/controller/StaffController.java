@@ -151,4 +151,9 @@ public class StaffController {
 			return R.error();
 		}
 	}
+
+	@GetMapping("/staffTree")
+	String deptTree() {
+		return "system/staff/staffTree";
+	}
 }

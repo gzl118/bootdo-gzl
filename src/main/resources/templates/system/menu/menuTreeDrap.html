@@ -1,0 +1,138 @@
+<!DOCTYPE html>
+<html>
+
+<meta charset="utf-8">
+<head>
+<div th:include="include :: header"></div>
+<link href="/css/plugins/zTree/bootstrapStyle/bootstrapStyle.css"
+	rel="stylesheet" />
+</head>
+
+<body class="gray-bg">
+	<div class="layui-form" style="margin: 5px;">
+		<div class="layui-inline">
+			<button type="button" class="layui-btn save_btn">
+				<i class="layui-icon layui-icon-add-1" aria-hidden="true"></i>保存
+			</button>
+		</div>
+	</div>
+	<div>
+		<ul id="treeMenu" class="ztree"></ul>
+	</div>
+	<div th:include="include :: footer"></div>
+	<script type="text/javascript" src="/js/plugins/zTree/jquery.min.js"></script>
+	<script type="text/javascript"
+		src="/js/plugins/zTree/jquery.ztree.core.min.js"></script>
+	<script type="text/javascript"
+		src="/js/plugins/zTree/jquery.ztree.exedit.min.js"></script>
+	<script type="text/javascript">
+		var arrs = [];
+		$(document).ready(function() {
+			zhouliMenu.loadMenu();
+			$(".save_btn").click(function() {
+				arrs = [];
+				var treeObj = zhouliMenu.getZtreeObj();
+				var nodes = treeObj.getNodes();
+				if (nodes && nodes.length > 0) {
+					for (var i = 0, l = nodes.length; i < l; i++) {
+						GetAllIndex(nodes[i]);
+					}
+				}
+				if (arrs && arrs.length > 0) {
+					$.ajax({
+						type : "POST",
+						url : "/sys/menu/changeOrder",
+						data : JSON.stringify(arrs),//将对象序列化成JSON字符串  
+						dataType : "json",
+						contentType : 'application/json;charset=utf-8', //设置请求头信息  
+						success : function(data) {
+							top.layer.msg(data.msg);
+							if (data.code == 0) {
+								layer.closeAll("iframe");
+								// 刷新父页面
+								parent.location.reload();
+							}
+						},
+						error : function(res) {
+						}
+					});
+				}
+			});
+		});
+		function GetAllIndex(node) {
+			var index = node.getIndex();
+			var obj = {
+				menuId : node.menuId,
+				ordernum : index
+			};
+			arrs.push(obj);
+			if (node.children && node.children.length > 0) {
+				for (var i = 0, l = node.children.length; i < l; i++) {
+					GetAllIndex(node.children[i]);
+				}
+			}
+		}
+		var setting = {
+			callback : {
+				beforeDrop : beforeDrop
+			},
+			check : {
+				enable : false
+			},
+			data : {
+				simpleData : {
+					enable : true,
+					idKey : "menuId",
+					pIdKey : "parentId",
+					rootPId : "0"
+				},
+				key : {
+					name : "menuname"
+				}
+			},
+			edit : {
+				drag : {
+					autoExpandTrigger : true,
+					prev : true,
+					inner : false,
+					next : true
+				},
+				enable : true,
+				showRemoveBtn : false,
+				showRenameBtn : false
+			}
+		};
+		var zhouliMenu = {
+			//加载菜单
+			loadMenu : function() {
+				$.get("/sys/menu/list", {
+					sort : 'ordernum',
+					page : 1,
+					limit : -1
+				}, function(data) {
+					if (data && data.code == 0) {
+						//绑定zTree
+						$.fn.zTree.init($("#treeMenu"), setting, data.rows);
+						//展开所有节点
+						$.fn.zTree.getZTreeObj("treeMenu").expandAll(true);
+					}
+				});
+			},
+			getZtreeObj : function() {
+				return $.fn.zTree.getZTreeObj("treeMenu");
+			}
+		};
+		function beforeDrop(treeId, treeNodes, targetNode, moveType, isCopy) {
+			var pNode = targetNode.getParentNode();
+			for (var i = 0, l = treeNodes.length; i < l; i++) {
+				var curPNode = treeNodes[i].getParentNode();
+				if (curPNode !== pNode) {
+					return false;
+				}
+			}
+			return true;
+		}
+	</script>
+</body>
+
+</html>

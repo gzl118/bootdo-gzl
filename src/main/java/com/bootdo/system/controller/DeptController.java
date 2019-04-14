@@ -2,6 +2,7 @@ package com.bootdo.system.controller;
 
 import java.util.List;
 import java.util.Map;
+import java.util.UUID;
 
 import org.apache.shiro.authz.annotation.RequiresPermissions;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -10,6 +11,7 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
@@ -18,6 +20,7 @@ import com.bootdo.common.controller.BaseController;
 import com.bootdo.common.utils.PageUtils;
 import com.bootdo.common.utils.Query;
 import com.bootdo.common.utils.R;
+import com.bootdo.common.utils.StringUtils;
 import com.bootdo.system.domain.DeptDO;
 import com.bootdo.system.service.DeptService;
 
@@ -64,6 +67,10 @@ public class DeptController extends BaseController {
 	String edit(@PathVariable("deptId") String deptId, Model model) {
 		DeptDO dept = deptService.get(deptId);
 		model.addAttribute("dept", dept);
+		DeptDO pdept = deptService.get(dept.getParentId());
+		if (pdept != null) {
+			model.addAttribute("pdeptName", pdept.getDeptname());
+		}
 		return "system/dept/edit";
 	}
 
@@ -74,6 +81,10 @@ public class DeptController extends BaseController {
 	@PostMapping("/save")
 	@RequiresPermissions("system:dept:add")
 	public R save(DeptDO dept) {
+		if (StringUtils.isBlank(dept.getDeptId()))
+			dept.setDeptId(UUID.randomUUID().toString());
+		if (StringUtils.isBlank(dept.getParentId()))
+			dept.setParentId("0");
 		if (deptService.save(dept) > 0) {
 			return R.ok();
 		}
@@ -87,6 +98,8 @@ public class DeptController extends BaseController {
 	@RequestMapping("/update")
 	@RequiresPermissions("system:dept:edit")
 	public R update(DeptDO dept) {
+		if (StringUtils.isBlank(dept.getParentId()))
+			dept.setParentId("0");
 		deptService.update(dept);
 		return R.ok();
 	}
@@ -116,7 +129,23 @@ public class DeptController extends BaseController {
 	}
 
 	@GetMapping("/deptTree")
-	String deptTree() {
+	String deptTree(String parentId, Model model) {
+		model.addAttribute("parentId", parentId);
 		return "system/dept/deptTree";
+	}
+
+	@GetMapping("/deptTreeDrap")
+	String deptTreeDrap() {
+		return "system/dept/deptTreeDrap";
+	}
+
+	@PostMapping("/changeOrder")
+	@ResponseBody
+	@RequiresPermissions("system:dept:changeOrder")
+	public R changeOrder(@RequestBody List<DeptDO> deptIds) {
+		if (deptService.updatelist(deptIds) > 0) {
+			return R.ok();
+		}
+		return R.error();
 	}
 }

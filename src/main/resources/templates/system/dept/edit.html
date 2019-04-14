@@ -6,98 +6,42 @@
 	<div style="padding: 20px;">
 		<form class="layui-form" style="width: 80%;" id="deptform"
 			lay-filter="deptform">
-			<input id="deptId" name="deptId" th:value="${dept.deptId}"  type="hidden">
-																			<div class="layui-form-item">
-						<label class="layui-form-label">部门名称</label>
-						<div class="layui-input-block">
-							<input type="text" class="layui-input" id="deptname" 
-								name="deptname" lay-verify="required" autocomplete="off"
-								th:value="${dept.deptname}"
-								placeholder="请输入部门名称" />
-						</div>
-					</div>
-																<div class="layui-form-item">
-						<label class="layui-form-label">描述</label>
-						<div class="layui-input-block">
-							<input type="text" class="layui-input" id="deptdesc" 
-								name="deptdesc" lay-verify="required" autocomplete="off"
-								th:value="${dept.deptdesc}"
-								placeholder="请输入描述" />
-						</div>
-					</div>
-																<div class="layui-form-item">
-						<label class="layui-form-label">父级编号</label>
-						<div class="layui-input-block">
-							<input type="text" class="layui-input" id="parentId" 
-								name="parentId" lay-verify="required" autocomplete="off"
-								th:value="${dept.parentId}"
-								placeholder="请输入父级编号" />
-						</div>
-					</div>
-																<div class="layui-form-item">
-						<label class="layui-form-label">顺序</label>
-						<div class="layui-input-block">
-							<input type="text" class="layui-input" id="ordernum" 
-								name="ordernum" lay-verify="required" autocomplete="off"
-								th:value="${dept.ordernum}"
-								placeholder="请输入顺序" />
-						</div>
-					</div>
-																<div class="layui-form-item">
-						<label class="layui-form-label">编辑人</label>
-						<div class="layui-input-block">
-							<input type="text" class="layui-input" id="editUser" 
-								name="editUser" lay-verify="required" autocomplete="off"
-								th:value="${dept.editUser}"
-								placeholder="请输入编辑人" />
-						</div>
-					</div>
-																<div class="layui-form-item">
-						<label class="layui-form-label">编辑时间</label>
-						<div class="layui-input-block">
-							<input type="text" class="layui-input" id="editTime" 
-								name="editTime" lay-verify="required" autocomplete="off"
-								th:value="${dept.editTime}"
-								placeholder="请输入编辑时间" />
-						</div>
-					</div>
-																<div class="layui-form-item">
-						<label class="layui-form-label">删除标识，1未删除，2删除</label>
-						<div class="layui-input-block">
-							<input type="text" class="layui-input" id="deleteflag" 
-								name="deleteflag" lay-verify="required" autocomplete="off"
-								th:value="${dept.deleteflag}"
-								placeholder="请输入删除标识，1未删除，2删除" />
-						</div>
-					</div>
-																<div class="layui-form-item">
-						<label class="layui-form-label">备注</label>
-						<div class="layui-input-block">
-							<input type="text" class="layui-input" id="ext1" 
-								name="ext1" lay-verify="required" autocomplete="off"
-								th:value="${dept.ext1}"
-								placeholder="请输入备注" />
-						</div>
-					</div>
-																<div class="layui-form-item">
-						<label class="layui-form-label">备注</label>
-						<div class="layui-input-block">
-							<input type="text" class="layui-input" id="ext2" 
-								name="ext2" lay-verify="required" autocomplete="off"
-								th:value="${dept.ext2}"
-								placeholder="请输入备注" />
-						</div>
-					</div>
-																<div class="layui-form-item">
-						<label class="layui-form-label">备注</label>
-						<div class="layui-input-block">
-							<input type="text" class="layui-input" id="ext3" 
-								name="ext3" lay-verify="required" autocomplete="off"
-								th:value="${dept.ext3}"
-								placeholder="请输入备注" />
-						</div>
-					</div>
-										<div class="layui-form-item layui-row layui-col-xs12">
+			<input id="deptId" name="deptId" th:value="${dept.deptId}"
+				type="hidden">
+			<div class="layui-form-item">
+				<label class="layui-form-label">部门名称<i style="color: red;">*</i></label>
+				<div class="layui-input-block">
+					<input type="text" class="layui-input" id="deptname"
+						name="deptname" lay-verify="required" autocomplete="off"
+						th:value="${dept.deptname}" placeholder="请输入部门名称" />
+				</div>
+			</div>
+			<div class="layui-form-item">
+				<label class="layui-form-label">描述</label>
+				<div class="layui-input-block">
+					<input type="text" class="layui-input" id="deptdesc"
+						name="deptdesc" autocomplete="off" th:value="${dept.deptdesc}"
+						placeholder="请输入描述" />
+				</div>
+			</div>
+			<div class="layui-form-item">
+				<label class="layui-form-label">上级部门</label>
+				<div class="layui-input-block">
+					<input type="hidden" class="layui-input" id="parentId"
+						name="parentId" /> <input type="text" class="layui-input"
+						id="pdeptname" value="0" name="pdeptname" autocomplete="off"
+						placeholder="请选择上级部门" th:value="${pdeptName}" />
+				</div>
+			</div>
+			<div class="layui-form-item">
+				<label class="layui-form-label">顺序</label>
+				<div class="layui-input-block">
+					<input type="text" class="layui-input" id="ordernum"
+						name="ordernum" autocomplete="off" th:value="${dept.ordernum}"
+						placeholder="请输入顺序" />
+				</div>
+			</div>
+			<div class="layui-form-item layui-row layui-col-xs12">
 				<div class="layui-input-block">
 					<button class="layui-btn layui-btn-sm" lay-submit=""
 						lay-filter="savedept">保存</button>
@@ -108,9 +52,7 @@
 		</form>
 	</div>
 	<div th:include="include::footer"></div>
-	<script src="/js/requiremain.js"></script>
-	<script src="/js/plugins/require/require.js"
-		data-main="/js/appjs/system/dept/edit.js"></script>
+	<script src="/js/appjs/system/dept/edit.js"></script>
 	</script>
 </body>
 </html>

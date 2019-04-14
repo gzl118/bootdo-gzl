@@ -1,85 +1,34 @@
-var menuIds;
-$(function() {
-	getMenuTreeData();
-	validateRule();
+var prefix = "/sys/role";
+layui.use([ 'form', 'layer', 'laydate' ], function() {
+	var form = layui.form;
+	var laydate = layui.laydate;
+	layer = parent.layer === undefined ? layui.layer : top.layer,
+			$ = layui.jquery;
+	form.on("submit(saverole)", function(data) {
+		// 弹出loading
+		var index = top.layer.msg('数据提交中，请稍候', {
+			icon : 16,
+			time : false,
+			shade : 0.8
+		});
+		// 实际使用时的提交信息
+		$.post(prefix + "/update", $("#roleform").serialize(), function(res) {
+			top.layer.close(index);
+			top.layer.msg(res.msg);
+			if (res.code == 0) {
+				layer.closeAll("iframe");
+				// 刷新父页面
+				parent.location.reload();
+			}
+		});
+		return false;
+	});
+	// 自定义验证规则
+	form.verify({
+		rolename : function(value, item) { // value：表单的值、item：表单的DOM对象
+			if (!new RegExp("^[a-zA-Z0-9_\u4e00-\u9fa5\\s·]+$").test(value)) {
+				return '用户名不能有特殊字符';
+			}
+		}
+	});
 });
-$.validator.setDefaults({
-	submitHandler : function() {
-		getAllSelectNodes();
-		update();
-	}
-});
-function loadMenuTree(menuTree) {
-	$('#menuTree').jstree({
-		"plugins" : [ "wholerow", "checkbox" ],
-		'core' : {
-			'data' : menuTree
-		},
-		"checkbox" : {
-			//"keep_selected_style" : false,
-			//"undetermined" : true
-			//"three_state" : false,
-			//"cascade" : ' up'
-		}
-	});
-	$('#menuTree').jstree('open_all');
-}
-function getAllSelectNodes() {
-	var ref = $('#menuTree').jstree(true); // 获得整个树
-	menuIds = ref.get_selected(); // 获得所有选中节点的，返回值为数组
-	$("#menuTree").find(".jstree-undetermined").each(function(i, element) {
-		menuIds.push($(element).closest('.jstree-node').attr("id"));
-	});
-	console.log(menuIds); 
-}
-function getMenuTreeData() {
-	var roleId = $('#roleId').val();
-	$.ajax({
-		type : "GET",
-		url : "/sys/menu/tree/" + roleId,
-		success : function(data) {
-			loadMenuTree(data);
-		}
-	});
-}
-function update() {
-	$('#menuIds').val(menuIds);
-	var role = $('#signupForm').serialize();
-	$.ajax({
-		cache : true,
-		type : "POST",
-		url : "/sys/role/update",
-		data : role, // 你的formid
-		async : false,
-		error : function(request) {
-			alert("Connection error");
-		},
-		success : function(r) {
-			if (r.code == 0) {
-				parent.layer.msg(r.msg);
-				parent.reLoad();
-				var index = parent.layer.getFrameIndex(window.name); // 获取窗口索引
-				parent.layer.close(index);
-
-			} else {
-				parent.layer.msg(r.msg);
-			}
-
-		}
-	});
-}
-function validateRule() {
-	var icon = "<i class='fa fa-times-circle'></i> ";
-	$("#signupForm").validate({
-		rules : {
-			roleName : {
-				required : true
-			}
-		},
-		messages : {
-			roleName : {
-				required : icon + "请输入角色名"
-			}
-		}
-	});
-}

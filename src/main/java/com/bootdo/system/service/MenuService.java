@@ -7,6 +7,7 @@ import java.util.Set;
 import org.springframework.stereotype.Service;
 
 import com.bootdo.common.domain.Tree;
+import com.bootdo.system.domain.DeptDO;
 import com.bootdo.system.domain.MenuDO;
 
 @Service
@@ -34,4 +35,7 @@ public interface MenuService {
 	int remove(String menuId);
 
 	int batchRemove(String[] menuIds);
+	
+	int updatelist(List<MenuDO> menuIds);
+	int insertlist(List<MenuDO> menuIds);
 }

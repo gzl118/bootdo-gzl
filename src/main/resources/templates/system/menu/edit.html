@@ -1,100 +1,83 @@
 <!DOCTYPE html>
 <html>
-
-<head>
-
 <meta charset="utf-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-
-
-<title></title>
-<meta name="keywords" content="">
-<meta name="description" content="">
-
-<link rel="shortcut icon" href="favicon.ico">
-<link href="/css/bootstrap.min.css?v=3.3.6" rel="stylesheet">
-<link href="/css/font-awesome.css?v=4.4.0" rel="stylesheet">
-<link href="/css/animate.css" rel="stylesheet">
-<link href="/css/style.css?v=4.1.0" rel="stylesheet">
-</head>
+<head th:include="include :: header"></head>
 <body class="gray-bg">
-	<div class="wrapper wrapper-content">
-		<div class="row">
-			<div class="col-sm-12">
-				<div class="ibox float-e-margins">
-					<div class="ibox-content">
-						<form class="form-horizontal m-t" id="signupForm">
-							<input id="parentId" name="parentId" type="hidden"
-								th:value="${pId}" /> <input id="menuId" name="menuId"
-								type="hidden" th:value="${menu.menuId}" />
-							<div class="form-group">
-								<label class="col-sm-3 control-label">上级菜单：</label>
-								<div class="col-sm-8">
-									<input id="" name="" class="form-control" type="text"
-										th:value="${pName}" readonly>
-								</div>
-							</div>
-							<div class="form-group">
-								<label class="col-sm-3 control-label">菜单类型：</label>
-								<div class="col-sm-8">
-									<label class="radio-inline"> <input type="radio"
-										th:field="*{menu.type}" name="type" value="0" /> 目录
-									</label> <label class="radio-inline"> <input type="radio"
-										th:field="*{menu.type}" name="type" value="1" /> 菜单
-									</label> <label class="radio-inline"> <input type="radio"
-										th:field="*{menu.type}" name="type" value="2" /> 按钮
-									</label>
-								</div>
-							</div>
-							<div class="form-group">
-								<label class="col-sm-3 control-label">菜单名称：</label>
-								<div class="col-sm-8">
-									<input id="name" name="name" class="form-control" type="text"
-										th:value="${menu.name}" required>
-								</div>
-							</div>
-							<div class="form-group">
-								<label class="col-sm-3 control-label">链接地址：</label>
-								<div class="col-sm-8">
-									<input id="url" name="url" class="form-control" type="text"
-										th:value="${menu.url}">
-								</div>
-							</div>
-							<div class="form-group">
-								<label class="col-sm-3 control-label">权限标识：</label>
-								<div class="col-sm-8">
-									<input id="perms" name="perms" class="form-control" type="text"
-										th:value="${menu.perms}">
-								</div>
-							</div>
-								<div class="form-group">
-								<label class="col-sm-3 control-label">排序号：</label>
-								<div class="col-sm-8">
-									<input id="orderNum" name="orderNum" class="form-control"
-										type="text" th:value="${menu.orderNum}">
-								</div>
-							</div>
-							<div class="form-group">
-								<label class="col-sm-3 control-label">图标：</label>
-								<div class="col-sm-5">
-									<input id="icon" name="icon" class="form-control" type="text"
-										placeholder="例如：fa fa-circle-o" th:value="${menu.icon}">
-								</div>
-								<input id="ico-btn" class="btn btn-warning" type="button" value="选择图标">
-							</div>
-							<div class="form-group">
-								<div class="col-sm-8 col-sm-offset-3">
-									<button type="submit" class="btn btn-info">提交</button>
-								</div>
-							</div>
-						</form>
-					</div>
+	<div style="padding: 20px;">
+		<form class="layui-form" style="width: 80%;" id="menuform"
+			lay-filter="menuform">
+			<input type="hidden" id="menuId" name="menuId"
+				th:value="${menu.menuId}" /> <input id="parentId" name="parentId"
+				type="hidden" th:value="${menu.parentId}">
+			<div class="layui-form-item">
+				<label class="layui-form-label">上级菜单</label>
+				<div class="layui-input-block">
+					<input id="pName" name="pName" class="layui-input" type="text"
+						th:value="${pName}" readonly>
 				</div>
 			</div>
-		</div>
+			<div class="layui-form-item">
+				<label class="layui-form-label">菜单类型</label>
+				<div class="layui-input-block">
+					<input type="hidden" class="layui-input" id="mtype"
+						th:value="${menu.menutype}" /> <input type="radio"
+						name="menutype" value="0" title="目录"> <input type="radio"
+						name="menutype" value="1" title="菜单"> <input type="radio"
+						name="menutype" value="2" title="按钮">
+				</div>
+			</div>
+			<div class="layui-form-item">
+				<label class="layui-form-label">菜单名称<i style="color: red;">*</i></label>
+				<div class="layui-input-block">
+					<input type="text" class="layui-input" id="menuname"
+						th:value="${menu.menuname}" name="menuname" autocomplete="off"
+						lay-verify="required" placeholder="请输入菜单名称" />
+				</div>
+			</div>
+			<div class="layui-form-item">
+				<label class="layui-form-label">地址</label>
+				<div class="layui-input-block">
+					<input type="text" class="layui-input" id="menuurl" name="menuurl"
+						autocomplete="off" placeholder="请输入地址" th:value="${menu.menuurl}" />
+				</div>
+			</div>
+			<div class="layui-form-item">
+				<label class="layui-form-label">权限标识</label>
+				<div class="layui-input-block">
+					<input type="text" class="layui-input" id="menuperms"
+						th:value="${menu.menuperms}" name="menuperms" autocomplete="off"
+						placeholder="请输入权限标识" />
+				</div>
+			</div>
+			<div class="layui-form-item">
+				<label class="layui-form-label">顺序</label>
+				<div class="layui-input-block">
+					<input type="text" class="layui-input" id="ordernum"
+						name="ordernum" autocomplete="off" placeholder="请输入顺序"
+						th:value="${menu.ordernum}" />
+				</div>
+			</div>
+			<div class="layui-form-item">
+				<label class="layui-form-label">图标</label>
+				<div class="layui-input-block">
+					<input type="text" class="layui-input" id="menuicon"
+						style="width: 80%; display: inline-block;"
+						th:value="${menu.menuicon}" name="menuicon" autocomplete="off"
+						placeholder="请点击选择图标" /> <input type="button"
+						class="layui-btn layui-btn-sm" value="其他图标" id="btnOtherIcon" />
+				</div>
+			</div>
+			<div class="layui-form-item layui-row layui-col-xs12">
+				<div class="layui-input-block">
+					<button class="layui-btn layui-btn-sm" lay-submit=""
+						lay-filter="savemenu">保存</button>
+					<button type="reset"
+						class="layui-btn layui-btn-sm layui-btn-primary">重置</button>
+				</div>
+			</div>
+		</form>
 	</div>
 	<div th:include="include::footer"></div>
 	<script src="/js/appjs/sys/menu/edit.js"></script>
 </body>
-
 </html>

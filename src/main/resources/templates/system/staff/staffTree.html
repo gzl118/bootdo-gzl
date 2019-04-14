@@ -1,0 +1,82 @@
+<!DOCTYPE html>
+<html>
+<meta charset="utf-8">
+<head th:include="include :: header"></head>
+<body class="gray-bg">
+	<div>
+		<table id="staffList" lay-filter="staffList"></table>
+	</div>
+	<div th:include="include :: footer"></div>
+	<script type="text/javascript">
+		layui
+				.use(
+						[ 'table' ],
+						function() {
+							var table = layui.table;
+							// 用户列表
+							var tableIns = table
+									.render({
+										elem : '#staffList',
+										url : "/system/staff/list",
+										cellMinWidth : 95,
+										page : {
+											layout : [ 'prev', 'page', 'next',
+													'count' ]
+										},
+										even : true,
+										where : {
+											deleteflag : 1
+										},
+										height : "full-30",
+										limit : 5,
+										id : "staffListTable",
+										response : {
+											statusName : 'code', // 规定数据状态的字段名称，默认：code
+											statusCode : 0, // 规定成功的状态码，默认：0
+											msgName : 'msg', // 规定状态信息的字段名称，默认：msg
+											countName : 'total', // 规定数据总数的字段名称，默认：count
+											dataName : 'rows' // 规定数据列表的字段名称，默认：data
+										},
+										done : function(res, curr, count) {
+										},
+										cols : [ [
+												{
+													field : 'employeeId',
+													title : '员工编号',
+													align : "center",
+													hide : true
+												},
+												{
+													field : 'deptId',
+													title : '部门编号',
+													align : "center",
+													hide : true
+												},
+												{
+													field : 'employeename',
+													title : '员工姓名',
+													align : "center"
+												},
+												{
+													field : 'sex',
+													title : '性别',
+													align : "center",
+													templet : function(d) {
+														return d.sex === 0 ? '<span class="label label-primary">男</span>'
+																: '<span class="label label-warning">女</span>';
+													}
+												} ] ]
+									});
+							table.on('row(staffList)', function(obj) {
+								var data = obj.data;
+								layer.closeAll("iframe");
+								var index = parent.layer
+										.getFrameIndex(window.name); //先得到当前iframe层的索引
+								parent.layer.close(index);
+								parent.loadEmployee(data.employeeId,
+										data.employeename, data.deptId);
+							});
+						});
+	</script>
+</body>
+</html>

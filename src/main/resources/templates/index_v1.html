@@ -16,6 +16,12 @@
 <link href="/css/plugins/toastr/toastr.min.css" rel="stylesheet">
 <link href="/css/animate.css" rel="stylesheet">
 <link href="/css/style.css?v=4.1.0" rel="stylesheet">
+<link href="/js/plugins/layui/css/layui.css" rel="stylesheet">
+<style>
+li .layui-icon {
+	font-size: 12px;
+}
+</style>
 </head>
 
 
@@ -52,18 +58,18 @@
 							<li><a id="index001" class="J_menuItem" href="index_v1.html"
 								data-index="0" th:href="@{/main}">gzl</a></li>
 						</ul></li> -->
-					<li th:each="menu : ${menus}"><a href="#"> <i
+					<li th:each="menu : ${menus}"><a href="#"> <i style=""
 							class="fa fa-bar-chart-o"
-							th:class="${menu.attributes.icon==null}?'fa fa-book':${menu.attributes.icon}"></i> <span
-							class="nav-label" th:text="${menu.text}">基础信息</span> <span
+							th:class="${menu.attributes.icon==null}?'fa fa-book':${menu.attributes.icon}"></i>
+							<span class="nav-label" th:text="${menu.text}">基础信息</span> <span
 							class="fa arrow"></span>
 					</a>
 						<ul class="nav nav-second-level">
 							<li th:each="cmenu : ${menu.children}"><a class="J_menuItem"
 								href="graph_echarts.html" th:href="${cmenu.attributes.url}"><i
 									class="fa fa-bar-chart-o"
-									th:class="${cmenu.attributes.icon==null}?'fa fa-book':${cmenu.attributes.icon}"></i> <span
-									class="nav-label" th:text="${cmenu.text}">系统管理</span> </a></li>
+									th:class="${cmenu.attributes.icon==null}?'fa fa-book':${cmenu.attributes.icon}"></i>
+									<span class="nav-label" th:text="${cmenu.text}">系统管理</span> </a></li>
 						</ul></li>
 				</ul>
 			</div>

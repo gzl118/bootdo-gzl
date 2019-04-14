@@ -1,0 +1,92 @@
+<!DOCTYPE html>
+<html>
+<meta charset="utf-8">
+<head th:include="include :: header"></head>
+<body class="gray-bg">
+	<div style="padding: 20px;">
+		<form class="layui-form" style="width: 80%;" id="menuform">
+			<input type="hidden" id="deleteflag" name="deleteflag" value="1" /><input
+				id="parentId" name="parentId" type="hidden" th:value="${pId}">
+			<div class="layui-form-item">
+				<label class="layui-form-label">前缀</label>
+				<div class="layui-input-block">
+					<input id="prefixMark" name="prefixMark" class="layui-input"
+						type="text" value="system" autocomplete="off"
+						lay-verify="required" />
+				</div>
+			</div>
+			<div class="layui-form-item">
+				<label class="layui-form-label">菜单标识</label>
+				<div class="layui-input-block">
+					<input id="menuMark" name="menuMark" class="layui-input"
+						autocomplete="off" lay-verify="required" type="text" />
+				</div>
+			</div>
+			<div class="layui-form-item">
+				<label class="layui-form-label">按钮</label>
+				<div class="layui-input-block">
+					<input type="checkbox" name="btntype" value="add" title="新增"
+						lay-skin="primary" checked> <input type="checkbox"
+						name="btntype" lay-skin="primary" value="edit" title="编辑" checked>
+					<input type="checkbox" lay-skin="primary" name="btntype"
+						value="remove" title="删除" checked><input type="checkbox"
+						name="btntype" value="batchRemove" title="批量删除" lay-skin="primary"
+						checked>
+				</div>
+			</div>
+			<div class="layui-form-item layui-row layui-col-xs12">
+				<div class="layui-input-block">
+					<button class="layui-btn layui-btn-sm" lay-submit=""
+						lay-filter="savebtn">保存</button>
+				</div>
+			</div>
+		</form>
+	</div>
+	<div th:include="include::footer"></div>
+	<script type="text/javascript">
+		layui.use([ 'form', 'layer' ], function() {
+			var form = layui.form;
+			var layer = layui.layer, $ = layui.jquery;
+			form.on("submit(savebtn)", function(data) {
+				var prefix = $("#prefixMark").val();
+				var menuMark = $("#menuMark").val();
+				var cbs = $('input:checkbox:checked');
+				var arrs = [];
+				$.each(cbs, function() {
+					var nv = prefix + ":" + menuMark + ":" + $(this).val();
+					var obj = {
+						menuperms : nv,
+						parentId : $("#parentId").val(),
+						menuname : $(this).attr("title"),
+						menutype : 2,
+						deleteflag : 1,
+						ordernum : 0
+					};
+					arrs.push(obj);
+				});
+				if (arrs.length > 0) {
+					$.ajax({
+						type : "POST",
+						url : "/sys/menu/savebtn",
+						data : JSON.stringify(arrs),//将对象序列化成JSON字符串  
+						dataType : "json",
+						contentType : 'application/json;charset=utf-8', //设置请求头信息  
+						success : function(data) {
+							layer.msg(data.msg);
+							if (data.code == 0) {
+								console.log("aaa");
+								layer.closeAll("iframe");
+								// 刷新父页面
+								parent.location.reload();
+							}
+						},
+						error : function(res) {
+						}
+					});
+				}
+				return false;
+			});
+		});
+	</script>
+</body>
+</html>

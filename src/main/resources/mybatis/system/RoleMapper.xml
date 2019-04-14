@@ -5,32 +5,34 @@
 
 	<select id="get" resultType="com.bootdo.system.domain.RoleDO">
 		select
-		`role_id`,`role_name`,`role_sign`,`remark`,`user_id_create`,`gmt_create`,`gmt_modified`
+		`role_id`,`rolename`,`note`,`edit_user`,`edit_time`,`deleteflag`,`ext1`,`ext2`,`ext3`
 		from sys_role where role_id = #{value}
 	</select>
 
 	<select id="list" resultType="com.bootdo.system.domain.RoleDO">
 		select
-		`role_id`,`role_name`,`role_sign`,`remark`,`user_id_create`,`gmt_create`,`gmt_modified`
+		`role_id`,`rolename`,`note`,`edit_user`,`edit_time`,`deleteflag`,`ext1`,`ext2`,`ext3`
 		from sys_role
 		<where>
 			<if test="roleId != null and roleId != ''"> and role_id = #{roleId} </if>
-			<if test="roleName != null and roleName != ''"> and role_name = #{roleName} </if>
-			<if test="roleSign != null and roleSign != ''"> and role_sign = #{roleSign} </if>
-			<if test="remark != null and remark != ''"> and remark = #{remark} </if>
-			<if test="userIdCreate != null and userIdCreate != ''"> and user_id_create = #{userIdCreate} </if>
-			<if test="gmtCreate != null and gmtCreate != ''"> and gmt_create = #{gmtCreate} </if>
-			<if test="gmtModified != null and gmtModified != ''"> and gmt_modified = #{gmtModified} </if>
+			<if test="rolename != null and rolename != ''"> and rolename LIKE '%${rolename}%' </if>
+			<if test="note != null and note != ''"> and note = #{note} </if>
+			<if test="editUser != null and editUser != ''"> and edit_user = #{editUser} </if>
+			<if test="editTime != null and editTime != ''"> and edit_time = #{editTime} </if>
+			<if test="deleteflag != null and deleteflag != ''"> and deleteflag = #{deleteflag} </if>
+			<if test="ext1 != null and ext1 != ''"> and ext1 = #{ext1} </if>
+			<if test="ext2 != null and ext2 != ''"> and ext2 = #{ext2} </if>
+			<if test="ext3 != null and ext3 != ''"> and ext3 = #{ext3} </if>
 		</where>
 		<choose>
 			<when test="sort != null and sort.trim() != ''">
 				order by ${sort} ${order}
 			</when>
 			<otherwise>
-				order by role_id
+				order by role_id desc
 			</otherwise>
 		</choose>
-		<if test="offset != null and limit != null">
+		<if test="offset != null and limit != null and limit !=-1">
 			limit #{offset}, #{limit}
 		</if>
 	</select>
@@ -39,46 +41,55 @@
 		select count(*) from sys_role
 		<where>
 			<if test="roleId != null and roleId != ''"> and role_id = #{roleId} </if>
-			<if test="roleName != null and roleName != ''"> and role_name = #{roleName} </if>
-			<if test="roleSign != null and roleSign != ''"> and role_sign = #{roleSign} </if>
-			<if test="remark != null and remark != ''"> and remark = #{remark} </if>
-			<if test="userIdCreate != null and userIdCreate != ''"> and user_id_create = #{userIdCreate} </if>
-			<if test="gmtCreate != null and gmtCreate != ''"> and gmt_create = #{gmtCreate} </if>
-			<if test="gmtModified != null and gmtModified != ''"> and gmt_modified = #{gmtModified} </if>
+			<if test="rolename != null and rolename != ''"> and rolename = #{rolename} </if>
+			<if test="note != null and note != ''"> and note = #{note} </if>
+			<if test="editUser != null and editUser != ''"> and edit_user = #{editUser} </if>
+			<if test="editTime != null and editTime != ''"> and edit_time = #{editTime} </if>
+			<if test="deleteflag != null and deleteflag != ''"> and deleteflag = #{deleteflag} </if>
+			<if test="ext1 != null and ext1 != ''"> and ext1 = #{ext1} </if>
+			<if test="ext2 != null and ext2 != ''"> and ext2 = #{ext2} </if>
+			<if test="ext3 != null and ext3 != ''"> and ext3 = #{ext3} </if>
 		</where>
 	</select>
 
-	<insert id="save" parameterType="com.bootdo.system.domain.RoleDO"
-		useGeneratedKeys="true" keyProperty="roleId">
+	<insert id="save" parameterType="com.bootdo.system.domain.RoleDO">
 		insert into sys_role
 		(
-		`role_name`,
-		`role_sign`,
-		`remark`,
-		`user_id_create`,
-		`gmt_create`,
-		`gmt_modified`
+		`role_id`,
+		`rolename`,
+		`note`,
+		`edit_user`,
+		`edit_time`,
+		`deleteflag`,
+		`ext1`,
+		`ext2`,
+		`ext3`
 		)
 		values
 		(
-		#{roleName},
-		#{roleSign},
-		#{remark},
-		#{userIdCreate},
-		#{gmtCreate},
-		#{gmtModified}
+		#{roleId},
+		#{rolename},
+		#{note},
+		#{editUser},
+		#{editTime},
+		#{deleteflag},
+		#{ext1},
+		#{ext2},
+		#{ext3}
 		)
 	</insert>
 
 	<update id="update" parameterType="com.bootdo.system.domain.RoleDO">
 		update sys_role
 		<set>
-			<if test="roleName != null">`role_name` = #{roleName}, </if>
-			<if test="roleSign != null">`role_sign` = #{roleSign}, </if>
-			<if test="remark != null">`remark` = #{remark}, </if>
-			<if test="userIdCreate != null">`user_id_create` = #{userIdCreate}, </if>
-			<if test="gmtCreate != null">`gmt_create` = #{gmtCreate}, </if>
-			<if test="gmtModified != null">`gmt_modified` = #{gmtModified}</if>
+			<if test="rolename != null">`rolename` = #{rolename}, </if>
+			<if test="note != null">`note` = #{note}, </if>
+			<if test="editUser != null">`edit_user` = #{editUser}, </if>
+			<if test="editTime != null">`edit_time` = #{editTime}, </if>
+			<if test="deleteflag != null">`deleteflag` = #{deleteflag}, </if>
+			<if test="ext1 != null">`ext1` = #{ext1}, </if>
+			<if test="ext2 != null">`ext2` = #{ext2}, </if>
+			<if test="ext3 != null">`ext3` = #{ext3}</if>
 		</set>
 		where role_id = #{roleId}
 	</update>

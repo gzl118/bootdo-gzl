@@ -50,9 +50,7 @@
 		<table id="${classname}List" lay-filter="${classname}List"></table>
 	</div>
 	<div th:include="include :: footer"></div>
-	<script src="/js/requiremain.js"></script>
-	<script src="/js/plugins/require/require.js"
-		data-main="/js/appjs/${pathName}/${classname}/${classname}.js"></script>
+	<script src="/js/appjs/${pathName}/${classname}/${classname}.js"></script>
 	<script type="text/html" id="${classname}ListBar">
       	{{# 
 			var gfun=function(pstatus){

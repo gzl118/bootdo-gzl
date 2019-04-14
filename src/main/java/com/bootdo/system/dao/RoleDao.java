@@ -8,15 +8,15 @@ import java.util.Map;
 import org.apache.ibatis.annotations.Mapper;
 
 /**
- * 角色
+ * 
  * @author chglee
  * @email 1992lcg@163.com
- * @date 2017-10-02 20:24:47
+ * @date 2019-04-14 18:52:03
  */
 @Mapper
 public interface RoleDao {
 
-	RoleDO get(Long roleId);
+	RoleDO get(String roleId);
 	
 	List<RoleDO> list(Map<String,Object> map);
 	
@@ -26,7 +26,7 @@ public interface RoleDao {
 	
 	int update(RoleDO role);
 	
-	int remove(Long roleId);
+	int remove(String role_id);
 	
-	int batchRemove(Long[] roleIds);
+	int batchRemove(String[] roleIds);
 }

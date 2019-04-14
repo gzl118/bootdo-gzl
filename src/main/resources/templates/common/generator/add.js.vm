@@ -1,8 +1,4 @@
 var prefix = "/${pathName}/${classname}";
-require.config({
-	paths : {}
-});
-require([ "jquery", 'layui' ], function($) {
 	layui.use([ 'form', 'layer', 'laydate' ], function() {
 		var form = layui.form;
 		var laydate = layui.laydate;
@@ -38,5 +34,4 @@ require([ "jquery", 'layui' ], function($) {
 						}
 					}
 				});
-	});
 });

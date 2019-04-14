@@ -29,6 +29,8 @@ public class UserDO implements Serializable {
 	private String ext2;
 	// 备注
 	private String ext3;
+	// 员工ID
+	private String employeeId;
 
 	/**
 	 * 设置：用户编号
@@ -196,5 +198,13 @@ public class UserDO implements Serializable {
 	 */
 	public String getExt3() {
 		return ext3;
+	}
+
+	public String getEmployeeId() {
+		return employeeId;
+	}
+
+	public void setEmployeeId(String employeeId) {
+		this.employeeId = employeeId;
 	}
 }
