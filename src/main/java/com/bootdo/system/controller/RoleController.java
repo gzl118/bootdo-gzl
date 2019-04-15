@@ -1,5 +1,6 @@
 package com.bootdo.system.controller;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 import java.util.UUID;
@@ -20,6 +21,8 @@ import com.bootdo.common.utils.Query;
 import com.bootdo.common.utils.R;
 import com.bootdo.common.utils.StringUtils;
 import com.bootdo.system.domain.RoleDO;
+import com.bootdo.system.domain.RoleMenuDO;
+import com.bootdo.system.service.RoleMenuService;
 import com.bootdo.system.service.RoleService;
 
 /**
@@ -35,6 +38,8 @@ import com.bootdo.system.service.RoleService;
 public class RoleController {
 	@Autowired
 	private RoleService roleService;
+	@Autowired
+	private RoleMenuService roleMenuService;
 
 	@GetMapping()
 	@RequiresPermissions("sys:role:role")
@@ -61,7 +66,7 @@ public class RoleController {
 	}
 
 	@GetMapping("/edit/{roleId}")
-	@RequiresPermissions("system:role:edit")
+	@RequiresPermissions("sys:role:edit")
 	String edit(@PathVariable("roleId") String roleId, Model model) {
 		RoleDO role = roleService.get(roleId);
 		model.addAttribute("role", role);
@@ -74,10 +79,21 @@ public class RoleController {
 	@ResponseBody
 	@PostMapping("/save")
 	@RequiresPermissions("sys:role:add")
-	public R save(RoleDO role) {
+	public R save(@RequestParam("ids[]") String[] menuIds, RoleDO role) {
 		if (StringUtils.isBlank(role.getRoleId()))
 			role.setRoleId(UUID.randomUUID().toString());
 		if (roleService.save(role) > 0) {
+			if (menuIds != null && menuIds.length > 0) {
+				List<RoleMenuDO> list = new ArrayList<RoleMenuDO>();
+				for (int i = 0; i < menuIds.length; i++) {
+					RoleMenuDO m = new RoleMenuDO();
+					m.setRelateId(UUID.randomUUID().toString());
+					m.setRoleId(role.getRoleId());
+					m.setMenuId(menuIds[i]);
+					list.add(m);
+				}
+				roleMenuService.insertlist(list);
+			}
 			return R.ok();
 		}
 		return R.error();
@@ -89,9 +105,23 @@ public class RoleController {
 	@ResponseBody
 	@RequestMapping("/update")
 	@RequiresPermissions("sys:role:edit")
-	public R update(RoleDO role) {
-		roleService.update(role);
-		return R.ok();
+	public R update(@RequestParam("ids[]") String[] menuIds, RoleDO role) {
+		if (roleService.update(role) > 0) {
+			if (menuIds != null && menuIds.length > 0) {
+				List<RoleMenuDO> list = new ArrayList<RoleMenuDO>();
+				for (int i = 0; i < menuIds.length; i++) {
+					RoleMenuDO m = new RoleMenuDO();
+					m.setRelateId(UUID.randomUUID().toString());
+					m.setRoleId(role.getRoleId());
+					m.setMenuId(menuIds[i]);
+					list.add(m);
+				}
+				roleMenuService.removeByRoleId(role.getRoleId());
+				roleMenuService.insertlist(list);
+			}
+			return R.ok();
+		}
+		return R.error();
 	}
 
 	/**
@@ -118,4 +148,9 @@ public class RoleController {
 		return R.ok();
 	}
 
+	@PostMapping("/listMenuIdByRoleId")
+	@ResponseBody
+	public List<String> listMenuIdByRoleId(String roleId) {
+		return roleMenuService.listMenuIdByRoleId(roleId);
+	}
 }

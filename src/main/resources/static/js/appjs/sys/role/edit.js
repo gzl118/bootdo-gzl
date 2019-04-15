@@ -11,8 +11,21 @@ layui.use([ 'form', 'layer', 'laydate' ], function() {
 			time : false,
 			shade : 0.8
 		});
+		// $("#roleform").serialize()
 		// 实际使用时的提交信息
-		$.post(prefix + "/update", $("#roleform").serialize(), function(res) {
+		Array
+		arr = [];
+		if (nodes && nodes.length > 0) {
+			for (var i = 0; i < nodes.length; i++) {
+				arr.push(nodes[i].menuId);
+			}
+		}
+		$.post(prefix + "/update", {
+			roleId : $("#roleId").val(),
+			rolename : $("#rolename").val(),
+			note : $("#note").val(),
+			ids : arr
+		}, function(res) {
 			top.layer.close(index);
 			top.layer.msg(res.msg);
 			if (res.code == 0) {
@@ -69,4 +82,9 @@ layui.use([ 'form', 'layer', 'laydate' ], function() {
 		}
 	};
 	zhouliMenu.loadMenu();
+	$.get(prefix + "/listMenuIdByRoleId", {
+		roleId : $("#roleId").val()
+	}, function(data) {
+
+	});
 });

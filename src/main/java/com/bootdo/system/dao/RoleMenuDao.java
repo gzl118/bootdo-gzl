@@ -31,4 +31,8 @@ public interface RoleMenuDao {
 	int batchRemove(String[] relateIds);
 
 	List<String> listMenuIdByRoleId(String roleId);
+
+	int insertlist(List<RoleMenuDO> list);
+
+	int removeByRoleId(String roleId);
 }

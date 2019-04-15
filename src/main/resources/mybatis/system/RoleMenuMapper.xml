@@ -65,7 +65,9 @@
 	<delete id="remove">
 		delete from sys_role_menu where relate_id = #{value}
 	</delete>
-
+	<delete id="removeByRoleId">
+		delete from sys_role_menu where role_id = #{value}
+	</delete>
 	<delete id="batchRemove">
 		delete from sys_role_menu where relate_id in
 		<foreach item="relateId" collection="array" open="("
@@ -77,5 +79,21 @@
 		select menu_id from sys_role_menu
 		<where>role_id = #{roleId}</where>
 	</select>
-
+	<insert id="insertlist" parameterType="java.util.List">
+		insert into sys_role_menu
+		(
+		`relate_id`,
+		`role_id`,
+		`menu_id`
+		)
+		values
+		<foreach collection="list" item="item" separator="," index="index"
+			open="" close="">
+			(
+			'${item.relateId}',
+			'${item.roleId}',
+			'${item.menuId}'
+			)
+		</foreach>
+	</insert>
 </mapper>

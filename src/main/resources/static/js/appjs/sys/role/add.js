@@ -11,16 +11,6 @@ layui.use([ 'form', 'layer', 'laydate' ], function() {
 			time : false,
 			shade : 0.8
 		});
-		// 实际使用时的提交信息
-		$.post(prefix + "/save", $("#roleform").serialize(), function(res) {
-			top.layer.close(index);
-			top.layer.msg(res.msg);
-			if (res.code == 0) {
-				layer.closeAll("iframe");
-				// 刷新父页面
-				parent.location.reload();
-			}
-		});
 		var treeObj = zhouliMenu.getZtreeObj();
 		var nodes = treeObj.getCheckedNodes(true);
 		Array
@@ -30,6 +20,22 @@ layui.use([ 'form', 'layer', 'laydate' ], function() {
 				arr.push(nodes[i].menuId);
 			}
 		}
+		// $("#roleform").serialize()
+		// 实际使用时的提交信息
+		$.post(prefix + "/save", {
+			rolename : $("#rolename").val(),
+			note : $("#note").val(),
+			deleteflag : $("#deleteflag").val(),
+			ids : arr
+		}, function(res) {
+			top.layer.close(index);
+			top.layer.msg(res.msg);
+			if (res.code == 0) {
+				layer.closeAll("iframe");
+				// 刷新父页面
+				parent.location.reload();
+			}
+		});
 		return false;
 	});
 	// 自定义验证规则
