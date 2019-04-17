@@ -63,17 +63,24 @@ layui.use([ 'form', 'layer', 'laydate' ], function() {
 	var zhouliMenu = {
 		// 加载菜单
 		loadMenu : function() {
-			$.get("/sys/menu/list", {
-				sort : 'ordernum',
-				deleteflag : 1,
-				page : 1,
-				limit : -1
+			$.get("/system/roleMenu/listmenu", {
+				roleId : $("#roleId").val()
 			}, function(data) {
 				if (data && data.code == 0) {
 					// 绑定zTree
-					$.fn.zTree.init($("#treeMenu"), setting, data.rows);
+					$.fn.zTree.init($("#treeMenu"), setting, data.menus);
 					// 展开所有节点
 					$.fn.zTree.getZTreeObj("treeMenu").expandAll(true);
+/*					var seldata = data.roleMenus;
+					if (seldata.length > 0) {
+						for (var i = 0; i < seldata.length; i++) {
+							var node = $.fn.zTree.getZTreeObj("treeMenu")
+									.getNodeByParam("menuId",
+											seldata[i].menuId);
+							$.fn.zTree.getZTreeObj("treeMenu").checkNode(node,
+									true, false, true);
+						}
+					}*/
 				}
 			});
 		},

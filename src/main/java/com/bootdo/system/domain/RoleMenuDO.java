@@ -3,8 +3,6 @@ package com.bootdo.system.domain;
 import java.io.Serializable;
 import java.util.Date;
 
-
-
 /**
  * 
  * 
@@ -14,13 +12,14 @@ import java.util.Date;
  */
 public class RoleMenuDO implements Serializable {
 	private static final long serialVersionUID = 1L;
-	
-	//关联ID
+
+	// 关联ID
 	private String relateId;
-	//角色ID
+	// 角色ID
 	private String roleId;
-	//菜单编号
+	// 菜单编号
 	private String menuId;
+	
 
 	/**
 	 * 设置：关联ID
@@ -28,34 +27,40 @@ public class RoleMenuDO implements Serializable {
 	public void setRelateId(String relateId) {
 		this.relateId = relateId;
 	}
+
 	/**
 	 * 获取：关联ID
 	 */
 	public String getRelateId() {
 		return relateId;
 	}
+
 	/**
 	 * 设置：角色ID
 	 */
 	public void setRoleId(String roleId) {
 		this.roleId = roleId;
 	}
+
 	/**
 	 * 获取：角色ID
 	 */
 	public String getRoleId() {
 		return roleId;
 	}
+
 	/**
 	 * 设置：菜单编号
 	 */
 	public void setMenuId(String menuId) {
 		this.menuId = menuId;
 	}
+
 	/**
 	 * 获取：菜单编号
 	 */
 	public String getMenuId() {
 		return menuId;
 	}
+
 }

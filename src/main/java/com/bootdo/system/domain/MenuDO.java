@@ -34,6 +34,8 @@ public class MenuDO implements Serializable {
 	private String ext2;
 	// 备注
 	private String ext3;
+	// 是否选中
+	private boolean checked = false;
 
 	/**
 	 * 设置：菜单编号
@@ -229,5 +231,13 @@ public class MenuDO implements Serializable {
 	 */
 	public String getExt3() {
 		return ext3;
+	}
+
+	public boolean isChecked() {
+		return checked;
+	}
+
+	public void setChecked(boolean checked) {
+		this.checked = checked;
 	}
 }
