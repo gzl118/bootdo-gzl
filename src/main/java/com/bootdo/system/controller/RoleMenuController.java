@@ -148,7 +148,7 @@ public class RoleMenuController {
 				}
 			}
 			mvo.setMenus(menus);
-			mvo.setRoleMenus(roleMenuList);
+//			mvo.setRoleMenus(roleMenuList);
 			mvo.setCode(0);
 		} catch (Exception e) {
 			e.printStackTrace();

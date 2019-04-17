@@ -132,6 +132,7 @@ public class RoleController {
 	@RequiresPermissions("sys:role:remove")
 	public R remove(String roleId) {
 		if (roleService.remove(roleId) > 0) {
+			roleMenuService.removeByRoleId(roleId);
 			return R.ok();
 		}
 		return R.error();
@@ -144,8 +145,11 @@ public class RoleController {
 	@ResponseBody
 	@RequiresPermissions("sys:role:batchRemove")
 	public R remove(@RequestParam("ids[]") String[] roleIds) {
-		roleService.batchRemove(roleIds);
-		return R.ok();
+		if (roleService.batchRemove(roleIds) > 0) {
+			roleMenuService.batchRemove(roleIds);
+			return R.ok();
+		}
+		return R.error();
 	}
 
 	@PostMapping("/listMenuIdByRoleId")

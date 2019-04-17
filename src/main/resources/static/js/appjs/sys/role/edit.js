@@ -13,6 +13,8 @@ layui.use([ 'form', 'layer', 'laydate' ], function() {
 		});
 		// $("#roleform").serialize()
 		// 实际使用时的提交信息
+		var treeObj = zhouliMenu.getZtreeObj();
+		var nodes = treeObj.getCheckedNodes(true);
 		Array
 		arr = [];
 		if (nodes && nodes.length > 0) {
@@ -71,16 +73,6 @@ layui.use([ 'form', 'layer', 'laydate' ], function() {
 					$.fn.zTree.init($("#treeMenu"), setting, data.menus);
 					// 展开所有节点
 					$.fn.zTree.getZTreeObj("treeMenu").expandAll(true);
-/*					var seldata = data.roleMenus;
-					if (seldata.length > 0) {
-						for (var i = 0; i < seldata.length; i++) {
-							var node = $.fn.zTree.getZTreeObj("treeMenu")
-									.getNodeByParam("menuId",
-											seldata[i].menuId);
-							$.fn.zTree.getZTreeObj("treeMenu").checkNode(node,
-									true, false, true);
-						}
-					}*/
 				}
 			});
 		},
@@ -89,9 +81,4 @@ layui.use([ 'form', 'layer', 'laydate' ], function() {
 		}
 	};
 	zhouliMenu.loadMenu();
-	$.get(prefix + "/listMenuIdByRoleId", {
-		roleId : $("#roleId").val()
-	}, function(data) {
-
-	});
 });

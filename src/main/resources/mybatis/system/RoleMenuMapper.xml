@@ -62,7 +62,7 @@
 		delete from sys_role_menu where role_id = #{value}
 	</delete>
 	<delete id="batchRemove">
-		delete from sys_role_menu where relate_id in
+		delete from sys_role_menu where role_id in
 		<foreach item="relateId" collection="array" open="("
 			separator="," close=")">
 			#{relateId}
