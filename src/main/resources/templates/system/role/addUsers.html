@@ -3,60 +3,28 @@
 	xmlns:shiro="http://www.pollix.at/thymeleaf/shiro">
 <meta charset="utf-8">
 <head th:include="include :: header"></head>
-<body class="gray-bg">
-	<div class="wrapper wrapper-content ">
-		<div class="row">
-<!-- 			<div class="col-sm-3"> -->
-<!-- 				<div class="ibox ibox-body"> -->
-<!-- 					<div class="ibox-title"> -->
-<!-- 						<h5>选择部门</h5> -->
-<!-- 					</div> -->
-<!-- 					<div class="ibox-content"> -->
-<!-- 						<div id="jstree"></div> -->
-<!-- 					</div> -->
-<!-- 				</div> -->
-<!-- 			</div> -->
-			<div class="col-sm-12">
-				<div class="ibox">
-					<div class="ibox-body">
-						<div class="fixed-table-toolbar">
-						<input id="roleId" name="roleId" type="hidden" th:value="${roleId}"> 
-							<div class="columns pull-left">
-								<button shiro:hasPermission="sys:user:add" type="button"
-									class="btn  btn-primary" onclick="batchSelected()">
-									<i class="fa fa-plus hidden" aria-hidden="true"></i>批量选择
-								</button>
-							</div>
-							<div class="columns pull-right">
-								<button class="btn btn-success" onclick="reLoad()">查询</button>
-							</div>
-
-							<div class="columns pull-right col-md-2 nopadding">
-								<input id="searchStaff" type="text" class="form-control"
-									placeholder="人员姓名">
-							</div>
-							<div class="columns pull-right col-md-2 nopadding">
-								<input id="searchUser" type="text" class="form-control"
-									placeholder="用户名">
-							</div>
-						</div>
-						<table id="exampleTable" data-mobile-responsive="true">
-						</table>
+<body>
+	<div>
+		<blockquote class="layui-elem-quote quoteBox">
+			<div class="layui-form">
+				<input type="hidden" id="roleId" th:value="${roleId}" />
+				<div class="layui-inline" style="float: right;">
+					<div class="layui-input-inline">
+						<input type="text" class="layui-input" id="username"
+							style="font-size: 12px" placeholder="请输入用户名称" autocomplete="off" />
 					</div>
+					<button type="button" class="layui-btn search_btn">
+						<i class="layui-icon layui-icon-search" aria-hidden="true"></i>搜索
+					</button>
+				</div>
+				<div class="layui-inline">
+					<button type="button" class="layui-btn addNews_btn">
+						<i class="layui-icon layui-icon-add-1" aria-hidden="true"></i>批量添加
+					</button>
 				</div>
 			</div>
-		</div>
-				<div>
-			<script type="text/javascript">
-// 				var s_select_h = 'hidden';
-				var s_select_h = '';
-			</script>
-		</div>
-<!-- 		<div shiro:hasPermission="sys:user:edit"> -->
-			<script type="text/javascript">
-			s_select_h = '';
-			</script>
-		</div>
+		</blockquote>
+		<table id="roleUserList" lay-filter="roleUserList"></table>
 	</div>
 	<div th:include="include :: footer"></div>
 	<script type="text/javascript" src="/js/appjs/sys/role/addUsers.js"></script>

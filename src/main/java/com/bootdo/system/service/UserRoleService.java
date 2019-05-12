@@ -1,37 +1,35 @@
 package com.bootdo.system.service;
 
+import com.bootdo.system.domain.UserDO;
+import com.bootdo.system.domain.UserRoleDO;
+
 import java.util.List;
 import java.util.Map;
 
-import org.springframework.stereotype.Service;
-
-import com.bootdo.system.domain.UserRoleDO;
-
-@Service
+/**
+ * 
+ * 
+ * @author chglee
+ * @email 1992lcg@163.com
+ * @date 2019-04-18 22:28:52
+ */
 public interface UserRoleService {
-	
-//	UserRoleDO get(Long id);
+
+	UserRoleDO get(String relateId);
 
 	List<UserRoleDO> list(Map<String, Object> map);
 
-//	int count(Map<String, Object> map);
-//
+	int count(Map<String, Object> map);
+
 	int save(UserRoleDO userRole);
-//
-//	int update(UserRoleDO userRole);
-//
-	int remove(Long id);
-//
-//	int batchRemove(Long[] ids);
-//
-//	List<Long> listRoleId(Long userId);
 
-	int removeByUserId(Long userId);
+	int update(UserRoleDO userRole);
 
-	int removeByRoleId(Long roleId);
-//
-	int batchSave(List<UserRoleDO> list);
-//
-//	int batchRemoveByUserId(Long[] ids);
+	int remove(String relateId);
+
+	int batchRemove(String[] relateIds);
+
+	List<UserDO> listUnInRole(Map<String, Object> map);
 	
+	int insertlist(List<UserRoleDO> list);
 }

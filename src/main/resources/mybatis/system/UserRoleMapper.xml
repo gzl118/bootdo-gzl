@@ -4,26 +4,30 @@
 <mapper namespace="com.bootdo.system.dao.UserRoleDao">
 
 	<select id="get" resultType="com.bootdo.system.domain.UserRoleDO">
-		select `id`,`user_id`,`role_id` from
-		sys_user_role where id = #{value}
+		select
+		`relate_id`,`user_id`,`role_id` from sys_user_role where relate_id =
+		#{value}
 	</select>
 
 	<select id="list" resultType="com.bootdo.system.domain.UserRoleDO">
-		select a.`id`,a.`user_id`,b.`name`,b.`username` from sys_user_role a left join sys_user b on a.user_id=b.user_id
+		select a.`relate_id`,a.`user_id`,a.`role_id`,b.username,b.usernikename
+		from sys_user_role a left join
+		sys_user b on a.user_id=b.user_id
 		<where>
+			<if test="relateId != null and relateId != ''"> and a.relate_id = #{relateId} </if>
 			<if test="userId != null and userId != ''"> and a.user_id = #{userId} </if>
 			<if test="roleId != null and roleId != ''"> and a.role_id = #{roleId} </if>
-			<if test="name != null and name != ''"> and b.name LIKE '%${name}%' </if>
+			<if test="username != null and username != ''"> and b.username LIKE '%${username}%' </if>
 		</where>
 		<choose>
 			<when test="sort != null and sort.trim() != ''">
 				order by ${sort} ${order}
 			</when>
 			<otherwise>
-				order by id desc
+				order by relate_id desc
 			</otherwise>
 		</choose>
-		<if test="offset != null and limit != null">
+		<if test="offset != null and limit != null and limit !=-1">
 			limit #{offset}, #{limit}
 		</if>
 	</select>
@@ -31,21 +35,22 @@
 	<select id="count" resultType="int">
 		select count(*) from sys_user_role
 		<where>
-			<if test="id != null and id != ''"> and id = #{id} </if>
+			<if test="relateId != null and relateId != ''"> and relate_id = #{relateId} </if>
 			<if test="userId != null and userId != ''"> and user_id = #{userId} </if>
 			<if test="roleId != null and roleId != ''"> and role_id = #{roleId} </if>
 		</where>
 	</select>
 
-	<insert id="save" parameterType="com.bootdo.system.domain.UserRoleDO"
-		useGeneratedKeys="true" keyProperty="id">
+	<insert id="save" parameterType="com.bootdo.system.domain.UserRoleDO">
 		insert into sys_user_role
 		(
+		`relate_id`,
 		`user_id`,
 		`role_id`
 		)
 		values
 		(
+		#{relateId},
 		#{userId},
 		#{roleId}
 		)
@@ -57,48 +62,55 @@
 			<if test="userId != null">`user_id` = #{userId}, </if>
 			<if test="roleId != null">`role_id` = #{roleId}</if>
 		</set>
-		where id = #{id}
+		where relate_id = #{relateId}
 	</update>
 
 	<delete id="remove">
-		delete from sys_user_role where id = #{value}
+		delete from sys_user_role where relate_id = #{value}
 	</delete>
 
 	<delete id="batchRemove">
-		delete from sys_user_role where id in
-		<foreach item="id" collection="array" open="(" separator=","
-			close=")">
-			#{id}
+		delete from sys_user_role where relate_id in
+		<foreach item="relateId" collection="array" open="("
+			separator="," close=")">
+			#{relateId}
 		</foreach>
 	</delete>
-
-	<select id="listRoleId" resultType="long">
-		select role_id from
-		sys_user_role where
-		user_id=#{userId}
+	<select id="listUnInRole" resultType="com.bootdo.system.domain.UserDO">
+		select su1.user_id,su1.username,su1.usernikename,su1.userstatus
+		from
+		sys_user su1
+		WHERE su1.user_id not in (select sur.user_id from
+		sys_user_role sur where
+		sur.role_id=#{roleId})
+		<if test="username != null and username != ''"> and su1.username LIKE '%${username}%' </if>
+		<choose>
+			<when test="sort != null and sort.trim() != ''">
+				order by ${sort} ${order}
+			</when>
+			<otherwise>
+				order by su1.username
+			</otherwise>
+		</choose>
+		<if test="offset != null and limit != null and limit !=-1">
+			limit #{offset}, #{limit}
+		</if>
 	</select>
-
-	<delete id="removeByUserId">
-		delete from sys_user_role where user_id=#{userId}
-	</delete>
-
-	<delete id="removeByRoleId">
-		delete from sys_user_role where role_id=#{roleId}
-	</delete>
-
-	<delete id="batchRemoveByUserId">
-		delete from sys_user_role where user_id in
-		<foreach item="id" collection="array" open="(" separator=","
-			close=")">
-			#{id}
-		</foreach>
-	</delete>
-
-	<insert id="batchSave">
-		INSERT INTO sys_user_role(user_id, role_id) values
-		<foreach item="item" index="index" collection="list"
-			separator=",">
-			(#{item.userId},#{item.roleId})
+	<insert id="insertlist" parameterType="java.util.List">
+		insert into sys_user_role
+		(
+		`relate_id`,
+		`role_id`,
+		`user_id`
+		)
+		values
+		<foreach collection="list" item="item" separator="," index="index"
+			open="" close="">
+			(
+			'${item.relateId}',
+			'${item.roleId}',
+			'${item.userId}'
+			)
 		</foreach>
 	</insert>
 </mapper>

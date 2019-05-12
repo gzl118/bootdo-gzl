@@ -1,185 +1,87 @@
-var prefix = "/sys/user";
-$(function() {
-	var roleId = '';
-	roleId=$("#roleId").val();
-	var deptId = '';
-//	getTreeData();	
-	load(deptId);
-});
-
-function load(deptId) {
-	$('#exampleTable')
-		.bootstrapTable(
-			{
-				method : 'get', // 服务器数据的请求方式 get or post
-				url : prefix + "/list", // 服务器数据的加载地址
-				// showRefresh : true,
-				// showToggle : true,
-				// showColumns : true,
-				iconSize : 'outline',
-				toolbar : '#exampleToolbar',
-				striped : true, // 设置为true会有隔行变色效果
-				dataType : "json", // 服务器返回的数据类型
-				pagination : true, // 设置为true会在底部显示分页条
-				// queryParamsType : "limit",
-				// //设置为limit则会发送符合RESTFull格式的参数
-				singleSelect : false, // 设置为true将禁止多选
-				// contentType : "application/x-www-form-urlencoded",
-				// //发送到服务器的数据编码类型
-				pageSize : 10, // 如果设置了分页，每页数据条数
-				pageNumber : 1, // 如果设置了分布，首页页码
-				// search : true, // 是否显示搜索框
-				showColumns : false, // 是否显示内容下拉框（选择显示的列）
-				sidePagination : "server", // 设置在哪里进行分页，可选值为"client" 或者
-				// "server"
-				queryParams : function(params) {
-					return {
-						// 说明：传入后台的参数包括offset开始索引，limit步长，sort排序列，order：desc或者,以及所有列的键值对
-						limit : params.limit,
-						offset : params.offset,
-						name : $('#searchStaff').val(),
-						username : $('#searchUser').val(),
-						deptId : deptId
-					};
-				},
-				columns : [
-					{
-						checkbox : true
-					},
-					{
-						field : 'userId', // 列字段名
-						title : '序号', // 列标题
-						visible: false
-					},
-					{
-						field : 'username',
-						title : '用户名'
-					},
-					{
-						field : 'name',
-						title : '人员姓名'
-					},
-					{
-						field : 'status',
-						title : '状态',
-						align : 'center',
-						formatter : function(value, row, index) {
-							if (value == '0') {
-								return '<span class="label label-danger">禁用</span>';
-							} else if (value == '1') {
-								return '<span class="label label-primary">正常</span>';
+var prefix = "/system/userRole";
+layui
+		.use(
+				[ 'form', 'layer', 'table', 'laytpl' ],
+				function() {
+					var form = layui.form, layer = layui.layer, $ = layui.jquery, laytpl = layui.laytpl, table = layui.table;
+					// 用户列表
+					var tableIns = table.render({
+						elem : '#roleUserList',
+						url : prefix + "/listUnInRole",
+						where : {
+							roleId : $("#roleId").val(),
+							username : $("#username").val(),
+							sort : 'username',
+							order : 'asc'
+						},
+						cellMinWidth : 95,
+						page : true,
+						even : true,
+						height : "full-100",
+						limits : [ 5, 10, 15, 20, 25 ],
+						limit : 10,
+						id : "roleUserListTable",
+						done : function(res, curr, count) {
+						},
+						response : {
+							statusName : 'code', // 规定数据状态的字段名称，默认：code
+							statusCode : 0, // 规定成功的状态码，默认：0
+							msgName : 'msg', // 规定状态信息的字段名称，默认：msg
+							countName : 'total', // 规定数据总数的字段名称，默认：count
+							dataName : 'rows' // 规定数据列表的字段名称，默认：data
+						},
+						cols : [ [ {
+							type : "checkbox",
+							fixed : "left",
+							width : 50
+						}, {
+							field : 'userId',
+							title : '用户ID',
+							align : "center",
+							hide : true
+						}, {
+							field : 'username',
+							title : '用户名',
+							align : "center"
+						}, {
+							field : 'usernikename',
+							title : '用户昵称',
+							align : "center"
+						} ] ]
+					});
+					$(".search_btn").on("click", function() {
+						table.reload("roleUserListTable", {
+							page : {
+								curr : 1
+							},
+							where : {
+								roleId : $("#roleId").val(),
+								username : $("#username").val()
 							}
-						}
-					},
-					{
-						title : '操作',
-						field : 'id',
-						align : 'center',
-						formatter : function(value, row, index) {
-							var e = '<a  class="btn btn-primary btn-sm ' + s_select_h + '" href="#" mce_href="#" title="选择" onclick="selected(\''
-								+ row.userId
-								+ '\')"><i class="fa fa-edit "></i></a> ';
-							return e ;
-						}
-					} ]
-			});
-}
-function reLoad() {
-	$('#exampleTable').bootstrapTable('refresh');
-}
-function selected(id) {
-	layer.confirm('确定要添加选中的用户？', {
-		btn : [ '确定', '取消' ]
-	}, function() {
-		$.ajax({
-			url : "/sys/roleuser/addToRole",
-			type : "post",
-			data : {
-				'id' : id,
-				'roleId': $("#roleId").val()
-			},
-			success : function(r) {
-				if (r.code == 0) {
-					layer.msg(r.msg);
-					reloadRoleMembers();
-				} else {
-					layer.msg(r.msg);
-				}
-			}
-		});
-	})
-}
-
-function batchSelected() {
-	var rows = $('#exampleTable').bootstrapTable('getSelections'); // 返回所有选择的行，当没有选择的记录时，返回一个空数组
-	if (rows.length == 0) {
-		layer.msg("请选择要添加的用户数据");
-		return;
-	}
-	layer.confirm("确认要添加选中的'" + rows.length + "'条成员数据吗?", {
-		btn : [ '确定', '取消' ]
-	// 按钮
-	}, function() {
-		var ids = new Array();
-		// 遍历所有选择的行数据，取每条数据对应的ID
-		$.each(rows, function(i, row) {
-			ids[i] = row['userId'];
-		});
-		$.ajax({
-			type : 'POST',
-			data : {
-				"ids" : ids,
-				'roleId': $("#roleId").val()
-			},
-			url : '/sys/roleuser/batchAddToRole',
-			success : function(r) {
-				if (r.code == 0) {
-					layer.msg(r.msg);
-					reloadRoleMembers();
-				} else {
-					layer.msg(r.msg);
-				}
-			}
-		});
-	}, function() {});
-}
-function getTreeData() {
-	$.ajax({
-		type : "GET",
-		url : "/system/sysDept/tree",
-		success : function(tree) {
-			loadTree(tree);
-		}
-	});
-}
-function loadTree(tree) {
-	$('#jstree').jstree({
-		'core' : {
-			'data' : tree
-		},
-		"plugins" : [ "search" ]
-	});
-	$('#jstree').jstree().open_all();
-}
-$('#jstree').on("changed.jstree", function(e, data) {
-	if (data.selected == -1) {
-		var opt = {
-			query : {
-				deptId : '',
-			}
-		}
-		$('#exampleTable').bootstrapTable('refresh', opt);
-	} else {
-		var opt = {
-			query : {
-				deptId : data.selected[0],
-			}
-		}
-		$('#exampleTable').bootstrapTable('refresh',opt);
-	}
-});
-function reloadRoleMembers() {
-	parent.reLoad();
-	var index = parent.layer.getFrameIndex(window.name); // 获取窗口索引
-	parent.layer.close(index);
-}
+						});
+					});
+					$(".addNews_btn")
+							.click(
+									function() {
+										var checkStatus = table
+												.checkStatus('roleUserListTable'), data = checkStatus.data, ArrayData = [];
+										if (data.length > 0) {
+											for ( var i in data) {
+												ArrayData.push(data[i].userId);
+											}
+											$.post(prefix + "/insertlist", {
+												ids : ArrayData,
+												roleId : $("#roleId").val()
+											}, function(res) {
+												top.layer.msg(res.msg);
+												if (res.code == 0) {
+													layer.closeAll("iframe");
+													// 刷新父页面
+													parent.location.reload();
+												}
+											});
+										} else {
+											layer.msg("请至少选择一条记录！");
+										}
+									});
+				});

@@ -1,56 +1,63 @@
 package com.bootdo.system.service.impl;
 
-import java.util.List;
-import java.util.Map;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-import org.springframework.transaction.annotation.Transactional;
+
+import java.util.List;
+import java.util.Map;
+
 import com.bootdo.system.dao.UserRoleDao;
+import com.bootdo.system.domain.UserDO;
 import com.bootdo.system.domain.UserRoleDO;
 import com.bootdo.system.service.UserRoleService;
 
-@Transactional
 @Service
-public class UserRoleServiceImpl implements UserRoleService{
+public class UserRoleServiceImpl implements UserRoleService {
+	@Autowired
+	private UserRoleDao userRoleDao;
 
-    @Autowired
-    UserRoleDao userRoleMapper;
+	@Override
+	public UserRoleDO get(String relateId) {
+		return userRoleDao.get(relateId);
+	}
 
 	@Override
 	public List<UserRoleDO> list(Map<String, Object> map) {
-		// TODO Auto-generated method stub
-		return userRoleMapper.list(map);
+		return userRoleDao.list(map);
 	}
 
 	@Override
-	public int removeByUserId(Long userId) {
-		// TODO Auto-generated method stub
-		return userRoleMapper.removeByUserId(userId);
-	}
-
-	@Override
-	public int remove(Long id) {
-		// TODO Auto-generated method stub
-		return userRoleMapper.remove(id);
-	}
-
-	@Override
-	public int removeByRoleId(Long roleId) {
-		// TODO Auto-generated method stub
-		return userRoleMapper.removeByRoleId(roleId);
+	public int count(Map<String, Object> map) {
+		return userRoleDao.count(map);
 	}
 
 	@Override
 	public int save(UserRoleDO userRole) {
-		// TODO Auto-generated method stub
-		return userRoleMapper.save(userRole);
+		return userRoleDao.save(userRole);
 	}
 
 	@Override
-	public int batchSave(List<UserRoleDO> list) {
-		// TODO Auto-generated method stub
-		return userRoleMapper.batchSave(list);
+	public int update(UserRoleDO userRole) {
+		return userRoleDao.update(userRole);
 	}
-    
-    
+
+	@Override
+	public int remove(String relateId) {
+		return userRoleDao.remove(relateId);
+	}
+
+	@Override
+	public int batchRemove(String[] relateIds) {
+		return userRoleDao.batchRemove(relateIds);
+	}
+
+	@Override
+	public List<UserDO> listUnInRole(Map<String, Object> map) {
+		return userRoleDao.listUnInRole(map);
+	}
+
+	@Override
+	public int insertlist(List<UserRoleDO> list) {
+		return userRoleDao.insertlist(list);
+	}
 }
