@@ -41,7 +41,7 @@
 				if (arrs && arrs.length > 0) {
 					$.ajax({
 						type : "POST",
-						url : "/sys/menu/changeOrder",
+						url : "/system/menu/changeOrder",
 						data : JSON.stringify(arrs),//将对象序列化成JSON字符串  
 						dataType : "json",
 						contentType : 'application/json;charset=utf-8', //设置请求头信息  
@@ -105,7 +105,7 @@
 		var zhouliMenu = {
 			//加载菜单
 			loadMenu : function() {
-				$.get("/sys/menu/list", {
+				$.get("/system/menu/list", {
 					sort : 'ordernum',
 					page : 1,
 					limit : -1

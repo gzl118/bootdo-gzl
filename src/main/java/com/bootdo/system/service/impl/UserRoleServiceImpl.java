@@ -60,4 +60,9 @@ public class UserRoleServiceImpl implements UserRoleService {
 	public int insertlist(List<UserRoleDO> list) {
 		return userRoleDao.insertlist(list);
 	}
+
+	@Override
+	public int removeByRoleId(String roleId) {
+		return userRoleDao.removeByRoleId(roleId);
+	}
 }

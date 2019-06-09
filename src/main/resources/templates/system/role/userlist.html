@@ -29,12 +29,12 @@
 					</button>
 				</div>
 				<div class="layui-inline">
-					<button type="button" class="layui-btn addNews_btn">
+					<button type="button"  shiro:hasPermission="system:userRole:add" class="layui-btn addNews_btn">
 						<i class="layui-icon layui-icon-add-1" aria-hidden="true"></i>添加
 					</button>
 				</div>
 				<div class="layui-inline">
-					<button type="button"
+					<button type="button"  shiro:hasPermission="system:userRole:batchRemove"
 						class="layui-btn layui-btn-danger layui-btn-normal delAll_btn">
 						<i class="layui-icon layui-icon-delete" aria-hidden="true"></i>批量删除
 					</button>
@@ -44,7 +44,7 @@
 		<table id="roleUserList" lay-filter="roleUserList"></table>
 	</div>
 	<div th:include="include::footer"></div>
-	<script type="text/javascript" src="/js/appjs/sys/role/userlist.js"></script>
+	<script type="text/javascript" src="/js/appjs/system/role/userlist.js"></script>
 	<script type="text/html" id="roleUserListBar">
       	{{# 
 			var gfun=function(){

@@ -11,17 +11,17 @@
 				var s_user_h = 'hidden';
 			</script>
 		</div>
-		<div shiro:hasPermission="sys:role:edit">
+		<div shiro:hasPermission="system:role:edit">
 			<script type="text/javascript">
 				s_edit_h = '';
 			</script>
 		</div>
-		<div shiro:hasPermission="sys:role:remove">
+		<div shiro:hasPermission="system:role:remove">
 			<script type="text/javascript">
 				var s_remove_h = '';
 			</script>
 		</div>
-		<div shiro:hasPermission="sys:role:remove">
+		<div shiro:hasPermission="system:role:remove">
 			<script type="text/javascript">
 				var s_user_h = '';
 			</script>
@@ -40,12 +40,13 @@
 					</button>
 				</div>
 				<div class="layui-inline">
-					<button type="button" class="layui-btn addNews_btn">
+					<button type="button" shiro:hasPermission="system:role:add"
+						class="layui-btn addNews_btn">
 						<i class="layui-icon layui-icon-add-1" aria-hidden="true"></i>新增
 					</button>
 				</div>
 				<div class="layui-inline">
-					<button type="button"
+					<button type="button" shiro:hasPermission="system:role:batchRemove"
 						class="layui-btn layui-btn-danger layui-btn-normal delAll_btn">
 						<i class="layui-icon layui-icon-delete" aria-hidden="true"></i>批量删除
 					</button>
@@ -55,7 +56,7 @@
 		<table id="roleList" lay-filter="roleList"></table>
 	</div>
 	<div th:include="include :: footer"></div>
-	<script src="/js/appjs/sys/role/role.js"></script>
+	<script src="/js/appjs/system/role/role.js"></script>
 	<script type="text/html" id="roleListBar">
       	{{# 
 			var gfun=function(pstatus){

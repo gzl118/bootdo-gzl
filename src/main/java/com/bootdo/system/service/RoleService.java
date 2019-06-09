@@ -27,4 +27,6 @@ public interface RoleService {
 	int remove(String roleId);
 	
 	int batchRemove(String[] roleIds);
+	
+	RoleDO getByName(Map<String, Object> map);
 }

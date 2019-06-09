@@ -34,4 +34,6 @@ public interface UserRoleDao {
 	List<UserDO> listUnInRole(Map<String,Object> map);
 	
 	int insertlist(List<UserRoleDO> list);
+	
+	int removeByRoleId(String roleId);
 }

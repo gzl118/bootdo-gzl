@@ -29,7 +29,7 @@ import com.bootdo.system.service.UserService;
 import com.bootdo.system.service.UserStaffService;
 import com.bootdo.system.vo.UserVO;
 
-@RequestMapping("/sys/user")
+@RequestMapping("/system/user")
 @Controller
 public class UserController extends BaseController {
 	@Autowired
@@ -38,14 +38,14 @@ public class UserController extends BaseController {
 	private UserStaffService userStaffService;
 
 	@GetMapping()
-	@RequiresPermissions("sys:user:user")
+	@RequiresPermissions("system:user:user")
 	String User() {
 		return "system/user/user";
 	}
 
 	@ResponseBody
 	@GetMapping("/list")
-	@RequiresPermissions("sys:user:user")
+	@RequiresPermissions("system:user:user")
 	public PageUtils list(@RequestParam Map<String, Object> params) {
 		// 查询列表数据
 		Query query = new Query(params);
@@ -56,13 +56,13 @@ public class UserController extends BaseController {
 	}
 
 	@GetMapping("/add")
-	@RequiresPermissions("sys:user:add")
+	@RequiresPermissions("system:user:add")
 	String add() {
 		return "system/user/add";
 	}
 
 	@GetMapping("/edit/{userId}")
-	@RequiresPermissions("sys:user:edit")
+	@RequiresPermissions("system:user:edit")
 	String edit(@PathVariable("userId") String userId, Model model) {
 		UserDO user = userService.get(userId);
 		model.addAttribute("user", user);
@@ -79,7 +79,7 @@ public class UserController extends BaseController {
 	 */
 	@ResponseBody
 	@PostMapping("/save")
-	@RequiresPermissions("sys:user:add")
+	@RequiresPermissions("system:user:add")
 	public R save(UserDO user) {
 		if (StringUtils.isBlank(user.getUserId()))
 			user.setUserId(UUID.randomUUID().toString());
@@ -102,7 +102,7 @@ public class UserController extends BaseController {
 	 */
 	@ResponseBody
 	@RequestMapping("/update")
-	@RequiresPermissions("sys:user:edit")
+	@RequiresPermissions("system:user:edit")
 	public R update(UserDO user) {
 		userService.update(user);
 		if (!StringUtils.isEmpty(user.getEmployeeId())) {
@@ -128,7 +128,7 @@ public class UserController extends BaseController {
 	 */
 	@PostMapping("/remove")
 	@ResponseBody
-	@RequiresPermissions("sys:user:remove")
+	@RequiresPermissions("system:user:remove")
 	public R remove(String userId) {
 		if (userService.remove(userId) > 0) {
 			return R.ok();
@@ -141,7 +141,7 @@ public class UserController extends BaseController {
 	 */
 	@PostMapping("/batchRemove")
 	@ResponseBody
-	@RequiresPermissions("sys:user:batchRemove")
+	@RequiresPermissions("system:user:batchRemove")
 	public R remove(@RequestParam("ids[]") String[] userIds) {
 		userService.batchRemove(userIds);
 		return R.ok();
@@ -158,7 +158,7 @@ public class UserController extends BaseController {
 
 	@PostMapping("/adminresetpwd")
 	@ResponseBody
-	@RequiresPermissions("sys:user:adminresetpwd")
+	@RequiresPermissions("system:user:adminresetpwd")
 	public R adminresetpwd(String userId) {
 		UserDO user = userService.get(userId);
 		user.setUserpwd(MD5Utils.encrypt(user.getUsername(), "111111"));

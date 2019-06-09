@@ -105,5 +105,9 @@
 			#{roleId}
 		</foreach>
 	</delete>
-
+	<select id="getByName" resultType="com.bootdo.system.domain.RoleDO"
+		parameterType="com.bootdo.system.domain.RoleDO">
+		select *
+		from sys_role where rolename = #{rolename} and role_id <![CDATA[ <> #{roleId}]]>
+	</select>
 </mapper>

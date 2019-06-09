@@ -13,22 +13,22 @@
 				var s_usable_h = 'hidden';
 			</script>
 		</div>
-		<div shiro:hasPermission="sys:user:edit">
+		<div shiro:hasPermission="system:user:edit">
 			<script type="text/javascript">
 				s_edit_h = '';
 			</script>
 		</div>
-		<div shiro:hasPermission="sys:user:remove">
+		<div shiro:hasPermission="system:user:remove">
 			<script type="text/javascript">
 				var s_remove_h = '';
 			</script>
 		</div>
-		<div shiro:hasPermission="sys:user:adminresetpwd">
+		<div shiro:hasPermission="system:user:adminresetpwd">
 			<script type="text/javascript">
 				var s_resetPwd_h = '';
 			</script>
 		</div>
-		<div shiro:hasPermission="sys:user:usable">
+		<div shiro:hasPermission="system:user:usable">
 			<script type="text/javascript">
 				var s_usable_h = '';
 			</script>
@@ -51,13 +51,13 @@
 					</button>
 				</div>
 				<div class="layui-inline">
-					<button shiro:hasPermission="sys:user:add" type="button"
+					<button shiro:hasPermission="system:user:add" type="button"
 						class="layui-btn addNews_btn">
 						<i class="layui-icon layui-icon-add-1" aria-hidden="true"></i>新增
 					</button>
 				</div>
 				<div class="layui-inline">
-					<button shiro:hasPermission="sys:user:batchRemove" type="button"
+					<button shiro:hasPermission="system:user:batchRemove" type="button"
 						class="layui-btn layui-btn-danger layui-btn-normal delAll_btn">
 						<i class="layui-icon layui-icon-delete" aria-hidden="true"></i>批量删除
 					</button>
@@ -67,7 +67,7 @@
 		<table id="userList" lay-filter="userList"></table>
 	</div>
 	<div th:include="include :: footer"></div>
-	<script src="/js/appjs/sys/user/user.js"></script>
+	<script src="/js/appjs/system/user/user.js"></script>
 	<script type="text/html" id="userListBar">
       	{{# 
 			var gfun=function(pstatus){

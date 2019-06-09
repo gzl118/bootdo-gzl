@@ -38,14 +38,14 @@ public class UserRoleController {
 	private UserRoleService userRoleService;
 
 	@GetMapping()
-	// @RequiresPermissions("system:userRole:userRole")
+	@RequiresPermissions("system:userRole:userRole")
 	String UserRole(String roleId, Model model) {
 		model.addAttribute("roleId", roleId);
 		return "system/role/userlist";
 	}
 
 	@GetMapping("addUser")
-	// @RequiresPermissions("system:userRole:userRole")
+	@RequiresPermissions("system:userRole:userRole")
 	String addUser(String roleId, Model model) {
 		model.addAttribute("roleId", roleId);
 		return "system/role/addUsers";
@@ -53,7 +53,7 @@ public class UserRoleController {
 
 	@ResponseBody
 	@GetMapping("/list")
-	// @RequiresPermissions("system:userRole:userRole")
+	@RequiresPermissions("system:userRole:userRole")
 	public PageUtils list(@RequestParam Map<String, Object> params) {
 		// 查询列表数据
 		Query query = new Query(params);
@@ -119,7 +119,7 @@ public class UserRoleController {
 	 */
 	@PostMapping("/batchRemove")
 	@ResponseBody
-	// @RequiresPermissions("system:userRole:batchRemove")
+	@RequiresPermissions("system:userRole:batchRemove")
 	public R remove(@RequestParam("ids[]") String[] relateIds) {
 		userRoleService.batchRemove(relateIds);
 		return R.ok();
@@ -127,7 +127,7 @@ public class UserRoleController {
 
 	@ResponseBody
 	@GetMapping("/listUnInRole")
-	// @RequiresPermissions("system:userRole:userRole")
+	@RequiresPermissions("system:userRole:userRole")
 	public PageUtils listUnInRole(@RequestParam Map<String, Object> params) {
 		// 查询列表数据
 		Query query = new Query(params);
@@ -140,7 +140,7 @@ public class UserRoleController {
 
 	@ResponseBody
 	@PostMapping("/insertlist")
-	// @RequiresPermissions("sys:userRole:insertlist")
+	@RequiresPermissions("system:userRole:insertlist")
 	public R insertlist(@RequestParam("ids[]") String[] userIds, String roleId) {
 		if (userIds != null && userIds.length > 0) {
 			List<UserRoleDO> list = new ArrayList<UserRoleDO>();

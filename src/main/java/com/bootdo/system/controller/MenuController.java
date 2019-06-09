@@ -29,20 +29,20 @@ import com.bootdo.system.service.MenuService;
 /**
  * @author bootdo 1992lcg@163.com
  */
-@RequestMapping("/sys/menu")
+@RequestMapping("/system/menu")
 @Controller
 public class MenuController extends BaseController {
 	String prefix = "system/menu";
 	@Autowired
 	MenuService menuService;
 
-	@RequiresPermissions("sys:menu:menu")
+	@RequiresPermissions("system:menu:menu")
 	@GetMapping()
 	String menu(Model model) {
 		return prefix + "/menu";
 	}
 
-	@RequiresPermissions("sys:menu:menu")
+	@RequiresPermissions("system:menu:menu")
 	@RequestMapping("/list")
 	@ResponseBody
 	public PageUtils list(@RequestParam Map<String, Object> params) {
@@ -54,7 +54,7 @@ public class MenuController extends BaseController {
 	}
 
 	@Log("添加菜单")
-	// @RequiresPermissions("sys:menu:add")
+	@RequiresPermissions("system:menu:add")
 	@GetMapping("/add/{pId}")
 	String add(Model model, @PathVariable("pId") String pId) {
 		model.addAttribute("pId", pId);
@@ -67,7 +67,7 @@ public class MenuController extends BaseController {
 	}
 
 	@Log("编辑菜单")
-	// @RequiresPermissions("sys:menu:edit")
+	@RequiresPermissions("system:menu:edit")
 	@GetMapping("/edit/{id}")
 	String edit(Model model, @PathVariable("id") String id) {
 		MenuDO mdo = menuService.get(id);
@@ -82,7 +82,7 @@ public class MenuController extends BaseController {
 	}
 
 	@Log("保存菜单")
-	// @RequiresPermissions("sys:menu:add")
+	@RequiresPermissions("system:menu:add")
 	@PostMapping("/save")
 	@ResponseBody
 	R save(MenuDO menu) {
@@ -96,7 +96,7 @@ public class MenuController extends BaseController {
 	}
 
 	@Log("更新菜单")
-	// @RequiresPermissions("sys:menu:edit")
+	@RequiresPermissions("system:menu:edit")
 	@PostMapping("/update")
 	@ResponseBody
 	R update(MenuDO menu) {
@@ -108,7 +108,7 @@ public class MenuController extends BaseController {
 	}
 
 	@Log("删除菜单")
-	// @RequiresPermissions("sys:menu:remove")
+	@RequiresPermissions("system:menu:remove")
 	@PostMapping("/remove")
 	@ResponseBody
 	R remove(String id) {
@@ -124,7 +124,7 @@ public class MenuController extends BaseController {
 	 */
 	@PostMapping("/batchRemove")
 	@ResponseBody
-	// @RequiresPermissions("system:menu:batchRemove")
+	@RequiresPermissions("system:menu:batchRemove")
 	public R remove(@RequestParam("ids[]") String[] menuIds) {
 		menuService.batchRemove(menuIds);
 		return R.ok();
@@ -151,7 +151,7 @@ public class MenuController extends BaseController {
 
 	@PostMapping("/changeOrder")
 	@ResponseBody
-	// @RequiresPermissions("system:menu:changeOrder")
+	@RequiresPermissions("system:menu:changeOrder")
 	public R changeOrder(@RequestBody List<MenuDO> menuIds) {
 		if (menuService.updatelist(menuIds) > 0) {
 			return R.ok();
@@ -160,6 +160,7 @@ public class MenuController extends BaseController {
 	}
 
 	@GetMapping("/menuBtn/{id}")
+	@RequiresPermissions("system:menu:savebtn")
 	String menuBtn(Model model, @PathVariable("id") String id) {
 		model.addAttribute("pId", id);
 		return "system/menu/menuBtn";
@@ -167,7 +168,7 @@ public class MenuController extends BaseController {
 
 	@PostMapping("/savebtn")
 	@ResponseBody
-	// @RequiresPermissions("system:menu:savebtn")
+	@RequiresPermissions("system:menu:savebtn")
 	public R savebtn(@RequestBody List<MenuDO> menuIds) {
 		menuIds.stream().forEach(p -> {
 			p.setMenuId(UUID.randomUUID().toString());

@@ -2,28 +2,30 @@
 <html>
 <meta charset="utf-8">
 <head th:include="include :: header"></head>
-<body class="gray-bg">
-	<div class="wrapper wrapper-content ">
-		<div class="col-sm-12">
-			<div class="ibox">
-				<div class="ibox-body">
-					<div  id="exampleToolbar" role="group" >
-						<button type="button" class="btn  btn-primary"
-							onclick="batchCode()">
-							<i class="" aria-hidden="true"></i>批量生成
-						</button>
-						<button type="button" class="btn  btn-success"
-							onclick="edit()">
-							<i class="" aria-hidden="true"></i>生成策略
-						</button>
-					</div>
-					<table id="exampleTable" data-mobile-responsive="true">
-					</table>
+<body>
+	<div>
+		<blockquote class="layui-elem-quote quoteBox">
+			<div class="layui-form">
+				<div class="layui-inline">
+					<button type="button" class="layui-btn codegenerator">
+						<i class="fa fa-code" aria-hidden="true"></i>批量生成
+					</button>
+				</div>
+				<div class="layui-inline">
+					<button type="button"
+						class="layui-btn layui-btn-normal generatormethod">
+						<i class="layui-icon layui-icon-set" aria-hidden="true"></i>生成策略
+					</button>
 				</div>
 			</div>
-		</div>
+		</blockquote>
+		<table id="codeList" lay-filter="codeList"></table>
 	</div>
 	<div th:include="include :: footer"></div>
-	<script type="text/javascript" src="/js/appjs/common/generator/list.js"></script>
+	<script type="text/javascript"
+		src="/js/appjs/common/generator/list1.js"></script>
+	<script type="text/html" id="codeListBar">
+      	<a class='layui-btn layui-btn-xs' lay-event='generate'><i class="fa fa-code"></i></a>
+	</script>
 </body>
 </html>

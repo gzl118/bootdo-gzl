@@ -1,6 +1,7 @@
 package com.bootdo.system.controller;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.UUID;
@@ -24,6 +25,7 @@ import com.bootdo.system.domain.RoleDO;
 import com.bootdo.system.domain.RoleMenuDO;
 import com.bootdo.system.service.RoleMenuService;
 import com.bootdo.system.service.RoleService;
+import com.bootdo.system.service.UserRoleService;
 
 /**
  * 
@@ -34,22 +36,24 @@ import com.bootdo.system.service.RoleService;
  */
 
 @Controller
-@RequestMapping("/sys/role")
+@RequestMapping("/system/role")
 public class RoleController {
 	@Autowired
 	private RoleService roleService;
 	@Autowired
 	private RoleMenuService roleMenuService;
+	@Autowired
+	private UserRoleService userRoleService;
 
 	@GetMapping()
-	@RequiresPermissions("sys:role:role")
+	@RequiresPermissions("system:role:role")
 	String Role() {
 		return "system/role/role";
 	}
 
 	@ResponseBody
 	@GetMapping("/list")
-	@RequiresPermissions("sys:role:role")
+	@RequiresPermissions("system:role:role")
 	public PageUtils list(@RequestParam Map<String, Object> params) {
 		// 查询列表数据
 		Query query = new Query(params);
@@ -60,13 +64,13 @@ public class RoleController {
 	}
 
 	@GetMapping("/add")
-	@RequiresPermissions("sys:role:add")
+	@RequiresPermissions("system:role:add")
 	String add() {
 		return "system/role/add";
 	}
 
 	@GetMapping("/edit/{roleId}")
-	@RequiresPermissions("sys:role:edit")
+	@RequiresPermissions("system:role:edit")
 	String edit(@PathVariable("roleId") String roleId, Model model) {
 		RoleDO role = roleService.get(roleId);
 		model.addAttribute("role", role);
@@ -78,8 +82,16 @@ public class RoleController {
 	 */
 	@ResponseBody
 	@PostMapping("/save")
-	@RequiresPermissions("sys:role:add")
-	public R save(@RequestParam("ids[]") String[] menuIds, RoleDO role) {
+	@RequiresPermissions("system:role:add")
+	public R save(
+			@RequestParam(value = "ids[]", required = false) String[] menuIds,
+			RoleDO role) {
+		Map<String, Object> params = new HashMap<String, Object>();
+		params.put("rolename", role.getRolename());
+		params.put("roleId", "");
+		RoleDO r = roleService.getByName(params);
+		if (r != null)
+			return R.error("角色名已存在！");
 		if (StringUtils.isBlank(role.getRoleId()))
 			role.setRoleId(UUID.randomUUID().toString());
 		if (roleService.save(role) > 0) {
@@ -104,8 +116,16 @@ public class RoleController {
 	 */
 	@ResponseBody
 	@RequestMapping("/update")
-	@RequiresPermissions("sys:role:edit")
-	public R update(@RequestParam("ids[]") String[] menuIds, RoleDO role) {
+	@RequiresPermissions("system:role:edit")
+	public R update(
+			@RequestParam(value = "ids[]", required = false) String[] menuIds,
+			RoleDO role) {
+		Map<String, Object> params = new HashMap<String, Object>();
+		params.put("rolename", role.getRolename());
+		params.put("roleId", role.getRoleId());
+		RoleDO r = roleService.getByName(params);
+		if (r != null)
+			return R.error("角色名已存在！");
 		if (roleService.update(role) > 0) {
 			if (menuIds != null && menuIds.length > 0) {
 				List<RoleMenuDO> list = new ArrayList<RoleMenuDO>();
@@ -129,10 +149,11 @@ public class RoleController {
 	 */
 	@PostMapping("/remove")
 	@ResponseBody
-	@RequiresPermissions("sys:role:remove")
+	@RequiresPermissions("system:role:remove")
 	public R remove(String roleId) {
 		if (roleService.remove(roleId) > 0) {
 			roleMenuService.removeByRoleId(roleId);
+			userRoleService.removeByRoleId(roleId);
 			return R.ok();
 		}
 		return R.error();
@@ -143,10 +164,11 @@ public class RoleController {
 	 */
 	@PostMapping("/batchRemove")
 	@ResponseBody
-	@RequiresPermissions("sys:role:batchRemove")
+	@RequiresPermissions("system:role:batchRemove")
 	public R remove(@RequestParam("ids[]") String[] roleIds) {
 		if (roleService.batchRemove(roleIds) > 0) {
 			roleMenuService.batchRemove(roleIds);
+			userRoleService.batchRemove(roleIds);
 			return R.ok();
 		}
 		return R.error();
