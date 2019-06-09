@@ -69,7 +69,7 @@ li .layui-icon {
 								href="graph_echarts.html" th:href="${cmenu.attributes.url}"><i
 									class="fa fa-bar-chart-o"
 									th:class="${cmenu.attributes.icon==null}?'fa fa-book':${cmenu.attributes.icon}"></i>
-									<span class="nav-label" th:text="${cmenu.text}">系统管理</span> </a></li>
+									<span class="nav-label1" th:text="${cmenu.text}">系统管理</span> </a></li>
 						</ul></li>
 				</ul>
 			</div>
@@ -146,7 +146,7 @@ li .layui-icon {
 						maxmin : true,
 						shadeClose : false,
 						area : [ '800px', '600px' ],
-						content : '/sys/user/personal'
+						content : '/system/user/personal'
 					});
 				}
 			}

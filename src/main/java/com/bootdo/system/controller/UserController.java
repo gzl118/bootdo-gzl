@@ -196,4 +196,11 @@ public class UserController extends BaseController {
 			throw new Exception("你修改的不是你登录的账号！");
 		}
 	}
+
+	@GetMapping("/personal")
+	String personal(Model model) {
+		UserDO userDO = userService.get(getUserId());
+		model.addAttribute("user", userDO);
+		return "system/user/personal";
+	}
 }
